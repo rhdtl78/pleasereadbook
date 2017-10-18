@@ -1,0 +1,19 @@
+table{
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1em;
+}
+table,td{
+  border: 1px solid #000;
+}
+td{
+  padding: 1em;
+  text-align: center;
+}
+table a{
+  text-decoration: none;
+  color: #000;
+}
+.buttons{
+  text-align: right;
+}
