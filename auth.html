@@ -11,7 +11,7 @@
 <body>
   <div class="container">
     <div class="row">
-      <div class="card">
+      <div class="inline-block">
         <span id="USER_NICKNAME"></span>님! 가입을 축하합니다!
         <span id="USER_EMAIL"></span>로 인증 메일을 보내드렸으니 확인 바랍니다!
       </div>
@@ -34,33 +34,18 @@
   <script type="text/javascript">
     firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
-        firebase.database().ref('/tmpUser/' + user.uid).on('value', function(snapshot) {
-          var email = snapshot.val().mailName + snapshot.val().mailPlatform;
-          var passwd = snapshot.val().passwd;
-          var nickname = snapshot.val().nickname;
-          $('#USER_EMAIL').text(email);
-          $('#USER_NICKNAME').text(nickname);
-
-          firebase.auth().createUserWithEmailAndPassword(email, passwd).then(function() {
-            var user = firebase.auth().currentUser;
-            user.updateProfile({
-              displayName: nickname,
-            }).then(function() {
-            }, function(error) {
-              alert(error.message);
-            });
-            user.sendEmailVerification().then(function() {
-              // Email sent.
-            }).catch(function(error) {
-              // An error happened.
-              alert(error.message)
-            });
-          }).catch(function(error) {
-            alert(error.message);
-          });
+        // User is signed in.
+        $('#USER_EMAIL').text(user.email);
+        $('#USER_NICKNAME').text(user.displayName);
+        //email verification
+        user.sendEmailVerification().then(function() {
+          // Email sent.
+        }).catch(function(error) {
+          // An error happened.
+          alert(error.message);
         });
       } else {
-
+        // No user is signed in.
       }
     });
   </script>
