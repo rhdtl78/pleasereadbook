@@ -4,7 +4,7 @@ var config = {
   authDomain: "pleasereadbook.firebaseapp.com",
   databaseURL: "https://pleasereadbook.firebaseio.com",
   projectId: "pleasereadbook",
-  storageBucket: "",
+  storageBucket: "pleasereadbook.appspot.com",
   messagingSenderId: "291094516014"
 };
 firebase.initializeApp(config);

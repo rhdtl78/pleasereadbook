@@ -1,53 +1,128 @@
 <!DOCTYPE html>
 <html lang="ko">
-  <head>
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
-    <link rel="stylesheet" href="/css/master.css">
-    <title>Please Read Book</title>
-  </head>
-  <body>
 
-    <div class="container-fluid">
-      <div class="row">
-        <form class="form RegisterForm center-block" action="#" method="post">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+  <link rel="stylesheet" href="/css/master.css">
+  <title>Please Read Book</title>
+</head>
+
+<body>
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-xl-3">
+        <form class="form center-block" action="/auth.html" method="post" id="REGISTER_FORM">
           <div class="input-group">
-            <label for="EMAIL">Email</label>
-            <input type="text" class="form-control" name="" value="" id="EMAIL">
+            <input type="text" class="form-control" name="emali" value="" id="EMAIL" placeholder="E-mail">
             <span class="input-group-addon">@</span>
-            <select class="MailPlatform" name="">
-              <option value="@google.com">google.com</option>
-            </select>
+            <select class="MailPlatform" name="mailPlatform" id=MAIL_PLATFORM>
+                <option value="@naver.com">naver.com</option>
+              </select>
           </div>
           <div class="input-group">
-            <label for="PASSWD">패스워드</label>
-            <input type="text" class="form-control" name="" value="" id="PASSWD">
+            <input class="form-control" type="password" id="PASSWD" name="passwd" maxlength="16" placeholder="Password" />
           </div>
           <div class="input-group">
-            <label for="PASSWD_CONFIRM">패스워드 확인</label>
-            <input type="text" class="form-control" name="" value="" id="PASSWD_CONFIRM">
+            <input class="form-control" type="password" id="PASSWD_CONFIRM" name="passwdConfirm" maxlength="16" placeholder="Password Confirm" />
           </div>
           <div class="input-group">
-            <label for="NICKNAME">별명</label>
-            <input type="text" class="form-control" name="" value="" id="NICKNAME">
+            <input type="text" class="form-control" name="nickname" value="" id="NICKNAME" placeholder="Nick Name">
           </div>
-          <button type="submit" class="btn btn-primary" name="button">Register</button>
+          <button type="button" class="btn btn-primary" name="button" id="REGISTER_BTN">Register</button>
+          <button type="button" class="btn btn primary" name="button" id="LOGIN_BTN">Login</button>
         </form>
       </div>
     </div>
+    <div class="row">
+      <div class="col-xl-3">
+        <button type="button" name="button" class="btn btn-primary btn-lg" id="LOGIN_GOOGLE">Login with google</button>
+      </div>
+    </div>
+  </div>
 
 
-    <!--Core Script CDN Link-->
-    <!--Bootstrap-->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
-    <!--Firebase-->
-    <script src="https://www.gstatic.com/firebasejs/4.5.2/firebase.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-database.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-messaging.js"></script>
-    <script type="text/javascript" src="/js/fireinit.js"></script>
-  </body>
+  <!--Core Script CDN Link-->
+  <!--Bootstrap-->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+  <!--Firebase-->
+  <script src="https://www.gstatic.com/firebasejs/4.5.2/firebase.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-messaging.js"></script>
+  <script type="text/javascript" src="/js/fireinit.js"></script>
+  <script type="text/javascript">
+    $.fn.serializeObject = function() {
+      "use strict";
+      var result = {};
+      var extend = function(i, element) {
+        var node = result[element.name];
+        if ('undefined' !== typeof node && node !== null) {
+          if ($.isArray(node)) {
+            node.push(element.value);
+          } else {
+            result[element.name] = [node, element.value];
+          }
+        } else {
+          result[element.name] = element.value;
+        }
+      };
+
+      $.each(this.serializeArray(), extend);
+      return result;
+    };
+    $('#REGISTER_BTN').click(function() {
+      var $form = $('#REGISTER_FORM');
+      var formdata = $form.serializeObject();
+
+      if (formdata.passwd != formdata.passwdConfirm) {
+        alert("비밀번호가 다릅니다. 다시 입력하십시오.");
+        return false;
+      } else {
+        firebase.database().ref('/tmpUser/' + _uid).set(formdata);
+        $form.submit();
+      }
+    });
+
+    $('#LOGIN_GOOGLE').click(function() {
+      var provider = new firebase.auth.GoogleAuthProvider();
+      firebase.auth().signInWithPopup(provider).then(function(result) {}).catch(function(error) {
+        alert(error.message);
+      });
+    });
+
+    $('#LOGIN_BTN').click(function () {
+      window.location.href = "/login.html";
+    });
+
+    // 익명 인증.
+    firebase.auth().signInAnonymously().catch(function(error) {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      // ...
+      alert(errorCode + "\n" + errorMessage);
+    });
+    var _uid = null;
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        // User is signed in.
+        var isAnonymous = user.isAnonymous;
+        var uid = user.uid;
+        _uid = uid
+        firebase.database().ref('/tmpUser/'+ user.uid).set({"username":user.displayName});
+      } else {
+        // User is signed out.
+        _uid = null;
+
+      }
+      // ...
+    });
+  </script>
+</body>
+
 </html>
