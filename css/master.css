@@ -19,3 +19,10 @@ html {
 .container-fluid{
   background-color: #555555;
 }
+
+.title{
+  font-size: 3rem;
+  color: white;
+  margin-top: 10%;
+  margin-bottom: 10%;
+}
