@@ -101,6 +101,14 @@
       $.each(this.serializeArray(), extend);
       return result;
     };
+
+    // 익명 인증.
+    firebase.auth().signInAnonymously().catch(function(error) {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      alert(errorCode + "\n" + errorMessage);
+    });
     $('#REGISTER_BTN').click(function() {
       var $form = $('#REGISTER_FORM');
       var formdata = $form.serializeObject();
@@ -109,7 +117,7 @@
         alert("비밀번호가 다릅니다. 다시 입력하십시오.");
         return false;
       } else {
-        firebase.database().ref('/tmpUser/' + _uid).set(formdata);
+        firebase.database().ref('/tmpUser/' + uid).set(formdata);
         $form.submit();
       }
     });
@@ -125,25 +133,15 @@
       window.location.href = "/login.html";
     });
 
-    // 익명 인증.
-    firebase.auth().signInAnonymously().catch(function(error) {
-      // Handle Errors here.
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      // ...
-      alert(errorCode + "\n" + errorMessage);
-    });
-    var _uid = null;
+    var uid = null;
     firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
         // User is signed in.
         var isAnonymous = user.isAnonymous;
-        var uid = user.uid;
-        _uid = uid
+        uid = user.uid;
         firebase.database().ref('/tmpUser/' + user.uid).set($('#REGISTER_FORM').serializeObject());
       } else {
         // User is signed out.
-        _uid = null;
 
       }
       // ...

@@ -46,7 +46,6 @@
             user.updateProfile({
               displayName: nickname,
             }).then(function() {
-              location.reload();
             }, function(error) {
               alert(error.message);
             });
