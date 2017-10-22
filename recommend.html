@@ -1,29 +1,286 @@
 <!DOCTYPE html>
 <html lang="ko">
-  <head>
-    <meta charset="utf-8">
-    <title>pleasereadbook</title>
-    <link rel="stylesheet" type="text/css" href="css/recommend.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
-  </head>
-  <body>
-    <table>
+
+<head>
+  <meta charset="utf-8">
+  <title>pleasereadbook</title>
+  <link rel="stylesheet" type="text/css" href="css/recommend.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">PleaseReadBook</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="#">마이페이지</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">마이클립</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">고객센터</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          정렬기준
+        </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" id="name" href="#">이름순</a>
+            <a class="dropdown-item" id="rate" href="#">인기순</a>
+            <a class="dropdown-item" id="time" href="#">독파순</a>
+        </li>
+      </ul>
+
+      <form class="form-inline my-2 my-lg-0">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      </form>
+      </div>
+  </nav>
+
+  <table class="table table-hover">
+    <thead>
       <tr>
-        <th>Booklip</th>
-        <td><a href="#">마이페이지</a></td>
-        <td><a href="#">마이클립</a></td>
-        <td><a href="#">고객센터</a></td>
+        <th scope="col">번호</th>
+        <th scope="col">제목</th>
+        <th scope="col">저자</th>
+        <th scope="col">평점</th>
       </tr>
-    </table>
-    <div class="buttons">
-      <button type="button">이름순</button>
-      <button type="button">인기순</button>
-      <button type="button">독파순</button>
-    </div>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row" id="book1">1</th>
+        <td>페이트</td>
+        <td>타스쿠오나</td>
+        <td>1</td>
+      </tr>
+      <tr>
+        <th scope="row" id="book2">2</th>
+        <td>어린왕자</td>
+        <td>생텍쥐페리</td>
+        <td>5</td>
+      </tr>
+      <tr>
+        <th scope="row" id="book3">3</th>
+        <td>개구리왕자</td>
+        <td>그림형제</td>
+        <td>4</td>
+      </tr>
+      <tr>
+        <th scope="row">4</th>
+        <td>원피스</td>
+        <td>오다 에이치로</td>
+        <td>3</td>
+      </tr>
+      <tr>
+        <th scope="row">5</th>
+        <td>홍길동</td>
+        <td>허균</td>
+        <td>4.8</td>
+      </tr>
+    </tbody>
+  </table>
+  <button class="btn" id="login">로그인</button>
+
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-messaging.js"></script>
+  <script src="/js/fireinit.js"></script>
+
+  <script type="text/javascript">
+    $('#login').click(function() {
+      var provider = new firebase.auth.GoogleAuthProvider();
+      firebase.auth().signInWithPopup(provider).then(function(result) {
+        alert("로그인 성공");
+      }).catch(function(error) {
+        alert(error);
+      });
+    });
+
+    firebase.auth().onAuthStateChanged(function(user) {
+      var book1 = {};
+      var book2 = {};
+      var book3 = {};
+      var book4 = {};
+      var book5 = {};
+      if (user) {
+        book1 = {
+          "title": "페이트",
+          "author": "타스쿠오나",
+          "rate": 1,
+          "time": "71시간"
+        };
+        book2 = {
+          "title": "어린왕자",
+          "author": "생텍쥐페리",
+          "rate": 5,
+          "time": "2시간"
+        };
+        book3 = {
+          "title": "개구리왕자",
+          "author": "그림형제",
+          "rate": 4,
+          "time": "1시간"
+        };
+        book4 = {
+          "title": "원피스",
+          "author": "오다 에이치로",
+          "rate": 3,
+          "time": "168시간"
+        };
+        book5 = {
+          "title": "홍길동",
+          "author": "허균",
+          "rate": 4.8,
+          "time": "4시간"
+        };
+
+        //파이어베이스 db에서 읽어오기
+        firebase.database().ref('/book').on('value',function(snapshot){
+          snapshot.forEach(function(childsnapshot){
+            var title=childsnapshot.child.key;
+            var author=childsnapshot.child.author;
+            var rate=childsnapshot.child.rate;
+            var time=childsnapshot.child.time;
+          });
+        });
+        //인기정렬
+
+        $('#rate').click(function sort_by_rate() {
+          alert(title);
+          alert(author);
+          alert(rate);
+          alert(time);
+          //var a = [book1["rate"], book2["rate"], book3["rate"], book4["rate"], book5["rate"]];
+          var a=[title,author,rate,time];
+          alert(a);
+          function swap(a, i, j) {
+            var tmp = a[i];
+            a[i] = a[j];
+            a[j] = tmp;
+          }
+
+          function max_heapify(a, i, length) {
+            while (true) {
+              var left = i * 2 + 1;
+              var right = i * 2 + 2;
+              var largest = i;
+
+              if (left < length && a[left] > a[largest]) {
+                largest = left;
+              }
+
+              if (right < length && a[right] > a[largest]) {
+                largest = right;
+              }
+
+              if (i == largest) {
+                break;
+              }
+
+              swap(a, i, largest);
+              i = largest;
+            }
+          }
+
+          function heapify(a, length) {
+            for (var i = Math.floor(length / 2); i >= 0; i--) {
+              max_heapify(a, i, length);
+            }
+          }
+
+          function heapsort(a) {
+            heapify(a, a.length);
+
+            for (var i = a.length - 1; i > 0; i--) {
+              swap(a, i, 0);
+
+              max_heapify(a, 0, i - 1);
+            }
+          }
+          $('tbody').append("<tr><th scope="row"><td>"+a+"</td><td>"+i+"</td><td>"+i+"</td></th></tr>");
+          $('tbody').append("<tr><th scope="row"><td>"+i+"</td><td>"+i+"</td><td>"+i+"</td></th></tr>");
+          $('tbody').append("<tr><th scope="row"><td>"+i+"</td><td>"+i+"</td><td>"+i+"</td></th></tr>");
+          $('tbody').append("<tr><th scope="row"><td>"+i+"</td><td>"+i+"</td><td>"+i+"</td></th></tr>");
+          $('tbody').append("<tr><th scope="row"><td>"+i+"</td><td>"+i+"</td><td>"+i+"</td></th></tr>");
+        });
 
 
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
-  </body>
+
+        //독파정렬
+
+        $('#time').click(function sort_by_time() {
+          //var a = [book1["time"], book2["time"], book3["time"], book4["time"], book5["time"]];
+          var a=[title,author,rate,time];
+          function swap(a, i, j) {
+            var tmp = a[i];
+            a[i] = a[j];
+            a[j] = tmp;
+          }
+
+          function max_heapify(a, i, length) {
+            while (true) {
+              var left = i * 2 + 1;
+              var right = i * 2 + 2;
+              var largest = i;
+
+              if (left < length && a[left] > a[largest]) {
+                largest = left;
+              }
+
+              if (right < length && a[right] > a[largest]) {
+                largest = right;
+              }
+
+              if (i == largest) {
+                break;
+              }
+
+              swap(a, i, largest);
+              i = largest;
+            }
+          }
+
+          function heapify(a, length) {
+            for (var i = Math.floor(length / 2); i >= 0; i--) {
+              max_heapify(a, i, length);
+            }
+          }
+
+          function heapsort(a) {
+            heapify(a, a.length);
+
+            for (var i = a.length - 1; i > 0; i--) {
+              swap(a, i, 0);
+
+              max_heapify(a, 0, i - 1);
+            }
+            $('tbody').append("<tr><th scope="row"><td>"+i+"</td><td>"+i+"</td><td>"+i+"</td></th></tr>");
+            $('tbody').append("<tr><th scope="row"><td>"+i+"</td><td>"+i+"</td><td>"+i+"</td></th></tr>");
+            $('tbody').append("<tr><th scope="row"><td>"+i+"</td><td>"+i+"</td><td>"+i+"</td></th></tr>");
+            $('tbody').append("<tr><th scope="row"><td>"+i+"</td><td>"+i+"</td><td>"+i+"</td></th></tr>");
+            $('tbody').append("<tr><th scope="row"><td>"+i+"</td><td>"+i+"</td><td>"+i+"</td></th></tr>");
+          }
+
+        });
+
+      }
+
+    });
+  </script>
+
+</body>
+
 </html>
