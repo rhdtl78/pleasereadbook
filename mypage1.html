@@ -34,7 +34,9 @@
       <table>
         <tr>
           <ol>
-            <li>UID: <span id="USER_EMAIL"></span></li>
+            <li>UID: <span id="USER_EMAIL">
+              $('#USER_EMAIL').text(user.email);
+            </span></li>
             <li>NICKNAME: <span id="USER_NICKNAME"></span></li>
           </ol>
         </tr>
