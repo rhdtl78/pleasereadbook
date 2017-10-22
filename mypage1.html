@@ -3,11 +3,11 @@
   <head>
     <meta charset="utf-8">
     <title></title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="/css/style.css">
   </head>
   <body>
     <div class="menubar">
-      <a href="#">Index</a>
+      <a href="#">Home</a>
       <a href="#">MyClip</a>
       <a href="#">BookClip</a>
     </div>
@@ -15,7 +15,7 @@
     <div class="chinf">
       <table>
         <tr>
-          <td><label>UID: </label></td>
+          <td><label>EMAIL: </label></td>
           <td><span id="USER_EMAIL"></span></td>
         </tr>
         <tr>
@@ -25,8 +25,21 @@
         <tr>
           <td><a href="mypage2.html">개인정보 수정</a></td>
         </tr>
+        <tr>
+          <td><button id="login" type="button" name="button">구글인증</button></td>
+        </tr>
       </table>
 
     </div>
+
+    <script type="text/javascript">
+      $("#login").click(function(){
+        var provider = new firebase.auth.GoogleAuthProvider();
+
+        firebase.auth().signInWithPopup(provider).then(function(result){
+
+        });
+      });
+    </script>
   </body>
 </html>
