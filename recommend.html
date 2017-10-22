@@ -36,11 +36,6 @@
             <a class="dropdown-item" id="time" href="#">독파순</a>
         </li>
       </ul>
-
-      <form class="form-inline my-2 my-lg-0">
-        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-      </form>
       </div>
   </nav>
 
@@ -109,175 +104,166 @@
       });
     });
 
-    firebase.auth().onAuthStateChanged(function(user) {
-      var book1 = {};
-      var book2 = {};
-      var book3 = {};
-      var book4 = {};
-      var book5 = {};
-      if (user) {
-        book1 = {
-          "title": "페이트",
-          "author": "타스쿠오나",
-          "rate": 1,
-          "time": "71시간"
-        };
-        book2 = {
-          "title": "어린왕자",
-          "author": "생텍쥐페리",
-          "rate": 5,
-          "time": "2시간"
-        };
-        book3 = {
-          "title": "개구리왕자",
-          "author": "그림형제",
-          "rate": 4,
-          "time": "1시간"
-        };
-        book4 = {
-          "title": "원피스",
-          "author": "오다 에이치로",
-          "rate": 3,
-          "time": "168시간"
-        };
-        book5 = {
-          "title": "홍길동",
-          "author": "허균",
-          "rate": 4.8,
-          "time": "4시간"
-        };
-
-        //파이어베이스 db에서 읽어오기
-        firebase.database().ref('/book').on('value',function(snapshot){
-          snapshot.forEach(function(childsnapshot){
-            var title=childsnapshot.child.key;
-            var author=childsnapshot.child.author;
-            var rate=childsnapshot.child.rate;
-            var time=childsnapshot.child.time;
+    $('#rate').click(function sort_by_rate() {
+      $('tbody').hide();
+      var title;
+      var author;
+      var rate;
+      var ary;
+      firebase.database().ref('/book').on('value', function(snapshot) {
+        snapshot.forEach(function(childsnapshot) {
+          firebase.database().ref('/book' + childsnapshot.key).on('value', function(book) {
+            title = book.val().title;
+            /*키값안에 타이틀들중에서 무엇이 어떻게 들어가는가?
+            이거 포이치 돌면서 하나씩 객체되면 title은 배열로 만들어야 하는것 아닌가?
+            그리고 이것을 title에서 제목 요소를 사용하는법은 무엇인가?*/
+            author = book.val().author;
+            rate = book.val().rate;
+            ary = [title, author, rate];
           });
         });
-        //인기정렬
+      });
+      alert(title);
+      var array_length;
+      /* to create MAX  array */
+      function heap_root(input, i) {
+        var left = 2 * i + 1;
+        var right = 2 * i + 2;
+        var max = i;
 
-        $('#rate').click(function sort_by_rate() {
+        if (left < array_length && input[left] > input[max]) {
+          max = left;
+        }
+
+        if (right < array_length && input[right] > input[max]) {
+          max = right;
+        }
+
+        if (max != i) {
+          swap(input, i, max);
+          heap_root(input, max);
+        }
+      }
+
+      function swap(input, index_A, index_B) {
+        var temp = input[index_A];
+
+        input[index_A] = input[index_B];
+        input[index_B] = temp;
+      }
+
+      function heapSort(input) {
+
+        array_length = input.length;
+
+        for (var i = Math.floor(array_length / 2); i >= 0; i -= 1) {
+          heap_root(input, i);
+        }
+
+        for (i = input.length - 1; i > 0; i--) {
+          swap(input, 0, i);
+          array_length--;
+
+
+          heap_root(input, 0);
+        }
+      }
+
+      var a = ary[0];
+      heapSort(a);
+      alert(a);
+      $('tbody').append("<tr><th><td>" + sdf + "</td><td>" + sdf + "</td><td>" + sdf + "</td></th></tr>");
+      $('tbody').append("<tr><th><td>" + title[1] + "</td><td>" + author[1] + "</td><td>" + rate[1] + "</td></th></tr>");
+      $('tbody').append("<tr><th><td>" + title[2] + "</td><td>" + author[2] + "</td><td>" + rate[2] + "</td></th></tr>");
+      $('tbody').append("<tr><th><td>" + title[3] + "</td><td>" + author[3] + "</td><td>" + rate[3] + "</td></th></tr>");
+      $('tbody').append("<tr><th><td>" + title[4] + "</td><td>" + author[4] + "</td><td>" + rate[4] + "</td></th></tr>");
+    });
+
+
+
+    //독파정렬
+
+    /*$('#time').click(function sort_by_time() {
+      firebase.database().ref('/book').on('value', function(snapshot) {
+        snapshot.forEach(function(childsnapshot) {
+          firebase.database().ref('/book' + childsnapshot.key).on('value', function(book) {
+            var title = book.val().title;
+            var author = book.val().author;
+            var rate = book.val().rate;
+
+          });
+
           alert(title);
           alert(author);
           alert(rate);
-          alert(time);
-          //var a = [book1["rate"], book2["rate"], book3["rate"], book4["rate"], book5["rate"]];
-          var a=[title,author,rate,time];
-          alert(a);
-          function swap(a, i, j) {
-            var tmp = a[i];
-            a[i] = a[j];
-            a[j] = tmp;
-          }
-
-          function max_heapify(a, i, length) {
-            while (true) {
-              var left = i * 2 + 1;
-              var right = i * 2 + 2;
-              var largest = i;
-
-              if (left < length && a[left] > a[largest]) {
-                largest = left;
-              }
-
-              if (right < length && a[right] > a[largest]) {
-                largest = right;
-              }
-
-              if (i == largest) {
-                break;
-              }
-
-              swap(a, i, largest);
-              i = largest;
-            }
-          }
-
-          function heapify(a, length) {
-            for (var i = Math.floor(length / 2); i >= 0; i--) {
-              max_heapify(a, i, length);
-            }
-          }
-
-          function heapsort(a) {
-            heapify(a, a.length);
-
-            for (var i = a.length - 1; i > 0; i--) {
-              swap(a, i, 0);
-
-              max_heapify(a, 0, i - 1);
-            }
-          }
-          $('tbody').append("<tr><th scope="row"><td>"+a+"</td><td>"+i+"</td><td>"+i+"</td></th></tr>");
-          $('tbody').append("<tr><th scope="row"><td>"+i+"</td><td>"+i+"</td><td>"+i+"</td></th></tr>");
-          $('tbody').append("<tr><th scope="row"><td>"+i+"</td><td>"+i+"</td><td>"+i+"</td></th></tr>");
-          $('tbody').append("<tr><th scope="row"><td>"+i+"</td><td>"+i+"</td><td>"+i+"</td></th></tr>");
-          $('tbody').append("<tr><th scope="row"><td>"+i+"</td><td>"+i+"</td><td>"+i+"</td></th></tr>");
-        });
-
-
-
-        //독파정렬
-
-        $('#time').click(function sort_by_time() {
-          //var a = [book1["time"], book2["time"], book3["time"], book4["time"], book5["time"]];
-          var a=[title,author,rate,time];
-          function swap(a, i, j) {
-            var tmp = a[i];
-            a[i] = a[j];
-            a[j] = tmp;
-          }
-
-          function max_heapify(a, i, length) {
-            while (true) {
-              var left = i * 2 + 1;
-              var right = i * 2 + 2;
-              var largest = i;
-
-              if (left < length && a[left] > a[largest]) {
-                largest = left;
-              }
-
-              if (right < length && a[right] > a[largest]) {
-                largest = right;
-              }
-
-              if (i == largest) {
-                break;
-              }
-
-              swap(a, i, largest);
-              i = largest;
-            }
-          }
-
-          function heapify(a, length) {
-            for (var i = Math.floor(length / 2); i >= 0; i--) {
-              max_heapify(a, i, length);
-            }
-          }
-
-          function heapsort(a) {
-            heapify(a, a.length);
-
-            for (var i = a.length - 1; i > 0; i--) {
-              swap(a, i, 0);
-
-              max_heapify(a, 0, i - 1);
-            }
-            $('tbody').append("<tr><th scope="row"><td>"+i+"</td><td>"+i+"</td><td>"+i+"</td></th></tr>");
-            $('tbody').append("<tr><th scope="row"><td>"+i+"</td><td>"+i+"</td><td>"+i+"</td></th></tr>");
-            $('tbody').append("<tr><th scope="row"><td>"+i+"</td><td>"+i+"</td><td>"+i+"</td></th></tr>");
-            $('tbody').append("<tr><th scope="row"><td>"+i+"</td><td>"+i+"</td><td>"+i+"</td></th></tr>");
-            $('tbody').append("<tr><th scope="row"><td>"+i+"</td><td>"+i+"</td><td>"+i+"</td></th></tr>");
-          }
 
         });
+      });
+      //var a = [book1["time"], book2["time"], book3["time"], book4["time"], book5["time"]];
+      var a = [title, author, rate, time];
 
+      function swap(a, i, j) {
+        var tmp = a[i];
+        a[i] = a[j];
+        a[j] = tmp;
       }
 
+      function max_heapify(a, i, length) {
+        while (true) {
+          var left = i * 2 + 1;
+          var right = i * 2 + 2;
+          var largest = i;
+
+          if (left < length && a[left] > a[largest]) {
+            largest = left;
+          }
+
+          if (right < length && a[right] > a[largest]) {
+            largest = right;
+          }
+
+          if (i == largest) {
+            break;
+          }
+
+          swap(a, i, largest);
+          i = largest;
+        }
+      }
+
+      function heapify(a, length) {
+        for (var i = Math.floor(length / 2); i >= 0; i--) {
+          max_heapify(a, i, length);
+        }
+      }
+
+      function heapsort(a) {
+        heapify(a, a.length);
+
+        for (var i = a.length - 1; i > 0; i--) {
+          swap(a, i, 0);
+
+          max_heapify(a, 0, i - 1);
+        }
+        $('tbody').append("<tr><th scope="
+          row "><td>" + i + "</td><td>" + i + "</td><td>" + i + "</td></th></tr>");
+        $('tbody').append("<tr><th scope="
+          row "><td>" + i + "</td><td>" + i + "</td><td>" + i + "</td></th></tr>");
+        $('tbody').append("<tr><th scope="
+          row "><td>" + i + "</td><td>" + i + "</td><td>" + i + "</td></th></tr>");
+        $('tbody').append("<tr><th scope="
+          row "><td>" + i + "</td><td>" + i + "</td><td>" + i + "</td></th></tr>");
+        $('tbody').append("<tr><th scope="
+          row "><td>" + i + "</td><td>" + i + "</td><td>" + i + "</td></th></tr>");
+      }
+
+    });*/
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        alert("로그인 성공");
+      } else {
+        alert(error);
+      }
     });
   </script>
 
