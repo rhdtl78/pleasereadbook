@@ -19,6 +19,12 @@ html {
 .container-fluid{
   background-color: #555555;
 }
+.title{
+  margin-top: 5%;
+  margin-bottom: 5%;
+  color: white;
+  font-size: 3rem;
+}
 
 #navi{
   padding:0;

@@ -37,21 +37,7 @@
           <div class="input-group">
             <input type="text" class="form-control" name="nickname" value="" id="NICKNAME" placeholder="Nick Name">
           </div>
-          <div class="input-group book">
-            <input type="text" class="form-control" name="title" placeholder="추천하는 책">
-            <input type="text" class="form-control" name="author" placeholder="저자">
-            <input type="text" class="form-control" name="rate" placeholder="점수">
-          </div>
-          <div class="input-group book">
-            <input type="text" class="form-control" name="title" placeholder="추천하는 책">
-            <input type="text" class="form-control" name="author" placeholder="저자">
-            <input type="text" class="form-control" name="rate" placeholder="점수">
-          </div>
-          <div class="input-group book">
-            <input type="text" class="form-control" name="title" placeholder="추천하는 책">
-            <input type="text" class="form-control" name="author" placeholder="저자">
-            <input type="text" class="form-control" name="rate" placeholder="점수">
-          </div>
+
           <div class="btn-group d-flex justify-content-between">
             <button type="button" class="btn btn-primary" name="button" id="REGISTER_BTN">Register</button>
             <button type="button" class="btn btn-primary" name="button" id="LOGIN_BTN">Login</button>
@@ -126,9 +112,14 @@
         alert("비밀번호가 다릅니다. 다시 입력하십시오.");
         return false;
       } else {
+
         var email = formdata.mailName + formdata.mailPlatform;
         var passwd = formdata.passwd;
         var nickname = formdata.nickname;
+        var title = formdata.title;
+        var author = formdata.author;
+        var rate = formdata.rate;
+        var book;
 
         firebase.auth().createUserWithEmailAndPassword(email, passwd).then(function() {
           var user = firebase.auth().currentUser;
@@ -141,6 +132,15 @@
           }, function(error) {
             alert("닉네임 변경에 실패\n" + error.message);
           });
+
+          for(var i = 0 ; i < 3; i++){
+            book = {
+              "title" : title[i],
+              "author" : author[i],
+              "rate" : rate[i],
+            };
+            firebase.database().ref('/Books').push(book);
+          }
 
           window.location.href = "/auth.html";
         }).catch(function(error) {
