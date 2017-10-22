@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+  <link rel="stylesheet" href="/css/master.css">
+  <title>Please Read Book!</title>
+</head>
+
+<body>
+  <div class="container-fluid">
+    <div class="title">
+      내가 추천 하는 책!
+    </div>
+    <form class="form" method="post" id="form">
+      <div class="input-group" name="book">
+        <input type="text" class="form-control" name="title" placeholder="추천하는 책">
+        <input type="text" class="form-control" name="author" placeholder="저자">
+        <input type="text" class="form-control" name="rate" placeholder="점수">
+      </div>
+      <div class="input-group" name="book">
+        <input type="text" class="form-control" name="title" placeholder="추천하는 책">
+        <input type="text" class="form-control" name="author" placeholder="저자">
+        <input type="text" class="form-control" name="rate" placeholder="점수">
+      </div>
+      <div class="input-group" name="book">
+        <input type="text" class="form-control" name="title" placeholder="추천하는 책">
+        <input type="text" class="form-control" name="author" placeholder="저자">
+        <input type="text" class="form-control" name="rate" placeholder="점수">
+      </div>
+      <div class="d-flex justify-content-between input-group">
+        <button type="button" name="button" class="btn btn-primary" id="SUBMIT">제출</button>
+      </div>
+    </form>
+  </div>
+
+  <!--Core Script CDN Link-->
+  <!--Bootstrap-->
+  <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+  <!--Firebase-->
+  <script src="https://www.gstatic.com/firebasejs/4.5.2/firebase.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-messaging.js"></script>
+  <script type="text/javascript" src="/js/fireinit.js"></script>
+  <script type="text/javascript" src="/js/serializeObject.js"></script>
+  <script type="text/javascript">
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        var database = firebase.database();
+        $('#SUBMIT').click(function() {
+          var userBookDB = database.ref('/users/' + user.uid + '/book');
+          var $form = $('#form').serializeObject();
+          var title = $form.title;
+          var author = $form.author;
+          var rate = $form.rate;
+
+          var book = [];
+          for (var i = 0; i < 3; i++) {
+            book[i] = {
+              'title': title[i],
+              'author': author[i],
+              'rate': rate[i]
+            };
+          }
+
+          for (i = 0; i < 3; i++) {
+            database.ref('/book').push(book[i]);
+          }
+
+          database.ref('/book').on('value', function(snapshot) {
+            snapshot.forEach(function(childSnapshot) {
+              var btitle;
+              var bookKey = childSnapshot.key;
+              var bookDB = database.ref('/book/' + bookKey);
+
+              bookDB.on('value', function(book) {
+                btitle = book.val().title;
+              });
+
+              if (btitle === title[0] || btitle === title[1] || btitle === title[2]) {
+                userBookDB.push(bookKey);
+              }
+            });
+            alert("반영되었습니다. 감사합니다.");
+          });
+        });
+      } else {
+        alert("로그인 해주십시오");
+      }
+    });
+  </script>
+</body>
+
+</html>
