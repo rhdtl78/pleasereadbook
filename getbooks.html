@@ -86,7 +86,13 @@
                 userBookDB.push(bookKey);
               }
             });
+            userBookDB.on('value',function (user_snapshot) {
+              if(!user_snapshot.val().seted){
+                userBookDB.set({'seted' : ture});
+              }
+            });
             alert("반영되었습니다. 감사합니다.");
+            window.location.href = "/index.html";
           });
         });
       } else {
