@@ -50,19 +50,19 @@
     </thead>
     <tbody>
       <tr>
-        <th scope="row" id="book1">1</th>
+        <th scope="row">1</th>
         <td>페이트</td>
         <td>타스쿠오나</td>
         <td>1</td>
       </tr>
       <tr>
-        <th scope="row" id="book2">2</th>
+        <th scope="row">2</th>
         <td>어린왕자</td>
         <td>생텍쥐페리</td>
         <td>5</td>
       </tr>
       <tr>
-        <th scope="row" id="book3">3</th>
+        <th scope="row">3</th>
         <td>개구리왕자</td>
         <td>그림형제</td>
         <td>4</td>
@@ -106,24 +106,27 @@
 
     $('#rate').click(function sort_by_rate() {
       $('tbody').hide();
-      var title;
-      var author;
-      var rate;
-      var ary;
+      var bookTitle;
+      var bookAuthor;
+      var bookRate;
+      var ary=[];
+
+      for(i=0;i<5;i++){
+        ary[i]=new Array();
+      }
       firebase.database().ref('/book').on('value', function(snapshot) {
         snapshot.forEach(function(childsnapshot) {
-          firebase.database().ref('/book' + childsnapshot.key).on('value', function(book) {
-            title = book.val().title;
-            /*키값안에 타이틀들중에서 무엇이 어떻게 들어가는가?
-            이거 포이치 돌면서 하나씩 객체되면 title은 배열로 만들어야 하는것 아닌가?
-            그리고 이것을 title에서 제목 요소를 사용하는법은 무엇인가?*/
-            author = book.val().author;
-            rate = book.val().rate;
-            ary = [title, author, rate];
+          firebase.database().ref('/book/' + childsnapshot.key).on('value', function(book) {
+            bookTitle = book.val().title;
+            bookAuthor = book.val().author;
+            bookRate = book.val().rate;
+
+            ary[0].push(bookTitle);
+            ary[1].push(bookAuthor);
+            ary[2].push(bookRate);
           });
         });
       });
-      alert(title);
       var array_length;
       /* to create MAX  array */
       function heap_root(input, i) {
@@ -171,12 +174,18 @@
 
       var a = ary[0];
       heapSort(a);
+
       alert(a);
-      $('tbody').append("<tr><th><td>" + sdf + "</td><td>" + sdf + "</td><td>" + sdf + "</td></th></tr>");
-      $('tbody').append("<tr><th><td>" + title[1] + "</td><td>" + author[1] + "</td><td>" + rate[1] + "</td></th></tr>");
-      $('tbody').append("<tr><th><td>" + title[2] + "</td><td>" + author[2] + "</td><td>" + rate[2] + "</td></th></tr>");
-      $('tbody').append("<tr><th><td>" + title[3] + "</td><td>" + author[3] + "</td><td>" + rate[3] + "</td></th></tr>");
-      $('tbody').append("<tr><th><td>" + title[4] + "</td><td>" + author[4] + "</td><td>" + rate[4] + "</td></th></tr>");
+
+      $('tbody').append("#rowTemplate");
+      $('tbody').append("#rowTemplate");
+      $('tbody').append("#rowTemplate");
+      $('tbody').append("#rowTemplate");
+      $('tbody').append("#rowTemplate");
+      //$('tbody').append("<tr><th>"+2+"</th><td>" + title[1] + "</td><td>" + author[1] + "</td><td>" + rate[1] + "</td></tr>");
+      //$('tbody').append("<tr><th>"+3+"</th><td>" + title[2] + "</td><td>" + author[2] + "</td><td>" + rate[2] + "</td></tr>");
+      //$('tbody').append("<tr><th>"+4+"</th><td>" + title[3] + "</td><td>" + author[3] + "</td><td>" + rate[3] + "</td></tr>");
+      //$('tbody').append("<tr><th>"+5+"</th><td>" + title[4] + "</td><td>" + author[4] + "</td><td>" + rate[4] + "</td></tr>");
     });
 
 
@@ -270,3 +279,11 @@
 </body>
 
 </html>
+<script id="rowTemplate" type="text/template">
+  <tr>
+    <th scope="row">5</th>
+    <td>홍길동</td>
+    <td>허균</td>
+    <td>4.8</td>
+  </tr>
+</script>
