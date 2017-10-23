@@ -50,7 +50,9 @@
         var provider = new firebase.auth.GoogleAuthProvider();
 
         firebase.auth().signInWithPopup(provider).then(function(result){
-
+          alert("로그인 성공");
+        }).catch(function(error){
+          alert(error);
         });
       });
     </script>
