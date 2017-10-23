@@ -48,38 +48,7 @@
         <th scope="col">평점</th>
       </tr>
     </thead>
-    <tbody>
-      <tr>
-        <th scope="row">1</th>
-        <td>페이트</td>
-        <td>타스쿠오나</td>
-        <td>1</td>
-      </tr>
-      <tr>
-        <th scope="row">2</th>
-        <td>어린왕자</td>
-        <td>생텍쥐페리</td>
-        <td>5</td>
-      </tr>
-      <tr>
-        <th scope="row">3</th>
-        <td>개구리왕자</td>
-        <td>그림형제</td>
-        <td>4</td>
-      </tr>
-      <tr>
-        <th scope="row">4</th>
-        <td>원피스</td>
-        <td>오다 에이치로</td>
-        <td>3</td>
-      </tr>
-      <tr>
-        <th scope="row">5</th>
-        <td>홍길동</td>
-        <td>허균</td>
-        <td>4.8</td>
-      </tr>
-    </tbody>
+    <tbody></tbody>
   </table>
   <button class="btn" id="login">로그인</button>
 
@@ -105,15 +74,12 @@
     });
 
     $('#rate').click(function sort_by_rate() {
-      $('tbody').hide();
       var bookTitle;
       var bookAuthor;
       var bookRate;
       var ary=[];
-
-      for(i=0;i<5;i++){
-        ary[i]=new Array();
-      }
+      var book = {};
+      var numBooks = 0;
       firebase.database().ref('/book').on('value', function(snapshot) {
         snapshot.forEach(function(childsnapshot) {
           firebase.database().ref('/book/' + childsnapshot.key).on('value', function(book) {
@@ -121,12 +87,18 @@
             bookAuthor = book.val().author;
             bookRate = book.val().rate;
 
-            ary[0].push(bookTitle);
-            ary[1].push(bookAuthor);
-            ary[2].push(bookRate);
+            book = {
+              'title' : bookTitle,
+              'author': bookAuthor,
+              'rate' : bookRate
+            };
+
+            ary[numBooks++]=book;
+
           });
         });
       });
+
       var array_length;
       /* to create MAX  array */
       function heap_root(input, i) {
@@ -172,20 +144,16 @@
         }
       }
 
-      var a = ary[0];
-      heapSort(a);
 
-      alert(a);
+      heapSort(ary);
+      for(i=0;i<ary.length;i++){
+        $('tbody').append("<tr><th>"+(i+1)+"</th><td>" + ary[i].title + "</td><td>" + ary[i].author + "</td><td>" + ary[i].rate + "</td></tr>");
+      }
 
-      $('tbody').append("#rowTemplate");
-      $('tbody').append("#rowTemplate");
-      $('tbody').append("#rowTemplate");
-      $('tbody').append("#rowTemplate");
-      $('tbody').append("#rowTemplate");
-      //$('tbody').append("<tr><th>"+2+"</th><td>" + title[1] + "</td><td>" + author[1] + "</td><td>" + rate[1] + "</td></tr>");
-      //$('tbody').append("<tr><th>"+3+"</th><td>" + title[2] + "</td><td>" + author[2] + "</td><td>" + rate[2] + "</td></tr>");
-      //$('tbody').append("<tr><th>"+4+"</th><td>" + title[3] + "</td><td>" + author[3] + "</td><td>" + rate[3] + "</td></tr>");
-      //$('tbody').append("<tr><th>"+5+"</th><td>" + title[4] + "</td><td>" + author[4] + "</td><td>" + rate[4] + "</td></tr>");
+      //$('tbody').append("<tr><th>2</th><td>" + ary[1].title + "</td><td>" + ary[1].author + "</td><td>" + ary[1].rate + "</td></tr>");
+      //$('tbody').append("<tr><th>3</th><td>" + ary[2].title + "</td><td>" + ary[2].author + "</td><td>" + ary[2].rate + "</td></tr>");
+      //$('tbody').append("<tr><th>4</th><td>" + ary[3].title + "</td><td>" + ary[3].author + "</td><td>" + ary[3].rate + "</td></tr>");
+      //$('tbody').append("<tr><th>5</th><td>" + ary[4].title + "</td><td>" + ary[4].author + "</td><td>" + ary[4].rate + "</td></tr>");
     });
 
 
@@ -279,11 +247,3 @@
 </body>
 
 </html>
-<script id="rowTemplate" type="text/template">
-  <tr>
-    <th scope="row">5</th>
-    <td>홍길동</td>
-    <td>허균</td>
-    <td>4.8</td>
-  </tr>
-</script>
