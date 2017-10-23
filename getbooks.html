@@ -88,7 +88,9 @@
             });
             userBookDB.on('value',function (user_snapshot) {
               if(!user_snapshot.val().seted){
-                userBookDB.set({'seted' : true});
+                var update = {};
+                update['/users/'+user.uid+'/seted'] = true;
+                firebase.database().ref().update(update);
               }
             });
             alert("반영되었습니다. 감사합니다.");

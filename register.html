@@ -106,10 +106,6 @@
           user.updateProfile({
             'displayName': nickname,
           }).then(function() {
-            alert("회원가입에 성공했습니다.\n" + user.email + "\n" + user.displayName);
-            firebase.database().ref('/users/' + user.uid + '/book').set({
-              'seted': false
-            });
             window.location.href = "/auth.html";
           }, function(error) {
             alert("닉네임 변경에 실패\n" + error.message);
