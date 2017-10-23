@@ -26,14 +26,21 @@
           <td><a href="mypage2.html">개인정보 수정</a></td>
         </tr>
         <tr>
-          <td><button id="login" type="button" name="button">구글인증</button></td>
+          <td><button id="login" type="button" class="btn indigo">구글인증</button></td>
         </tr>
       </table>
 
     </div>
 
+    <script src="https://www.gstatic.com/firebasejs/4.5.2/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-messaging.js"></script>
+<script type="text/javascript" src="/js/fireinit.js"></script>
+
     <script type="text/javascript">
-      $("#login").click(function(){
+      $('#login').click(function(){
         var provider = new firebase.auth.GoogleAuthProvider();
 
         firebase.auth().signInWithPopup(provider).then(function(result){
