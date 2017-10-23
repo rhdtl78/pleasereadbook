@@ -73,7 +73,8 @@
       });
     });
 
-    $('#rate').click(function sort_by_rate() {
+    $('#rate').click(function () {
+      $('tbody>*').remove();
       var bookTitle;
       var bookAuthor;
       var bookRate;
@@ -99,61 +100,14 @@
         });
       });
 
-      var array_length;
-      /* to create MAX  array */
-      function heap_root(input, i) {
-        var left = 2 * i + 1;
-        var right = 2 * i + 2;
-        var max = i;
 
-        if (left < array_length && input[left] > input[max]) {
-          max = left;
-        }
-
-        if (right < array_length && input[right] > input[max]) {
-          max = right;
-        }
-
-        if (max != i) {
-          swap(input, i, max);
-          heap_root(input, max);
-        }
-      }
-
-      function swap(input, index_A, index_B) {
-        var temp = input[index_A];
-
-        input[index_A] = input[index_B];
-        input[index_B] = temp;
-      }
-
-      function heapSort(input) {
-
-        array_length = input.length;
-
-        for (var i = Math.floor(array_length / 2); i >= 0; i -= 1) {
-          heap_root(input, i);
-        }
-
-        for (i = input.length - 1; i > 0; i--) {
-          swap(input, 0, i);
-          array_length--;
-
-
-          heap_root(input, 0);
-        }
-      }
-
+      //a=[ary[0].rate,ary[1].rate,ary[2].rate,ary[3].rate,ary[4].rate];
 
       heapSort(ary);
       for(i=0;i<ary.length;i++){
         $('tbody').append("<tr><th>"+(i+1)+"</th><td>" + ary[i].title + "</td><td>" + ary[i].author + "</td><td>" + ary[i].rate + "</td></tr>");
       }
 
-      //$('tbody').append("<tr><th>2</th><td>" + ary[1].title + "</td><td>" + ary[1].author + "</td><td>" + ary[1].rate + "</td></tr>");
-      //$('tbody').append("<tr><th>3</th><td>" + ary[2].title + "</td><td>" + ary[2].author + "</td><td>" + ary[2].rate + "</td></tr>");
-      //$('tbody').append("<tr><th>4</th><td>" + ary[3].title + "</td><td>" + ary[3].author + "</td><td>" + ary[3].rate + "</td></tr>");
-      //$('tbody').append("<tr><th>5</th><td>" + ary[4].title + "</td><td>" + ary[4].author + "</td><td>" + ary[4].rate + "</td></tr>");
     });
 
 
@@ -238,10 +192,77 @@
     firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
         alert("로그인 성공");
+        var bookTitle;
+        var bookAuthor;
+        var bookRate;
+        var ary=[];
+        var book = {};
+        var numBooks = 0;
+        firebase.database().ref('/book').on('value', function(snapshot) {
+          snapshot.forEach(function(childsnapshot) {
+            firebase.database().ref('/book/' + childsnapshot.key).on('value', function(book) {
+              bookTitle = book.val().title;
+              bookAuthor = book.val().author;
+              bookRate = book.val().rate;
+
+              book = {
+                'title' : bookTitle,
+                'author': bookAuthor,
+                'rate' : bookRate
+              };
+
+              ary[numBooks++]=book;
+
+            });
+          });
+        });
       } else {
         alert(error);
       }
     });
+
+    var array_length;
+    function heap_root(input, i) {
+      var left = 2 * i + 1;
+      var right = 2 * i + 2;
+      var max = i;
+
+      if ((left < array_length) && (input[left].rate > input[max].rate)) {
+        max = left;
+      }
+
+      if ((right < array_length) && (input[right].rate > input[max].rate)) {
+        max = right;
+      }
+
+      if (max != i) {
+        swap(input, i, max);
+        heap_root(input, max);
+      }
+    }
+
+    function swap(input, index_A, index_B) {
+      var temp = input[index_A];
+
+      input[index_A] = input[index_B];
+      input[index_B] = temp;
+    }
+
+    function heapSort(input) {
+
+      array_length = input.length;
+
+      for (var i = Math.floor(array_length / 2); i >= 0; i -= 1) {
+        heap_root(input, i);
+      }
+
+      for (i = input.length - 1; i > 0; i--) {
+        swap(input, 0, i);
+        array_length--;
+        heap_root(input, 0);
+      }
+    }
+
   </script>
 
 </body>
