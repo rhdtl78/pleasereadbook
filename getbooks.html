@@ -64,7 +64,7 @@
             book[i] = {
               'title': title[i],
               'author': author[i],
-              'rate': parseFloat(rate[i])
+              'rate': rate[i]
             };
           }
 
@@ -86,7 +86,6 @@
                 userBookDB.push(bookKey);
               }
             });
-
             userBookDB.on('value',function (user_snapshot) {
               if(!user_snapshot.val().seted){
                 var update = {};
@@ -94,7 +93,6 @@
                 firebase.database().ref().update(update);
               }
             });
-
             alert("반영되었습니다. 감사합니다.");
             window.location.href = "/index.html";
           });
