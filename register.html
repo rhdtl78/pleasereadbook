@@ -37,21 +37,7 @@
           <div class="input-group">
             <input type="text" class="form-control" name="nickname" value="" id="NICKNAME" placeholder="Nick Name">
           </div>
-          <div class="input-group book">
-            <input type="text" class="form-control" name="title" placeholder="추천하는 책">
-            <input type="text" class="form-control" name="author" placeholder="저자">
-            <input type="text" class="form-control" name="rate" placeholder="점수">
-          </div>
-          <div class="input-group book">
-            <input type="text" class="form-control" name="title" placeholder="추천하는 책">
-            <input type="text" class="form-control" name="author" placeholder="저자">
-            <input type="text" class="form-control" name="rate" placeholder="점수">
-          </div>
-          <div class="input-group book">
-            <input type="text" class="form-control" name="title" placeholder="추천하는 책">
-            <input type="text" class="form-control" name="author" placeholder="저자">
-            <input type="text" class="form-control" name="rate" placeholder="점수">
-          </div>
+
           <div class="btn-group d-flex justify-content-between">
             <button type="button" class="btn btn-primary" name="button" id="REGISTER_BTN">Register</button>
             <button type="button" class="btn btn-primary" name="button" id="LOGIN_BTN">Login</button>
@@ -77,45 +63,28 @@
   <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-database.js"></script>
   <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-messaging.js"></script>
   <script type="text/javascript" src="/js/fireinit.js"></script>
+  <script type="text/javascript" src="/js/serializeObject.js"></script>
   <!-- firebase ui 링크 -->
   <script src="https://www.gstatic.com/firebasejs/ui/live/0.4/firebase-ui-auth.js"></script>
   <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/live/0.4/firebase-ui-auth.css" />
-  <script type="text/javascript">
-    var uiConfig = {
-      'signInSuccessUrl': '/index.html', // TODO 인증 성공시 이동할 URL
-      'signInOptions': [
-        // 사용할 인증 방법 선택하기
-        firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-        //firebase.auth.FacebookAuthProvider.PROVIDER_ID,
-        //firebase.auth.TwitterAuthProvider.PROVIDER_ID,
-        //firebase.auth.GithubAuthProvider.PROVIDER_ID,
-        firebase.auth.EmailAuthProvider.PROVIDER_ID
-      ],
-      'tosUrl': '#', // TODO 이용약관 URL
-    };
-    var ui = new firebaseui.auth.AuthUI(firebase.auth());
-    ui.start('#firebaseui-auth-container', uiConfig);
-  </script>
-  <script type="text/javascript">
-    $.fn.serializeObject = function() {
-      "use strict";
-      var result = {};
-      var extend = function(i, element) {
-        var node = result[element.name];
-        if ('undefined' !== typeof node && node !== null) {
-          if ($.isArray(node)) {
-            node.push(element.value);
-          } else {
-            result[element.name] = [node, element.value];
-          }
-        } else {
-          result[element.name] = element.value;
-        }
-      };
 
-      $.each(this.serializeArray(), extend);
-      return result;
-    };
+  <script type="text/javascript">
+    $(function() {
+      var uiConfig = {
+        'signInSuccessUrl': '/index.html', // TODO 인증 성공시 이동할 URL
+        'signInOptions': [
+          // 사용할 인증 방법 선택하기
+          firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+          //firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+          //firebase.auth.TwitterAuthProvider.PROVIDER_ID,
+          //firebase.auth.GithubAuthProvider.PROVIDER_ID,
+          firebase.auth.EmailAuthProvider.PROVIDER_ID
+        ],
+        'tosUrl': '#', // TODO 이용약관 URL
+      };
+      var ui = new firebaseui.auth.AuthUI(firebase.auth());
+      ui.start('#firebaseui-auth-container', uiConfig);
+    });
 
 
     $('#REGISTER_BTN').click(function() {
@@ -126,6 +95,7 @@
         alert("비밀번호가 다릅니다. 다시 입력하십시오.");
         return false;
       } else {
+
         var email = formdata.mailName + formdata.mailPlatform;
         var passwd = formdata.passwd;
         var nickname = formdata.nickname;
@@ -134,18 +104,16 @@
           var user = firebase.auth().currentUser;
           // nickname update
           user.updateProfile({
-            displayName: nickname,
+            'displayName': nickname,
           }).then(function() {
-            alert("회원가입에 성공했습니다.");
-            alert(user.email + "\n" + user.displayName);
+            window.location.href = "/auth.html";
           }, function(error) {
             alert("닉네임 변경에 실패\n" + error.message);
           });
 
-          window.location.href = "/auth.html";
         }).catch(function(error) {
           // An error happened with creat user with email and password
-          alert(error.message);
+          alert("계정 생성에 실패\n" + error.message);
         });
       }
     });
