@@ -10,29 +10,48 @@
 
 <body>
   <div class="container-fluid">
-    <div class="title">
+    <div class="title text-center">
       내가 추천 하는 책!
     </div>
-    <form class="form" method="post" id="form">
-      <div class="input-group" name="book">
-        <input type="text" class="form-control" name="title" placeholder="추천하는 책">
-        <input type="text" class="form-control" name="author" placeholder="저자">
-        <input type="text" class="form-control" name="rate" placeholder="점수">
+    <div class="justify-content-between">
+      <div class="card d-inline-block">
+        <div class="input-group">
+          <input type="text" class="form-control" name="title" placeholder="추천하는 책">
+        </div>
+        <div class="input-group">
+          <input type="text" class="form-control" name="author" placeholder="저자">
+        </div>
+        <div class="input-group">
+          <input type="text" class="form-control" name="rate" placeholder="점수">
+        </div>
       </div>
-      <div class="input-group" name="book">
-        <input type="text" class="form-control" name="title" placeholder="추천하는 책">
-        <input type="text" class="form-control" name="author" placeholder="저자">
-        <input type="text" class="form-control" name="rate" placeholder="점수">
+      <div class="card d-inline-block">
+        <div class="input-group">
+          <input type="text" class="form-control" name="title" placeholder="추천하는 책">
+        </div>
+        <div class="input-group">
+          <input type="text" class="form-control" name="author" placeholder="저자">
+        </div>
+        <div class="input-group">
+          <input type="text" class="form-control" name="rate" placeholder="점수">
+        </div>
       </div>
-      <div class="input-group" name="book">
-        <input type="text" class="form-control" name="title" placeholder="추천하는 책">
-        <input type="text" class="form-control" name="author" placeholder="저자">
-        <input type="text" class="form-control" name="rate" placeholder="점수">
+      <div class="card d-inline-block">
+        <div class="input-group">
+          <input type="text" class="form-control" name="title" placeholder="추천하는 책">
+        </div>
+        <div class="input-group">
+          <input type="text" class="form-control" name="author" placeholder="저자">
+        </div>
+        <div class="input-group">
+          <input type="text" class="form-control" name="rate" placeholder="점수">
+        </div>
       </div>
       <div class="d-flex justify-content-between input-group">
         <button type="button" name="button" class="btn btn-primary" id="SUBMIT">제출</button>
       </div>
-    </form>
+    </div>
+
   </div>
 
   <!--Core Script CDN Link-->
@@ -49,57 +68,60 @@
   <script type="text/javascript" src="/js/fireinit.js"></script>
   <script type="text/javascript" src="/js/serializeObject.js"></script>
   <script type="text/javascript">
-    firebase.auth().onAuthStateChanged(function(user) {
-      if (user) {
-        var database = firebase.database();
-        $('#SUBMIT').click(function() {
-          var userBookDB = database.ref('/users/' + user.uid + '/book');
-          var $form = $('#form').serializeObject();
-          var title = $form.title;
-          var author = $form.author;
-          var rate = $form.rate;
+    $(function($) {
+      firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+          var database = firebase.database();
+          $('#SUBMIT').click(function() {
+            var userBookDB = database.ref('/users/' + user.uid + '/book');
+            var $form = $('#form').serializeObject();
+            var title = $form.title;
+            var author = $form.author;
+            var rate = $form.rate;
 
-          var book = [];
-          for (var i = 0; i < 3; i++) {
-            book[i] = {
-              'title': title[i],
-              'author': author[i],
-              'rate': parseFloat(rate[i])
-            };
-          }
 
-          for (i = 0; i < 3; i++) {
-            database.ref('/book').push(book[i]);
-          }
+            var book = [];
+            for (var i = 0; i < 3; i++) {
+              book[i] = {
+                'title': title[i],
+                'author': author[i],
+                'rate': parseFloat(rate[i])
+              };
+            }
 
-          database.ref('/book').on('value', function(snapshot) {
-            snapshot.forEach(function(childSnapshot) {
-              var btitle;
-              var bookKey = childSnapshot.key;
-              var bookDB = database.ref('/book/' + bookKey);
+            for (i = 0; i < 3; i++) {
+              database.ref('/book').push(book[i]);
+            }
 
-              bookDB.on('value', function(book) {
-                btitle = book.val().title;
+            database.ref('/book').on('value', function(snapshot) {
+              snapshot.forEach(function(childSnapshot) {
+                var btitle;
+                var bookKey = childSnapshot.key;
+                var bookDB = database.ref('/book/' + bookKey);
+
+                bookDB.on('value', function(book) {
+                  btitle = book.val().title;
+                });
+
+                if (btitle === title[0] || btitle === title[1] || btitle === title[2]) {
+                  userBookDB.push(bookKey);
+                }
               });
-
-              if (btitle === title[0] || btitle === title[1] || btitle === title[2]) {
-                userBookDB.push(bookKey);
-              }
+              userBookDB.on('value', function(user_snapshot) {
+                if (!user_snapshot.val().seted) {
+                  var update = {};
+                  update['/users/' + user.uid + '/seted'] = true;
+                  firebase.database().ref().update(update);
+                }
+              });
+              alert("반영되었습니다. 감사합니다.");
+              window.location.href = "/index.html";
             });
-            userBookDB.on('value',function (user_snapshot) {
-              if(!user_snapshot.val().seted){
-                var update = {};
-                update['/users/'+user.uid+'/seted'] = true;
-                firebase.database().ref().update(update);
-              }
-            });
-            alert("반영되었습니다. 감사합니다.");
-            window.location.href = "/index.html";
           });
-        });
-      } else {
-        alert("로그인 해주십시오");
-      }
+        } else {
+          alert("로그인 해주십시오");
+        }
+      });
     });
   </script>
 </body>
