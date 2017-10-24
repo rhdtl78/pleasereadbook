@@ -26,91 +26,9 @@ html {
   font-size: 3rem;
 }
 
-#navi{
-  padding:0;
-  width:100px;
-  margin:0;
-}
-#navi h2{
-  margin: 0;
-  padding: 0;
-}
-/*메인메뉴 스타일 지정*/
-#navi h2 a{
-  display: block;
-  font-weight: bold;
-  text-decoration: none;
-  margin: 0;
-  padding: 10px;
-  font-size: 14px;
-  color: #ccc;
-  text-shadow: 0 1px 1px #000;
-  background: black;
-
-}
-
-/*메인 메뉴에 대한 마우스 이벤트에 대한 효과 지정*/
-#navi :target h2 a,
-#navi h2 a:focus,
-#navi h2 a:hover,
-#navi h2 a:active{
-  color:#eee;
-  text-shadow: 0 1px 1px #000000;
-}
-/*부메뉴에 대한 기본 설정*/
-#navi p {
-  padding: 0;
-  margin: 0;
-  height:0;
-  overflow:hidden;
-  -moz-transition:height 0.5s ease-in;
-  -o-transition:all 0.5s ease-in;
-  -webkit-transition:height 0.5s ease-in;
-  transition:height 0.2s ease-in;
-}
-/*메인 메뉴를 클릭했을 대의 부메뉴를 정의*/
-#navi :target p {
-  height: 30px;
-  border-bottom: 1px solid #c9c9c9;
-  background:#efefef;
-}
-
-/*부메뉴 링크에 대한 효과를 정의*/
-
-#navi :target p a{
-  display: block;
-  text-decoration:none;
-  padding: 4px 10px;
-  line-height: 22px;
-  font-size: 13px;
-  color: #4e5800;
-}
-#top{
-  background-color: #333;
-  height: 50px;
-  width: 100%;
-}
-
-#navi{ /*left*/
-  background-color: black;
-  float: left;
-  width: 10%;
-  position: fixed;
-}
-
-#main{
-  background-color: gray;
-  float: left;
-  height: 500px;
-  width: 100%;
-  position: fix;
-}
-
-#bottom{
-  background-color: black;
-  width: 100%;
-  height: 10px;
-  position: relative;
-  clear: both;  /*상단의 흐름을 한번 끊어주기 위해 clear를 해준다.*/
-  float: left;  /*새로운 흐름을 지정해줘야 깨지지 않는다*/
+.title{
+  font-size: 3rem;
+  color: white;
+  margin-top: 10%;
+  margin-bottom: 10%;
 }

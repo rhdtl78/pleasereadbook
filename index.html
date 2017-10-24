@@ -1,5 +1,28 @@
 <!DOCTYPE html>
 <html lang="ko">
+<<<<<<< HEAD
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <title>Please Read Book</title>
+  </head>
+  <body>
+
+
+    <!--Core Script CDN Link-->
+    <!--Bootstrap-->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+    <!--Firebase-->
+    <script src="https://www.gstatic.com/firebasejs/4.5.2/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-messaging.js"></script>
+    <script type="text/javascript" src="/js/fireinit.js"></script>
+  </body>
+=======
 
 <head>
   <meta charset="utf-8">
@@ -18,6 +41,7 @@
   <script type="text/javascript">
     firebase.auth().onAuthStateChanged(function(user) {
       if (!user || user.isAnonymous) {
+        alert("로그인 하세요!");
         window.location.href = "/register.html";
       } else {
         var userBookDB = firebase.database().ref('/users/' + user.uid);
@@ -30,14 +54,6 @@
           }
         });
       }
-    });
-
-    $('#LOG_OUT').click(function() {
-      firebase.auth().signOut().then(function() {
-        window.location.href = "/register.html";
-      }, function(error) {
-        alert(error);
-      });
     });
   </script>
 </head>
@@ -91,25 +107,22 @@
       <p><a href="#">공지사항</a></p>
     </div>
     <div id="menu2">
-      <h2><a href="#menu2">recomand</a></h2>
-      <p><a href="#">이름순 정렬</a></p>
-      <p><a href="#">인기순 정렬</a></p>
-      <p><a href="#">독파 시간 순 정렬</a></p>
+      <h2><a href="/recommend.html">recomand</a></h2>
     </div>
     <div id="menu3">
-      <h2><a href="#menu3">my_CLip</a></h2>
+      <h2><a href="#menu3">내 책장</a></h2>
       <p><a href="#">읽기 시작/종료</a></p>
       <p><a href="#">도서 추가</a></p>
       <p><a href="#">도서 목록 삭제</a></p>
     </div>
     <div id="menu4">
-      <h2><a href="#menu4">my_Page</a></h2>
+      <h2><a href="#menu4">마이페이지</a></h2>
       <p><a href="#">비밀번호</a></p>
       <p><a href="#">이메일 인증</a></p>
       <p><a href="#">프로필 사진</a></p>
     </div>
     <div id="menu5">
-      <h2><a href="#menu5">cd_Center</a></h2>
+      <h2><a href="#menu5">고객센터</a></h2>
       <p><a href="#">1:1 문의</a></p>
       <p><a href="#">FAQ</a></p>
     </div>
@@ -123,7 +136,15 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
   <script type="text/javascript">
+    $('#LOG_OUT').click(function() {
+      firebase.auth().signOut().then(function() {
+        alert("로그아웃되었습니다.");
+      }, function(error) {
+        alert(error);
+      });
+    });
   </script>
 </body>
 
+>>>>>>> 47139ab7e8de6bb4fa03d1708f17886007b3e4dd
 </html>
