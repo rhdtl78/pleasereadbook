@@ -64,6 +64,8 @@
   <script src="/js/fireinit.js"></script>
 
   <script type="text/javascript">
+
+
     $('#login').click(function() {
       var provider = new firebase.auth.GoogleAuthProvider();
       firebase.auth().signInWithPopup(provider).then(function(result) {
@@ -72,6 +74,8 @@
         alert(error);
       });
     });
+
+
 
     $('#rate').click(function() {
       $('tbody>*').remove();
@@ -100,15 +104,19 @@
         });
       });
 
+
+
       heapSort(ary);
       for (var i = 0; i < ary.length; i++) {
         $('tbody').append("<tr><th>" + (i + 1) + "</th><td>" + ary[i].title + "</td><td>" + ary[i].author + "</td><td>" + ary[i].rate + "</td></tr>");
       }
+
     });
+
 
     firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
-        $('tbody>*').remove();
+        alert("로그인 성공");
         var bookTitle;
         var bookAuthor;
         var bookRate;
