@@ -86,48 +86,49 @@
       ui.start('#firebaseui-auth-container', uiConfig);
     });
 
+    $(function($) {
+      $('#REGISTER_BTN').click(function() {
+        var $form = $('#REGISTER_FORM');
+        var formdata = $form.serializeObject();
 
-    $('#REGISTER_BTN').click(function() {
-      var $form = $('#REGISTER_FORM');
-      var formdata = $form.serializeObject();
+        if (formdata.passwd != formdata.passwdConfirm) {
+          alert("비밀번호가 다릅니다. 다시 입력하십시오.");
+          return false;
+        } else {
 
-      if (formdata.passwd != formdata.passwdConfirm) {
-        alert("비밀번호가 다릅니다. 다시 입력하십시오.");
-        return false;
-      } else {
+          var email = formdata.mailName + formdata.mailPlatform;
+          var passwd = formdata.passwd;
+          var nickname = formdata.nickname;
 
-        var email = formdata.mailName + formdata.mailPlatform;
-        var passwd = formdata.passwd;
-        var nickname = formdata.nickname;
+          firebase.auth().createUserWithEmailAndPassword(email, passwd).then(function() {
+            var user = firebase.auth().currentUser;
+            // nickname update
+            user.updateProfile({
+              'displayName': nickname,
+            }).then(function() {
+              window.location.href = "/auth.html";
+            }, function(error) {
+              alert("닉네임 변경에 실패\n" + error.message);
+            });
 
-        firebase.auth().createUserWithEmailAndPassword(email, passwd).then(function() {
-          var user = firebase.auth().currentUser;
-          // nickname update
-          user.updateProfile({
-            'displayName': nickname,
-          }).then(function() {
-            window.location.href = "/auth.html";
-          }, function(error) {
-            alert("닉네임 변경에 실패\n" + error.message);
+          }).catch(function(error) {
+            // An error happened with creat user with email and password
+            alert("계정 생성에 실패\n" + error.message);
           });
-
-        }).catch(function(error) {
-          // An error happened with creat user with email and password
-          alert("계정 생성에 실패\n" + error.message);
-        });
-      }
-    });
-
-    //Google Login
-    $('#LOGIN_GOOGLE').click(function() {
-      var provider = new firebase.auth.GoogleAuthProvider();
-      firebase.auth().signInWithPopup(provider).then(function(result) {}).catch(function(error) {
-        alert(error.message);
+        }
       });
-    });
 
-    $('#LOGIN_BTN').click(function() {
-      window.location.href = "/login.html";
+      //Google Login
+      $('#LOGIN_GOOGLE').click(function() {
+        var provider = new firebase.auth.GoogleAuthProvider();
+        firebase.auth().signInWithPopup(provider).then(function(result) {}).catch(function(error) {
+          alert(error.message);
+        });
+      });
+
+      $('#LOGIN_BTN').click(function() {
+        window.location.href = "/login.html";
+      });
     });
   </script>
 </body>
