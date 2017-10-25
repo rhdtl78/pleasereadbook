@@ -73,4 +73,5 @@ button {
   border-color: lightblue;
   border-radius: 16px;
   outline: 0;
+  text-decoration: none;
 }
