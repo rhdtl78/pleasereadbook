@@ -4,8 +4,8 @@
 <head>
   <meta charset="utf-8">
   <title>pleasereadbook</title>
-  <link rel="stylesheet" type="text/css" href="css/recommend.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="css/recommend.css">
 </head>
 
 <body>
@@ -18,10 +18,10 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-          <a class="nav-link" href="#">마이페이지</a>
+          <a class="nav-link" href="/mypage1.html">마이페이지</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">마이클립</a>
+          <a class="nav-link" href="/myclip.html">나의 리스트</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">고객센터</a>
@@ -48,7 +48,15 @@
         <th scope="col">평점</th>
       </tr>
     </thead>
-    <tbody></tbody>
+    <tbody>
+      <tr>
+        <th>1</th>
+        <td>sdflkjsd</td>
+        <td>sdflkjsd</td>
+        <td>sdflkjsd</td>
+      </tr>
+
+    </tbody>
   </table>
   <button class="btn" id="login">로그인</button>
 
@@ -64,59 +72,18 @@
   <script src="/js/fireinit.js"></script>
 
   <script type="text/javascript">
-
-
-    $('#login').click(function() {
-      var provider = new firebase.auth.GoogleAuthProvider();
-      firebase.auth().signInWithPopup(provider).then(function(result) {
-        alert("로그인 성공");
-      }).catch(function(error) {
-        alert(error);
-      });
-    });
-
-
-
-    $('#rate').click(function() {
-      $('tbody>*').remove();
-      var bookTitle;
-      var bookAuthor;
-      var bookRate;
-      var ary = [];
-      var book = {};
-      var numBooks = 0;
-      firebase.database().ref('/book').on('value', function(snapshot) {
-        snapshot.forEach(function(childsnapshot) {
-          firebase.database().ref('/book/' + childsnapshot.key).on('value', function(book) {
-            bookTitle = book.val().title;
-            bookAuthor = book.val().author;
-            bookRate = book.val().rate;
-
-            book = {
-              'title': bookTitle,
-              'author': bookAuthor,
-              'rate': bookRate
-            };
-
-            ary[numBooks++] = book;
-
-          });
+    $(document).ready(function() {
+      $('#login').click(function() {
+        var provider = new firebase.auth.GoogleAuthProvider();
+        firebase.auth().signInWithPopup(provider).then(function(result) {
+          alert("로그인 성공");
+        }).catch(function(error) {
+          alert(error);
         });
       });
 
-
-
-      heapSort(ary);
-      for (var i = 0; i < ary.length; i++) {
-        $('tbody').append("<tr><th>" + (i + 1) + "</th><td>" + ary[i].title + "</td><td>" + ary[i].author + "</td><td>" + ary[i].rate + "</td></tr>");
-      }
-
-    });
-
-
-    firebase.auth().onAuthStateChanged(function(user) {
-      if (user) {
-        alert("로그인 성공");
+      $('#rate').click(function() {
+        $('tbody>*').remove();
         var bookTitle;
         var bookAuthor;
         var bookRate;
@@ -142,13 +109,51 @@
           });
         });
 
+        heapSort(ary);
         for (var i = 0; i < ary.length; i++) {
           $('tbody').append("<tr><th>" + (i + 1) + "</th><td>" + ary[i].title + "</td><td>" + ary[i].author + "</td><td>" + ary[i].rate + "</td></tr>");
         }
 
-      } else {
-        alert(error);
-      }
+
+      });
+
+      firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+          //$('tbody>*').remove();
+          var bookTitle;
+          var bookAuthor;
+          var bookRate;
+          var ary = [];
+          var book = {};
+          var numBooks = 0;
+          firebase.database().ref('/book').on('value', function(snapshot) {
+            snapshot.forEach(function(childsnapshot) {
+              firebase.database().ref('/book/' + childsnapshot.key).on('value', function(book) {
+                bookTitle = book.val().title;
+                bookAuthor = book.val().author;
+                bookRate = book.val().rate;
+
+                book = {
+                  'title': bookTitle,
+                  'author': bookAuthor,
+                  'rate': bookRate
+                };
+
+                ary[numBooks++] = book;
+
+              });
+            });
+          });
+          $('tbody').ready(function() {
+            for (var i = 0; i < ary.length; i++) {
+              $('tbody').append("<tr><th>" + (i + 1) + "</th><td>" + ary[i].title + "</td><td>" + ary[i].author + "</td><td>" + ary[i].rate + "</td></tr>");
+            }
+          });
+        } else {
+          alert(error);
+        }
+      });
+
     });
   </script>
   <script src="./js/sortByRate.js"></script>
