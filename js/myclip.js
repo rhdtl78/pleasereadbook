@@ -1,5 +1,6 @@
 "use strict"
 
+
 $('#addBooks').click(function() {
   var $els = $("tr input[type='checkbox']:checked");
   $els.each(function(idx, el) {
@@ -29,3 +30,36 @@ $('#del').click(function() {
   }
 });
 
+$(function(){
+  $('#bookList > tbody > *').remove();
+  var bookTitle;
+  var bookAuthor;
+  var bookRate;
+  var ary = [];
+  var book = {};
+  var numBooks = 0;
+  firebase.database().ref('/book').on('value', function(snapshot) {
+    snapshot.forEach(function(childsnapshot) {
+      firebase.database().ref('/book/' + childsnapshot.key).on('value', function(book) {
+        bookTitle = book.val().title;
+        bookAuthor = book.val().author;
+        bookRate = book.val().rate;
+
+        book = {
+          'title': bookTitle,
+          'author': bookAuthor,
+          'rate': bookRate
+        };
+
+        ary[numBooks++] = book;
+
+      });
+    });
+  });
+  for (var i = 0; i < ary.length; i++) {
+    $('#bookList tbody').append($('#ModalTemplate').html());
+    $('#bookList tbody tr:last-child').find('book-title').append(ary[i].title);
+    $('#bookList tbody tr:last-child').find('book-author').append(ary[i].author);
+    $('#bookList tbody tr:last-child').find('book-rate').append(ary[i].rate);
+  }
+});
