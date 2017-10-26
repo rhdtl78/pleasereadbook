@@ -32,22 +32,24 @@
   <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-messaging.js"></script>
   <script type="text/javascript" src="/js/fireinit.js"></script>
   <script type="text/javascript">
-    firebase.auth().onAuthStateChanged(function(user) {
-      if (user) {
-        // User is signed in.
-        $('#USER_EMAIL').text(user.email);
-        $('#USER_NICKNAME').text(user.displayName);
-        //email verification
-        user.sendEmailVerification().then(function() {
-          // Email sent.
-          firebase.database().ref('/users/' + user.uid + '/seted').set(false);
-        }).catch(function(error) {
-          // An error happened.
-          alert(error.message);
-        });
-      } else {
-        // No user is signed in.
-      }
+    $(function($) {
+      firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+          // User is signed in.
+          $('#USER_EMAIL').text(user.email);
+          $('#USER_NICKNAME').text(user.displayName);
+          //email verification
+          user.sendEmailVerification().then(function() {
+            // Email sent.
+            firebase.database().ref('/users/' + user.uid + '/seted').set(false);
+          }).catch(function(error) {
+            // An error happened.
+            alert(error.message);
+          });
+        } else {
+          // No user is signed in.
+        }
+      });
     });
   </script>
 
