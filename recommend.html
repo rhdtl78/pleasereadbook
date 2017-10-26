@@ -21,7 +21,7 @@
           <a class="nav-link" href="/mypage1.html">마이페이지</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/myclip.html">마이클립</a>
+          <a class="nav-link" href="/myclip.html">나의 리스트</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">고객센터</a>
@@ -46,6 +46,7 @@
         <th scope="col">제목</th>
         <th scope="col">저자</th>
         <th scope="col">평점</th>
+        <th scope="col">독파 (단위: 시간)</th>
       </tr>
     </thead>
     <tbody id="tb"></tbody>
@@ -79,6 +80,7 @@
         var bookTitle;
         var bookAuthor;
         var bookRate;
+        var bookTime;
         var ary = [];
         var book = {};
         var numBooks = 0;
@@ -88,11 +90,13 @@
               bookTitle = book.val().title;
               bookAuthor = book.val().author;
               bookRate = book.val().rate;
+              bookTime=book.val().time;
 
               book = {
                 'title': bookTitle,
                 'author': bookAuthor,
-                'rate': bookRate
+                'rate': bookRate,
+                'time':bookTime
               };
 
               ary[numBooks++] = book;
@@ -103,7 +107,7 @@
 
         heapSort(ary);
         for (var i = 0; i < ary.length; i++) {
-          $('tbody').append("<tr><th>" + (i + 1) + "</th><td>" + ary[i].title + "</td><td>" + ary[i].author + "</td><td>" + ary[i].rate + "</td></tr>");
+          $('tbody').append("<tr><th>" + (i + 1) + "</th><td>" + ary[i].title + "</td><td>" + ary[i].author + "</td><td>" + ary[i].rate+"</td><td>" + ary[i].time+"</td></tr>");
         }
 
 
@@ -112,10 +116,10 @@
       firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
           $('tbody').ready(function(){
-            //$('tbody>*').remove();
             var bookTitle;
             var bookAuthor;
             var bookRate;
+            var bookTime;
             var ary = [];
             var book = {};
             var numBooks = 0;
@@ -125,11 +129,13 @@
                   bookTitle = book.val().title;
                   bookAuthor = book.val().author;
                   bookRate = book.val().rate;
+                  bookTime=book.val().time;
 
                   book = {
                     'title': bookTitle,
                     'author': bookAuthor,
-                    'rate': bookRate
+                    'rate': bookRate,
+                    'time':bookTime
                   };
 
                   ary[numBooks++] = book;
@@ -137,10 +143,10 @@
                 });
               });
             });
-              for (var i = 0; i < ary.length; i++) {
-                //$('#tb').append("<tr><th>" + (i + 1) + "</th><td>" + ary[i].title + "</td><td>" + ary[i].author + "</td><td>" + ary[i].rate + "</td></tr>");
-                $('#tb').append($("<tr><th>").html(i + 1)+$("</th><td>").html(ary[i].title) +$("</td><td>").html(ary[i].author)+$("</td><td>").html(ary[i].rate) + $("</td></tr>"));
-              }
+    
+            for (var i = 0; i < ary.length; i++) {
+              $('tbody').append("<tr><th>" + (i + 1) + "</th><td>" + ary[i].title + "</td><td>" + ary[i].author + "</td><td>" + ary[i].rate+"</td><td>" + ary[i].time+"</td></tr>");
+            }
           });
 
         } else {
