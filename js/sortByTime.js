@@ -4,11 +4,11 @@ function heap_root(input, i) {
   var right = 2 * i + 2;
   var max = i;
 
-  if ((left < array_length) && (input[left].rate > input[max].rate)) {
+  if ((left < array_length) && (input[left].time > input[max].time)) {
     max = left;
   }
 
-  if ((right < array_length) && (input[right].rate > input[max].rate)) {
+  if ((right < array_length) && (input[right].time > input[max].time)) {
     max = right;
   }
 
@@ -25,7 +25,7 @@ function swap(input, index_A, index_B) {
   input[index_B] = temp;
 }
 
-function heapSortRate(input) {
+function heapSortTime(input) {
 
   array_length = input.length;
 
