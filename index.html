@@ -36,30 +36,23 @@
 
 <body>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">PleaseReadBook</a>
+    <a class="navbar-brand" href="/index.html">PleaseReadBook</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-
+      <span class="navbar-toggler-icon"></span>
+    </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-          <a class="nav-link" href="#">마이페이지</a>
+          <a class="nav-link" href="/mypage.html">마이페이지</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">마이클립</a>
+          <a class="nav-link" href="/myclip.html">내 목표</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">고객센터</a>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          정렬기준
-        </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="#">이름순</a>
-            <a class="dropdown-item" href="#">인기순</a>
-            <a class="dropdown-item" href="#">독파순</a>
+          <a class="nav-link" href="/recommend.html">추천 도서목록</a>
         </li>
       </ul>
       <ul class="navbar-nav ml-auto">
@@ -74,7 +67,7 @@
         <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
       </form>
-      </div>
+    </div>
   </nav>
   <div id="top"></div>
   <div id="navi">
@@ -104,6 +97,12 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
   <script type="text/javascript">
     $(function($) {
+      firebase.auth().onAuthStateChanged(function (user) {
+        if(user){
+          $('#AUTH_STATE').text("환영합니다"+user.displayName+"님!");
+        }
+      });
+
       $('#LOG_OUT').click(function() {
         firebase.auth().signOut().then(function() {
           window.location.href = "/register.html";

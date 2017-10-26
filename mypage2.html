@@ -6,6 +6,40 @@
     <link rel="stylesheet" href="/css/mypage.css">
   </head>
   <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="/index.html">PleaseReadBook</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/mypage.html">마이페이지</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/myclip.html">내 목표</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">고객센터</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link" href="/recommend.html">추천 도서목록</a>
+          </li>
+        </ul>
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <span id="AUTH_STATE"></span>
+          </li>
+          <li class="nav-item">
+            <button type="button" name="button" class="btn btn-default" id="LOG_OUT">로그아웃</button>
+          </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+      </div>
+    </nav>
     <div class="menubar">
       <a href="index.html">Home</a>
       <a href="myclip.html">내 책장</a>
