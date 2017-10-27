@@ -30,6 +30,14 @@
           <a class="nav-link" href="/recommend.html">추천 도서목록</a>
         </li>
       </ul>
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <span id="AUTH_STATE"></span>
+        </li>
+        <li class="nav-item">
+          <button type="button" name="button" class="btn btn-default" id="LOG_OUT">로그아웃</button>
+        </li>
+      </ul>
     </div>
   </nav>
 
@@ -50,8 +58,9 @@
     <button type="button" class="btn btn-primary" name="button" id="name">이름순</button>
     <button type="button" class="btn btn-primary" name="button" id="rate">인기순</button>
     <button type="button" class="btn btn-primary" name="button" id="time">독파순</button>
+    <button class="btn" id="login">로그인</button>
+    <button type="button" class="btn btn-default" name="button" id="logout">로그아웃</button>
   </div>
-  <button class="btn" id="login">로그인</button>
 
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
@@ -81,6 +90,13 @@
           var ary = getAllBooks();
           setTable(ary);
         }).catch(function(error) {
+          alert(error);
+        });
+      });
+      $('#LOG_OUT').click(function() {
+        firebase.auth().signOut().then(function() {
+          window.location.href = "/register.html";
+        }, function(error) {
           alert(error);
         });
       });
