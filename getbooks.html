@@ -24,16 +24,8 @@
         <div class="input-group">
           <input type="text" class="form-control" name="rate" placeholder="점수">
         </div>
-      </div>
-      <div class="card d-inline-block">
         <div class="input-group">
-          <input type="text" class="form-control" name="title" placeholder="추천하는 책">
-        </div>
-        <div class="input-group">
-          <input type="text" class="form-control" name="author" placeholder="저자">
-        </div>
-        <div class="input-group">
-          <input type="text" class="form-control" name="rate" placeholder="점수">
+          <input type="text" class="form-control" name="time" placeholder="읽기에 걸린 시간 (단위 : 시간)">
         </div>
       </div>
       <div class="card d-inline-block">
@@ -45,6 +37,23 @@
         </div>
         <div class="input-group">
           <input type="text" class="form-control" name="rate" placeholder="점수">
+        </div>
+        <div class="input-group">
+          <input type="text" class="form-control" name="time" placeholder="읽기에 걸린 시간 (단위 : 시간)">
+        </div>
+      </div>
+      <div class="card d-inline-block">
+        <div class="input-group">
+          <input type="text" class="form-control" name="title" placeholder="추천하는 책">
+        </div>
+        <div class="input-group">
+          <input type="text" class="form-control" name="author" placeholder="저자">
+        </div>
+        <div class="input-group">
+          <input type="text" class="form-control" name="rate" placeholder="점수">
+        </div>
+        <div class="input-group">
+          <input type="text" class="form-control" name="time" placeholder="읽기에 걸린 시간 (단위 : 시간)">
         </div>
       </div>
       <div class="d-flex justify-content-between input-group">
@@ -69,23 +78,23 @@
   <script type="text/javascript" src="/js/serializeObject.js"></script>
   <script type="text/javascript">
     $(function($) {
-      firebase.auth().onAuthStateChanged(function(user) {
-        if (user) {
-          var database = firebase.database();
-          $('#SUBMIT').click(function() {
+      $('#SUBMIT').click(function() {
+        firebase.auth().onAuthStateChanged(function(user) {
+          if (user) {
+            var database = firebase.database();
             var userBookDB = database.ref('/users/' + user.uid + '/book');
             var $form = $('#form').serializeObject();
             var title = $form.title;
             var author = $form.author;
             var rate = $form.rate;
-
-
+            var time = $form.time;
             var book = [];
             for (var i = 0; i < 3; i++) {
               book[i] = {
                 'title': title[i],
                 'author': author[i],
-                'rate': parseFloat(rate[i])
+                'rate': parseFloat(rate[i]),
+                'time': parseFloat(time[i])
               };
             }
 
@@ -117,10 +126,11 @@
               alert("반영되었습니다. 감사합니다.");
               window.location.href = "/index.html";
             });
-          });
-        } else {
-          alert("로그인 해주십시오");
-        }
+
+          } else {
+            alert("로그인 해주십시오");
+          }
+        });
       });
     });
   </script>
