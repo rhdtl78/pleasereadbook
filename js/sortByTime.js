@@ -1,5 +1,5 @@
 var array_length;
-function heap_root(input, i) {
+function heapRootTime(input, i) {
   var left = 2 * i + 1;
   var right = 2 * i + 2;
   var max = i;
@@ -13,12 +13,12 @@ function heap_root(input, i) {
   }
 
   if (max != i) {
-    swap(input, i, max);
-    heap_root(input, max);
+    swapTime(input, i, max);
+    heapRootTime(input, max);
   }
 }
 
-function swap(input, index_A, index_B) {
+function swapTime(input, index_A, index_B) {
   var temp = input[index_A];
 
   input[index_A] = input[index_B];
@@ -30,12 +30,12 @@ function heapSortTime(input) {
   array_length = input.length;
 
   for (var i = Math.floor(array_length / 2); i >= 0; i -= 1) {
-    heap_root(input, i);
+    heapRootTime(input, i);
   }
 
   for (i = input.length - 1; i > 0; i--) {
-    swap(input, 0, i);
+    swapTime(input, 0, i);
     array_length--;
-    heap_root(input, 0);
+    heapRootTime(input, 0);
   }
 }
