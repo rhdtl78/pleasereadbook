@@ -3,14 +3,52 @@
   <head>
     <meta charset="utf-8">
     <title></title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/mypage.css">
   </head>
+
   <body>
-    <div class="menubar">
-      <a href="index.html">Home</a>
-      <a href="myclip.html">내 책장</a>
-      <a href="recommend.html">Recommend</a>
-    </div>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="#">PleaseReadBook</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/mypage.html">마이페이지</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/myclip.html">나의 리스트</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">고객센터</a>
+          </li>
+          <li class="nav-item dropdown" id="SORT_ITEM">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            정렬기준
+          </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="#">이름순</a>
+              <a class="dropdown-item" href="#">인기순</a>
+              <a class="dropdown-item" href="#">독파순</a>
+          </li>
+        </ul>
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <span id="AUTH_STATE"></span>
+          </li>
+          <li class="nav-item">
+            <button type="button" name="button" class="btn btn-default" id="LOG_OUT">로그아웃</button>
+          </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+        </div>
+    </nav>
 
     <div class="chinf">
       <table>
@@ -49,7 +87,7 @@
       $('#btn_passwd').click(function(){
         var btnpasswd=$('#upasswd').val();
 
-        if(btnpasswd == DBbtnpasswd){
+        if(btnpasswd === DBbtnpasswd){
           window.location.href = "/mypage3.html"
         }else{
           alert('비밀번호가 다릅니다!');
