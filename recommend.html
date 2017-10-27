@@ -63,178 +63,54 @@
   <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-database.js"></script>
   <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-messaging.js"></script>
   <script src="/js/fireinit.js"></script>
-
+  <script src="/js/sortByTime.js"></script>
+  <script src="/js/sortByRate.js"></script>
+  <script src="/js/getAllBooks.js"></script>
   <script type="text/javascript">
-    $(document).ready(function() {
+    $(function($) {
+      function setTable(ary) {
+        for (var i = 0; i < ary.length; i++) {
+          $('tbody').append("<tr><th>" + (i + 1) + "</th><td>" + ary[i].title + "</td><td>" + ary[i].author + "</td><td>" + ary[i].rate + "</td><td>" + ary[i].time + "</td></tr>");
+        }
+      }
+
       $('#login').click(function() {
         var provider = new firebase.auth.GoogleAuthProvider();
         firebase.auth().signInWithPopup(provider).then(function(result) {
           alert("로그인 성공");
+          var ary = getAllBooks();
+          setTable(ary);
         }).catch(function(error) {
           alert(error);
         });
       });
 
+      firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+          var ary = getAllBooks();
+          setTable(ary);
+        } else {
+          alert("로그인 필요");
+        }
+      });
+
       $('#rate').click(function() {
         $('tbody>*').remove();
-        var bookTitle;
-        var bookAuthor;
-        var bookRate;
-        var bookTime;
-        var ary = [];
-        var book = {};
-        var numBooks = 0;
-        firebase.database().ref('/book').on('value', function(snapshot) {
-          snapshot.forEach(function(childsnapshot) {
-            firebase.database().ref('/book/' + childsnapshot.key).on('value', function(book) {
-              bookTitle = book.val().title;
-              bookAuthor = book.val().author;
-              bookRate = book.val().rate;
-              bookTime=book.val().time;
-
-              book = {
-                'title': bookTitle,
-                'author': bookAuthor,
-                'rate': bookRate,
-                'time':bookTime
-              };
-
-              ary[numBooks++] = book;
-
-            });
-          });
-        });
+        var ary = getAllBooks();
         heapSortRate(ary);
-
-        var array_length;
-        function heap_root(input, i) {
-          var left = 2 * i + 1;
-          var right = 2 * i + 2;
-          var max = i;
-
-          if ((left < array_length) && (input[left].rate > input[max].rate)) {
-            max = left;
-          }
-
-          if ((right < array_length) && (input[right].rate > input[max].rate)) {
-            max = right;
-          }
-
-          if (max != i) {
-            swap(input, i, max);
-            heap_root(input, max);
-          }
-        }
-
-        function swap(input, index_A, index_B) {
-          var temp = input[index_A];
-
-          input[index_A] = input[index_B];
-          input[index_B] = temp;
-        }
-
-        function heapSortRate(input) {
-
-          array_length = input.length;
-
-          for (var i = Math.floor(array_length / 2); i >= 0; i -= 1) {
-            heap_root(input, i);
-          }
-
-          for (i = input.length - 1; i > 0; i--) {
-            swap(input, 0, i);
-            array_length--;
-            heap_root(input, 0);
-          }
-        }
-
-        for (var i = 0; i < ary.length; i++) {
-          $('tbody').append("<tr><th>" + (i + 1) + "</th><td>" + ary[i].title + "</td><td>" + ary[i].author + "</td><td>" + ary[i].rate+"</td><td>" + ary[i].time+"</td></tr>");
-        }
+        setTable(ary);
       });
 
       $('#time').click(function() {
         $('tbody>*').remove();
-        var bookTitle;
-        var bookAuthor;
-        var bookRate;
-        var bookTime;
-        var ary = [];
-        var book = {};
-        var numBooks = 0;
-        firebase.database().ref('/book').on('value', function(snapshot) {
-          snapshot.forEach(function(childsnapshot) {
-            firebase.database().ref('/book/' + childsnapshot.key).on('value', function(book) {
-              bookTitle = book.val().title;
-              bookAuthor = book.val().author;
-              bookRate = book.val().rate;
-              bookTime=book.val().time;
-
-              book = {
-                'title': bookTitle,
-                'author': bookAuthor,
-                'rate': bookRate,
-                'time':bookTime
-              };
-
-              ary[numBooks++] = book;
-
-            });
-          });
-        });
+        var ary = getAllBooks();
         heapSortTime(ary);
-        for (var i = 0; i < ary.length; i++) {
-          $('tbody').append("<tr><th>" + (i + 1) + "</th><td>" + ary[i].title + "</td><td>" + ary[i].author + "</td><td>" + ary[i].rate+"</td><td>" + ary[i].time+"</td></tr>");
-        }
+        setTable(ary);
       });
 
-
-
-      firebase.auth().onAuthStateChanged(function(user) {
-        if (user) {
-          $('tbody').ready(function(){
-            var bookTitle;
-            var bookAuthor;
-            var bookRate;
-            var bookTime;
-            var ary = [];
-            var book = {};
-            var numBooks = 0;
-            firebase.database().ref('/book').on('value', function(snapshot) {
-              snapshot.forEach(function(childsnapshot) {
-                firebase.database().ref('/book/' + childsnapshot.key).on('value', function(book) {
-                  bookTitle = book.val().title;
-                  bookAuthor = book.val().author;
-                  bookRate = book.val().rate;
-                  bookTime=book.val().time;
-
-                  book = {
-                    'title': bookTitle,
-                    'author': bookAuthor,
-                    'rate': bookRate,
-                    'time':bookTime
-                  };
-
-                  ary[numBooks++] = book;
-
-                });
-              });
-            });
-
-            for (var i = 0; i < ary.length; i++) {
-              $('tbody').append("<tr><th>" + (i + 1) + "</th><td>" + ary[i].title + "</td><td>" + ary[i].author + "</td><td>" + ary[i].rate+"</td><td>" + ary[i].time+"</td></tr>");
-            }
-          });
-
-        } else {
-          alert(error);
-        }
-      });
 
     });
   </script>
-  <!--script src="./js/sortByRate.js"></script-->
-  <script src="./js/sortByTime.js"></script>
 </body>
 
 </html>
