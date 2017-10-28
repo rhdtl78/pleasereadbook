@@ -71,7 +71,7 @@
                 </tr>
               </thead>
               <tbody>
-                <!-- Book Example -->
+                <!-- Book Example (DB 연동 후 삭제할 부분) -->
                 <tr>
                   <td><input type='checkbox'></td>
                   <td><img src="..."></label></td>
@@ -79,6 +79,7 @@
                   <td><label class='book-author'>글쓴이</label></td>
                   <td><label class='book-rate'></label></td>
                 </tr>
+                <!-- /Book Example -->
               </tbody>
 
             </table>
@@ -121,6 +122,14 @@
   </script>
   <script id="endButton" type="text/template">
     <button class="btn btn-success end">독서 종료</button>
+  </script>
+  <script id="ModalTemplate" type="text/template">
+    <tr>
+      <td><input type='checkbox'></td>
+      <td class="thumbnail"></td>
+      <td><label class="book-title"></label></td>
+      <td><label class="book-author"></label></td>
+      <td><label class="book-rate"></label></td>
   </script>
 
 
