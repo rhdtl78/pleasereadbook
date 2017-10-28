@@ -1,24 +1,24 @@
 var array_length;
-function heap_root(input, i) {
+function heapRootRate(input, i) {
   var left = 2 * i + 1;
   var right = 2 * i + 2;
   var max = i;
 
-  if ((left < array_length) && (input[left].rate > input[max].rate)) {
+  if ((left < array_length) && (input[left].rate < input[max].rate)) {
     max = left;
   }
 
-  if ((right < array_length) && (input[right].rate > input[max].rate)) {
+  if ((right < array_length) && (input[right].rate < input[max].rate)) {
     max = right;
   }
 
   if (max != i) {
-    swap(input, i, max);
-    heap_root(input, max);
+    swapRate(input, i, max);
+    heapRootRate(input, max);
   }
 }
 
-function swap(input, index_A, index_B) {
+function swapRate(input, index_A, index_B) {
   var temp = input[index_A];
 
   input[index_A] = input[index_B];
@@ -30,12 +30,12 @@ function heapSortRate(input) {
   array_length = input.length;
 
   for (var i = Math.floor(array_length / 2); i >= 0; i -= 1) {
-    heap_root(input, i);
+    heapRootRate(input, i);
   }
 
   for (i = input.length - 1; i > 0; i--) {
-    swap(input, 0, i);
+    swapRate(input, 0, i);
     array_length--;
-    heap_root(input, 0);
+    heapRootRate(input, 0);
   }
 }
