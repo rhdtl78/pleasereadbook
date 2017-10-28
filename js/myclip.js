@@ -1,12 +1,13 @@
 "use strict"
 
-
-$('#addBooks').click(function() {
-  var $els = $("tr input[type='checkbox']:checked");
-  $els.each(function(idx, el) {
-    $("#tab tbody").append($('#rowTemplate').html());
-    $("#tab tbody > tr:last-child .book-title").text($(el).parents("tr").find(".book-title").text())
-    $("#tab tbody > tr:last-child .book-author").text($(el).parents("tr").find(".book-author").text())
+$(function ($) {
+  $('#addBooks').click(function() {
+    var $els = $("tr input[type='checkbox']:checked");
+    $els.each(function(idx, el) {
+      $("#tab tbody").append($('#rowTemplate').html());
+      $("#tab tbody > tr:last-child .book-title").text($(el).parents("tr").find(".book-title").text())
+      $("#tab tbody > tr:last-child .book-author").text($(el).parents("tr").find(".book-author").text())
+    });
   });
 
   $('.start').click(function(){
@@ -19,18 +20,19 @@ $('#addBooks').click(function() {
       $(this).parents("tr").find(".date-ended").text(d.getFullYear() + '.' + (d.getMonth()+1) + '.' + d.getDate());
     });
   });
-});
-$('#del').click(function() {
-  if (confirm("선택한 도서를 삭제하시겠습니까?")) {
-    var $els = $("tr input[type='checkbox']:checked");
-    $els.each(function(idx, el) {
-      $(el).parents("tr").empty();
-    });
-    recalculate();
-  }
+  $('#del').click(function() {
+    if (confirm("선택한 도서를 삭제하시겠습니까?")) {
+      var $els = $("tr input[type='checkbox']:checked");
+      $els.each(function(idx, el) {
+        $(el).parents("tr").empty();
+      });
+      recalculate();
+    }
+  });
+
 });
 
-$(function(){
+$(function($){
   $('#bookList > tbody > *').remove();
   var bookTitle;
   var bookAuthor;
