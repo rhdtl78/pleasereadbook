@@ -124,11 +124,6 @@
         firebase.auth().signInWithPopup(provider).then(function(result) {}).catch(function(error) {
           alert(error.message);
         });
-        firebase.auth().onAuthStateChanged(function(user) {
-          if (user) {
-            firebase.database().ref('/users/' + user.uid + '/seted').set(false);
-          }
-        });
         window.location.href = "/index.html"
       });
 
