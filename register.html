@@ -69,7 +69,7 @@
   <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/live/0.4/firebase-ui-auth.css" />
 
   <script type="text/javascript">
-    $(function() {
+    $(function($) {
       var uiConfig = {
         'signInSuccessUrl': '/index.html', // TODO 인증 성공시 이동할 URL
         'signInOptions': [
@@ -124,6 +124,12 @@
         firebase.auth().signInWithPopup(provider).then(function(result) {}).catch(function(error) {
           alert(error.message);
         });
+        firebase.auth().onAuthStateChanged(function(user) {
+          if (user) {
+            firebase.database().ref('/users/' + user.uid + '/seted').set(false);
+          }
+        });
+        window.location.href = "/index.html"
       });
 
       $('#LOGIN_BTN').click(function() {
