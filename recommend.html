@@ -123,6 +123,14 @@
         heapSortTime(ary);
         setTable(ary);
       });
+
+      $('#author').click(function() {
+        $('tbody>*').remove();
+        var ary = getAllBooks();
+        heapSortRate(ary);
+        setTable(ary);
+      });
+
     });
   </script>
 </body>
