@@ -17,7 +17,7 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item">
-            <a class="nav-link" href="/mypage.html">마이페이지</a>
+            <a class="nav-link" href="/mypage1.html">마이페이지</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/myclip.html">나의 리스트</a>
@@ -78,14 +78,14 @@
 
     firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
-        DBbtnpasswd=$('#USER_PASSWD').text(user.passwd);
+        DBbtnpasswd=user.passwd;
       }else{
         window.location.href = "/login.html"
       }
     });
 
       $('#btn_passwd').click(function(){
-        var btnpasswd=$('#upasswd').text();
+        var btnpasswd=$('#upasswd').val();
 
         if(btnpasswd === DBbtnpasswd){
           window.location.href = "/mypage3.html"
