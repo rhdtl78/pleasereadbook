@@ -67,10 +67,11 @@
         var $form = $('#REGISTER_FORM').serializeObject();
         var nickname = $form.nickname;
         var passwd = $form.passwd;
-
+        user.updatePassword(passwd).catch(function (error) {
+          alert(error);
+        })
         user.updateProfile({
           'displayName': nickname,
-          'password': passwd,
         }).then(function() {
           window.location.href = "/auth.html";
         }, function(error) {
