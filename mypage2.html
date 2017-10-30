@@ -78,7 +78,7 @@
 
     firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
-        DBbtnpasswd=user.passwd;
+        DBbtnpasswd=user.password;
       }else{
         window.location.href = "/login.html"
       }
