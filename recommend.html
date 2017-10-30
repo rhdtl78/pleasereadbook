@@ -55,7 +55,7 @@
   </table>
 
   <div class="control-panel d-inline">
-    <button type="button" class="btn btn-primary" name="button" id="author">이름순</button>
+    <button type="button" class="btn btn-primary" name="button" id="title">이름순</button>
     <button type="button" class="btn btn-primary" name="button" id="rate">인기순</button>
     <button type="button" class="btn btn-primary" name="button" id="time">독파순</button>
     <button class="btn" id="login">로그인</button>
@@ -124,13 +124,14 @@
         setTable(ary);
       });
 
-      $('#author').click(function() {
+      $('#title').click(function() {
         $('tbody>*').remove();
         var ary = getAllBooks();
-        heapSortRate(ary);
+        ary.sort(function sortComparer(a, b) {
+          return a.title.localeCompare(b.title);
+        });
         setTable(ary);
       });
-
     });
   </script>
 </body>
