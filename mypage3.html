@@ -52,11 +52,11 @@
 
     <div class="chinf">
       <table>
-        <tr>
+        <!--<tr>
           <td><label for="passwd">비밀번호</label></td>
           <td><input id="passwd" type="text" name=""></td>
           <td><input type="submit" value="확인"></td>
-        </tr>
+        </tr>-->
         <tr>
           <td><label for="nickname">닉네임 변경</label></td>
           <td><input id="nickname" type="text" name=""></td>
@@ -99,7 +99,7 @@
       user.updateProfile({
         'displayName': nick,
       }).then(function() {
-        window.location.href = "/auth.html";
+        window.location.href = "/mypage1.html";
       }, function(error) {
         alert("닉네임 변경에 실패\n" + error.message);
       });
