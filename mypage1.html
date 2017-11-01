@@ -79,32 +79,33 @@
   <script src="/js/fireinit.js"></script>
 
   <script type="text/javascript">
-
-    // 유저 정보 감지
-    firebase.auth().onAuthStateChanged(function (user) {
-      if (user) {
-        $('#USER_EMAIL').text(user.email);
-        $('#USER_NICKNAME').text(user.displayName);
-        $('#login').hide();
-      }else{
-        window.location.href = "/login.html"
-      }
-    });
-    $('#login').click(function() {
-      var provider = new firebase.auth.GoogleAuthProvider();
-
-      firebase.auth().signInWithPopup(provider).then(function(result) {
-        alert("로그인 성공");
-      }).catch(function(error) {
-        alert(error);
+    $(function($) {
+      // 유저 정보 감지
+      firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+          $('#USER_EMAIL').text(user.email);
+          $('#USER_NICKNAME').text(user.displayName);
+          $('#login').hide();
+        } else {
+          window.location.href = "/login.html"
+        }
       });
-    });
+      $('#login').click(function() {
+        var provider = new firebase.auth.GoogleAuthProvider();
 
-    $('#LOG_OUT').click(function() {
-      firebase.auth().signOut().then(function() {
-        window.location.href = "/register.html";
-      }, function(error) {
-        alert(error);
+        firebase.auth().signInWithPopup(provider).then(function(result) {
+          alert("로그인 성공");
+        }).catch(function(error) {
+          alert(error);
+        });
+      });
+
+      $('#LOG_OUT').click(function() {
+        firebase.auth().signOut().then(function() {
+          window.location.href = "/register.html";
+        }, function(error) {
+          alert(error);
+        });
       });
     });
   </script>
