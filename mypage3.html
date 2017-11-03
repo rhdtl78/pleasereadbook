@@ -102,8 +102,8 @@
       var user = firebase.auth().currentUser;
 
       user.updateProfile({
-        'displayName': nick;
-        'phoneNumber': phn;
+        'displayName': nick,
+        'phoneNumber': phn,
       }).then(function() {
         window.location.href = "/mypage1.html";
       }, function(error) {
