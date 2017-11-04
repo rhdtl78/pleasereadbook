@@ -2,28 +2,44 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>MyPage</title>
+    <title>MyPage_Change_info</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/mypage.css">
+
+    <style>
+      .put_right{
+        float: right;
+      }
+    </style>
+
   </head>
+
   <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" href="/index.html">PleaseReadBook</a>
+      <a class="navbar-brand" href="#">PleaseReadBook</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item">
             <a class="nav-link" href="/mypage1.html">마이페이지</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/myclip.html">내 목표</a>
+            <a class="nav-link" href="/myclip.html">나의 리스트</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">고객센터</a>
           </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link" href="/recommend.html">추천 도서목록</a>
+          <li class="nav-item dropdown" id="SORT_ITEM">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            정렬기준
+          </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="#">이름순</a>
+              <a class="dropdown-item" href="#">인기순</a>
+              <a class="dropdown-item" href="#">독파순</a>
           </li>
         </ul>
         <ul class="navbar-nav ml-auto">
@@ -38,9 +54,10 @@
           <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
           <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </form>
-      </div>
+        </div>
     </nav>
-    <div class="chinf">
+
+    <!--<div class="chinf">
       <table>
         <tr>
           <td><label for="passwd">비밀번호</label></td>
@@ -48,15 +65,78 @@
           <td><input type="submit" value="확인"></td>
         </tr>
         <tr>
-          <td><label for="email">이메일 변경</label></td>
-          <td><input id="email" type="text" name=""></td>
-          <td><input type="submit" value="확인"></td>
+          <td><label for="nickname">닉네임 변경</label></td>
+          <td><input id="nickname" type="text" name=""></td>
+        </tr>
+        <tr>
+          <td><label for="phone">전화번호 변경</label></td>
+          <td><input id="phone" type="text" name=""></td>
         </tr>
 
         <tr>
-          <td><input type="submit" name="" value="변경"></td>
+          <td><button type="button" id="ch_inf">변경</button></td>
         </tr>
       </table>
+    </div>-->
+
+    <div class="input-group">
+      <span class="input-group-addon" id="basic-addon1">닉네임</span>
+      <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" id="nickname">
     </div>
+
+    <br>
+
+    <div class="put_right">
+      <button type="button" class="btn btn-primary" id="ch_inf">변경</button>
+    </div>
+
+
+    <!--Core Script CDN Link-->
+    <!--Bootstrap-->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+    <!--Firebase-->
+    <script src="https://www.gstatic.com/firebasejs/4.5.2/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-messaging.js"></script>
+    <script src="/js/fireinit.js"></script>
+
+    <script type="text/javascript">
+
+    firebase.auth().onAuthStateChanged(function (user) {
+      if (user) {
+
+      }else{
+        window.location.href = "/login.html"
+      }
+    });
+
+    $('#ch_inf').click(function(){
+      var nick = $('#nickname').val();
+    //  var phn = $('#phone').val();
+
+      var user = firebase.auth().currentUser;
+
+      user.updateProfile({
+        'displayName': nick,
+      }).then(function() {
+        window.location.href = "/mypage1.html";
+      }, function(error) {
+        alert("닉네임 변경에 실패\n" + error.message);
+      });
+
+    /*  user.updatePhoneNumber({
+        'phoneNumber': phn,
+      }).then(function(){
+
+      },function(error){
+        alert("전화번호 변경에 실패\n" + error.message);
+      });*/
+    });
+
+    </script>
   </body>
 </html>
