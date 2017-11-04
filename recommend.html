@@ -76,19 +76,22 @@
   <script src="/js/sortByRate.js"></script>
   <script src="/js/getAllBooks.js"></script>
   <script type="text/javascript">
-    $(function($) {
-      function setTable(ary) {
-        for (var i = 0; i < ary.length; i++) {
-          $('tbody').append("<tr><th>" + (i + 1) + "</th><td>" + ary[i].title + "</td><td>" + ary[i].author + "</td><td>" + ary[i].rate + "</td><td>" + ary[i].time + "</td></tr>");
+    $(async function($) {
+      const service={
+        tableElement: (ary) => setTable(ary) {
+          for (var i = 0; i < ary.length; i++) {
+            $('tbody').append("<tr><th>" + (i + 1) + "</th><td>" + ary[i].title + "</td><td>" + ary[i].author + "</td><td>" + ary[i].rate + "</td><td>" + ary[i].time + "</td></tr>");
+          }
         }
       }
+      service.tableElement(ary);
 
       $('#login').click(function() {
         var provider = new firebase.auth.GoogleAuthProvider();
         firebase.auth().signInWithPopup(provider).then(function(result) {
           alert("로그인 성공");
           var ary = getAllBooks();
-          setTable(ary);
+          service.tableElement(ary);
         }).catch(function(error) {
           alert(error);
         });
@@ -114,14 +117,14 @@
         $('tbody>*').remove();
         var ary = getAllBooks();
         heapSortRate(ary);
-        setTable(ary);
+        service.tableElement(ary);
       });
 
       $('#time').click(function() {
         $('tbody>*').remove();
         var ary = getAllBooks();
         heapSortTime(ary);
-        setTable(ary);
+        service.tableElement(ary);
       });
 
       $('#title').click(function() {
@@ -130,7 +133,7 @@
         ary.sort(function sortComparer(a, b) {
           return a.title.localeCompare(b.title);
         });
-        setTable(ary);
+        service.tableElement(ary);
       });
     });
   </script>
