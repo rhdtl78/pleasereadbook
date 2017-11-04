@@ -3,9 +3,16 @@
 
 <head>
   <meta charset="utf-8">
-  <title></title>
+  <title>Mypage</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
-  <link rel="stylesheet" href="/css/mypage.css">
+<!--  <link rel="stylesheet" href="/css/mypage.css">-->
+
+  <style>
+    .put_right{
+      float: right;
+    }
+</style>
+
 </head>
 
 <body>
@@ -44,7 +51,7 @@
     </div>
   </nav>
 
-  <div class="chinf">
+  <!--<div class="chinf">
     <div class="container-fluid">
       <div class="">
         EMAIL: <span id="USER_EMAIL"></span>
@@ -52,10 +59,29 @@
       <div class="">
         NICKNAME: <span id="USER_NICKNAME"></span>
       </div>
-    </div>
+      <div class="">
+        PHONENUMBER: <span id="USER_PHONENUMBER"></span>
+      </div>
+      <div class="">
+        PROFILEPHOTO: <span id="USER_PHOTOURL"></span>
+      </div>
+    </div>-->
 
-    <a href="mypage2.html">개인정보 수정</a>
-    <button class="btn btn-default" id="login">구글인증</button>
+  <ul class="list-group">
+    <li class="list-group-item">EMAIL: <span id="USER_EMAIL"></span></li>
+    <li class="list-group-item">NICKNAME: <span id="USER_NICKNAME"></span></li>
+  <!--  <li class="list-group-item">Morbi leo risus</li>
+    <li class="list-group-item">Porta ac consectetur ac</li>
+    <li class="list-group-item">Vestibulum at eros</li>-->
+  </ul>
+
+  <br>
+
+  <div class="put_right">
+    <button type="button" class="btn btn-link" id="mybook">내 책 목록</button>
+    <button type="button" class="btn btn-primary" id="chinf">개인정보 수정</button>
+  </div>
+  <!--  <button class="btn btn-default" id="login">구글인증</button>-->
   </div>
 
   <!--Core Script CDN Link-->
@@ -72,33 +98,47 @@
   <script src="/js/fireinit.js"></script>
 
   <script type="text/javascript">
+    $(function($) {
+      // 유저 정보 감지
+      firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+          $('#USER_EMAIL').text(user.email);
+          $('#USER_NICKNAME').text(user.displayName);
+          $('#USER_PHONENUMBER').text(user.phoneNumber);
+          $('#USER_PHOTOURL').text(user.photoURL);
+          $('#login').hide();
 
-    // 유저 정보 감지
-    firebase.auth().onAuthStateChanged(function (user) {
-      if (user) {
-        $('#USER_EMAIL').text(user.email);
-        $('#USER_NICKNAME').text(user.displayName);
-        $('#login').hide();
-      }else{
-        window.location.href = "/login.html"
-      }
-    });
-    $('#login').click(function() {
-      var provider = new firebase.auth.GoogleAuthProvider();
-
-      firebase.auth().signInWithPopup(provider).then(function(result) {
-        alert("로그인 성공");
-      }).catch(function(error) {
-        alert(error);
+        } else {
+          window.location.href = "/login.html"
+        }
       });
+      $('#login').click(function() {
+        var provider = new firebase.auth.GoogleAuthProvider();
+
+        firebase.auth().signInWithPopup(provider).then(function(result) {
+          alert("로그인 성공");
+        }).catch(function(error) {
+          alert(error);
+        });
+      });
+
+      $('#LOG_OUT').click(function() {
+        firebase.auth().signOut().then(function() {
+          window.location.href = "/register.html";
+        }, function(error) {
+          alert(error);
+        });
+      });
+
+
     });
 
-    $('#LOG_OUT').click(function() {
-      firebase.auth().signOut().then(function() {
-        window.location.href = "/register.html";
-      }, function(error) {
-        alert(error);
-      });
+    $('#mybook').click(function(){
+      window.location.href = "/myclip.html";
+    });
+
+    $('#chinf').click(function(){
+      window.location.href = "/mypage3.html";
     });
   </script>
 </body>
