@@ -1,5 +1,43 @@
 "use strict"
 
+//TODO: /users/(선택한 책목록) 에서 책의 키를 가져와 /book에서 비교해 같은 것들을 목록에 표시
+//      책의 읽기 상태도 불러와야 함 (YYYY.MM.DD 에 읽기 시작)
+function resettab ($) { //선택해놓은 책 목록 새로고침하는 함수
+  $('#tab > tbody > *').remove();
+  var bookTitle;
+  var bookAuthor;
+  var bookRate;
+  var ary = [];
+  var book = {};
+  var numBooks = 0;
+  firebase.database().ref('/users').on('value', function(snapshot) { //여기 ref 경로 수정필요
+    snapshot.forEach(function(childsnapshot) {
+      firebase.database().ref('/book/' + childsnapshot.key).on('value', function(book) {
+        bookTitle = book.val().title;
+        bookAuthor = book.val().author;
+        bookRate = book.val().rate;
+
+        book = {
+          'title': bookTitle,
+          'author': bookAuthor,
+          'rate': bookRate
+        };
+
+        ary[numBooks++] = book;
+
+      });
+    });
+  });
+  for (var i = 0; i < ary.length; i++) {
+    $('#bookList tbody').append($('#ModalTemplate').html());
+    $('#bookList tbody tr:last-child').find('book-title').append(ary[i].title);
+    $('#bookList tbody tr:last-child').find('book-author').append(ary[i].author);
+    $('#bookList tbody tr:last-child').find('book-rate').append(ary[i].rate);
+  }
+
+
+}
+
 $(function ($) {
   $('#addBooks').click(function() { // 책 선택창 (팝업) 에서 선택 완료 버튼
     var $els = $("tr input[type='checkbox']:checked");
@@ -69,44 +107,6 @@ $('#add').click(function(){ // 책 선택창 (팝업) 띄우는 버튼
   }
 });
 
-
-//TODO: /users/(선택한 책목록) 에서 책의 키를 가져와 /book에서 비교해 같은 것들을 목록에 표시
-//      책의 읽기 상태도 불러와야 함 (YYYY.MM.DD 에 읽기 시작)
-$(function resettab ($) { //선택해놓은 책 목록 새로고침하는 함수
-  $('#tab > tbody > *').remove();
-  var bookTitle;
-  var bookAuthor;
-  var bookRate;
-  var ary = [];
-  var book = {};
-  var numBooks = 0;
-  firebase.database().ref('/users').on('value', function(snapshot) { //여기 ref 경로 수정필요
-    snapshot.forEach(function(childsnapshot) {
-      firebase.database().ref('/book/' + childsnapshot.key).on('value', function(book) {
-        bookTitle = book.val().title;
-        bookAuthor = book.val().author;
-        bookRate = book.val().rate;
-
-        book = {
-          'title': bookTitle,
-          'author': bookAuthor,
-          'rate': bookRate
-        };
-
-        ary[numBooks++] = book;
-
-      });
-    });
-  });
-  for (var i = 0; i < ary.length; i++) {
-    $('#bookList tbody').append($('#ModalTemplate').html());
-    $('#bookList tbody tr:last-child').find('book-title').append(ary[i].title);
-    $('#bookList tbody tr:last-child').find('book-author').append(ary[i].author);
-    $('#bookList tbody tr:last-child').find('book-rate').append(ary[i].rate);
-  }
-
-
-});
 firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
     resettab();
