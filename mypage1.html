@@ -67,7 +67,14 @@
       </div>-->
     </div>
 
-    <a href="/mypage3.html">개인정보 수정</a>
+    <div class="">
+      <a href="/mypage3.html">개인정보 수정</a>
+    </div>
+
+    <div class="">
+      <a href="/myclip.html">내 책 목록</a>
+    </div>
+    
     <button class="btn btn-default" id="login">구글인증</button>
   </div>
 
@@ -94,6 +101,7 @@
           $('#USER_PHONENUMBER').text(user.phoneNumber);
           $('#USER_PHOTOURL').text(user.photoURL);
           $('#login').hide();
+
         } else {
           window.location.href = "/login.html"
         }

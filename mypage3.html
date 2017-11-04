@@ -103,12 +103,21 @@
 
       user.updateProfile({
         'displayName': nick,
-        'phoneNumber': phn,
       }).then(function() {
-        window.location.href = "/mypage1.html";
+
       }, function(error) {
         alert("닉네임 변경에 실패\n" + error.message);
       });
+
+      user.updatePhoneNumber({
+        'phoneNumber': phn,
+      }).then(function(){
+
+      },function(error){
+        alert("전화번호 변경에 실패\n" + error.message);
+      });
+
+      window.location.href = "/mypage1.html";
     });
 
     </script>
