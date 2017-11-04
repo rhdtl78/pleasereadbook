@@ -2,25 +2,28 @@
 
 //TODO: /users/(선택한 책목록) 에서 책의 키를 가져와 /book에서 비교해 같은 것들을 목록에 표시
 //      책의 읽기 상태도 불러와야 함 (YYYY.MM.DD 에 읽기 시작)
-function resettab ($) { //선택해놓은 책 목록 새로고침하는 함수
+function resettab () { //선택해놓은 책 목록 새로고침하는 함수
   $('#tab > tbody > *').remove();
   var bookTitle;
   var bookAuthor;
-  var bookRate;
+  var timeStart;
+  var timeEnd;
   var ary = [];
   var book = {};
   var numBooks = 0;
-  firebase.database().ref('/users').on('value', function(snapshot) { //여기 ref 경로 수정필요
+  firebase.database().ref('/users/reading').on('value', function(snapshot) { //여기 ref 경로 수정필요
     snapshot.forEach(function(childsnapshot) {
-      firebase.database().ref('/book/' + childsnapshot.key).on('value', function(book) {
+      firebase.database().ref('/users/reading' + childsnapshot.key).on('value', function(book) {
         bookTitle = book.val().title;
         bookAuthor = book.val().author;
-        bookRate = book.val().rate;
+        timeStart = book.val().timeStart;
+        timeEnd = book.val().timeEnd;
 
         book = {
           'title': bookTitle,
           'author': bookAuthor,
-          'rate': bookRate
+          'start': timeStart,
+          'end': timeEnd
         };
 
         ary[numBooks++] = book;
@@ -32,7 +35,8 @@ function resettab ($) { //선택해놓은 책 목록 새로고침하는 함수
     $('#bookList tbody').append($('#ModalTemplate').html());
     $('#bookList tbody tr:last-child').find('book-title').append(ary[i].title);
     $('#bookList tbody tr:last-child').find('book-author').append(ary[i].author);
-    $('#bookList tbody tr:last-child').find('book-rate').append(ary[i].rate);
+    $('#bookList tbody tr:last-child').find('time-start').append(ary[i].timeStart);
+    $('#bookList tbody tr:last-child').find('time-end').append(ary[i].timeEnd);
   }
 
 

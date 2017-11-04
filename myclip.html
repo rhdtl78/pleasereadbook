@@ -105,24 +105,27 @@
   </html>
 
 
-
+  <!-- 내책목록 tr 템플릿 -->
   <script id="rowTemplate" type="text/template">
     <tr>
       <td><input type='checkbox'></td>
       <td><label class='book-title'></label></td>
       <td><label class='book-author'></label></td>
       <td><label class='book-status'></label></td>
-      <td><label class='date-started'></label></td>
-      <td><label class='date-ended'></label></td>
+      <td><label class='time-start'></label></td>
+      <td><label class='time-end'></label></td>
       <td class="button-timer"><button class="btn btn-secondary start">독서 시작</button></td>
     </tr>
   </script>
+
   <script id="startButton" type="text/template">
     <button class="btn btn-secondary start">독서 시작</button>
   </script>
   <script id="endButton" type="text/template">
     <button class="btn btn-success end">독서 종료</button>
   </script>
+
+    <!-- 전체책목록 tr 템플릿 -->
   <script id="ModalTemplate" type="text/template">
     <tr>
       <td><input type='checkbox'></td>
