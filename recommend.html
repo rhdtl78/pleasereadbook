@@ -35,7 +35,7 @@
           <span id="AUTH_STATE"></span>
         </li>
         <li class="nav-item">
-          <button type="button" name="button" class="btn btn-default" id="LOG_OUT">로그아웃</button>
+          <button type="button" name="button" class="btn btn-default" id="logoutUp">로그아웃</button>
         </li>
       </ul>
     </div>
@@ -59,7 +59,7 @@
     <button type="button" class="btn btn-primary" name="button" id="rate">인기순</button>
     <button type="button" class="btn btn-primary" name="button" id="time">독파순</button>
     <button class="btn" id="login">로그인</button>
-    <button type="button" class="btn btn-default" name="button" id="logout">로그아웃</button>
+    <button type="button" class="btn btn-default" name="button" id="logoutDown">로그아웃</button>
   </div>
 
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
@@ -76,27 +76,33 @@
   <script src="/js/sortByRate.js"></script>
   <script src="/js/getAllBooks.js"></script>
   <script type="text/javascript">
-    $(async function($) {
-      const service={
-        tableElement: (ary) => setTable(ary) {
-          for (var i = 0; i < ary.length; i++) {
-            $('tbody').append("<tr><th>" + (i + 1) + "</th><td>" + ary[i].title + "</td><td>" + ary[i].author + "</td><td>" + ary[i].rate + "</td><td>" + ary[i].time + "</td></tr>");
-          }
+    $(function($) {
+      function setTable(ary) {
+        for (var i = 0; i < ary.length; i++) {
+          $('tbody').append("<tr><th>" + (i + 1) + "</th><td>" + ary[i].title + "</td><td>" + ary[i].author + "</td><td>" + ary[i].rate + "</td><td>" + ary[i].time + "</td></tr>");
         }
       }
-      service.tableElement(ary);
 
       $('#login').click(function() {
         var provider = new firebase.auth.GoogleAuthProvider();
         firebase.auth().signInWithPopup(provider).then(function(result) {
           alert("로그인 성공");
           var ary = getAllBooks();
-          service.tableElement(ary);
+          setTable(ary);
         }).catch(function(error) {
           alert(error);
         });
       });
-      $('#LOG_OUT').click(function() {
+
+      $('#logoutUp').click(function() {
+        firebase.auth().signOut().then(function() {
+          window.location.href = "/register.html";
+        }, function(error) {
+          alert(error);
+        });
+      });
+
+      $('#logoutDown').click(function() {
         firebase.auth().signOut().then(function() {
           window.location.href = "/register.html";
         }, function(error) {
@@ -117,14 +123,14 @@
         $('tbody>*').remove();
         var ary = getAllBooks();
         heapSortRate(ary);
-        service.tableElement(ary);
+        setTable(ary);
       });
 
       $('#time').click(function() {
         $('tbody>*').remove();
         var ary = getAllBooks();
         heapSortTime(ary);
-        service.tableElement(ary);
+        setTable(ary);
       });
 
       $('#title').click(function() {
@@ -133,7 +139,7 @@
         ary.sort(function sortComparer(a, b) {
           return a.title.localeCompare(b.title);
         });
-        service.tableElement(ary);
+        setTable(ary);
       });
     });
   </script>
