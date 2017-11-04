@@ -43,7 +43,7 @@
     <table class="table" id="tab">
       <thead>
         <tr>
-          <th></th><th>제목</th><th>저자</th><th>상태</th><th>시작한 날짜</th><th>끝난 날짜</th><th></th>
+          <th></th><th>제목</th><th>저자</th><th>시작한 날짜</th><th>끝난 날짜</th><th></th>
         </tr>
       </thead>
       <tbody></tbody>
@@ -67,21 +67,10 @@
             <table class="table" id="bookList">
               <thead>
                 <tr>
-                  <th></th><th></th><th>책제목</th><th>저자</th><th>평점</th>
+                  <th></th><th>책제목</th><th>저자</th><th>평점</th>
                 </tr>
               </thead>
-              <tbody>
-                <!-- Book Example (DB 연동 후 삭제할 부분) -->
-                <tr>
-                  <td><input type='checkbox'></td>
-                  <td><img src="..."></label></td>
-                  <td><label class='book-title'>책의이름</label></td>
-                  <td><label class='book-author'>글쓴이</label></td>
-                  <td><label class='book-rate'></label></td>
-                </tr>
-                <!-- /Book Example -->
-              </tbody>
-
+              <tbody></tbody>
             </table>
           </div>
           <div class="modal-footer">
@@ -104,38 +93,12 @@
   </body>
   </html>
 
-
-  <!-- 내책목록 tr 템플릿 -->
-  <script id="rowTemplate" type="text/template">
-    <tr>
-      <td><input type='checkbox'></td>
-      <td><label class='book-title'></label></td>
-      <td><label class='book-author'></label></td>
-      <td><label class='book-status'></label></td>
-      <td><label class='time-start'></label></td>
-      <td><label class='time-end'></label></td>
-      <td class="button-timer"><button class="btn btn-secondary start">독서 시작</button></td>
-    </tr>
-  </script>
-
   <script id="startButton" type="text/template">
     <button class="btn btn-secondary start">독서 시작</button>
   </script>
   <script id="endButton" type="text/template">
     <button class="btn btn-success end">독서 종료</button>
   </script>
-
-  <!-- 전체책목록 tr 템플릿 (폐기)
-  <script id="ModalTemplate" type="text/template">
-    <tr>
-      <td><input type='checkbox'></td>
-      <td class="thumbnail"></td>
-      <td><label class="book-title"></label></td>
-      <td><label class="book-author"></label></td>
-      <td><label class="book-rate"></label></td>
-    </tr>
-  </script>
-  -->
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="./js/myclip.js"></script>
