@@ -20,7 +20,6 @@ $(function($) {
         });
       });
       $('#add').click(function() { // 책 선택창 (팝업) 띄우는 버튼
-        $('#bookListModal').modal('show');
         $('#bookList > tbody > *').remove();
         var ary = [];
         firebase.database().ref('/book').on('value', function(snapshot) {
