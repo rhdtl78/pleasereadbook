@@ -90,7 +90,7 @@ $(function($) {
           var $els = $("tr input[type='checkbox']:checked");
           $els.each(function(idx, el) {
             //TODO: 도서 삭제하면 DB 유저정보에서 책 (키값) 삭제
-            var btitle = $(el).parents(tr).find('.book-title').text();
+            var btitle = $(el).parents("tr").find('.book-title').text();
             database.ref('/users/' + user.uid + '/reading').on('value', function(snapshot) {
               snapshot.forEach(function(childSnapshot) {
                 var bookKey = childSnapshot.key;
