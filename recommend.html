@@ -110,6 +110,32 @@
         });
       });
 
+      $(function($) {
+        const auth = firebase.auth();
+        auth.onAuthStateChanged(user => {
+          if (user) {
+            var numBooks = 0;
+            const dbReference = firebase.database().ref('/users/' + user.uid + '/reading');
+            dbReference.once('value', function(snapshot) { //여기 ref 경로 수정필요
+              snapshot.forEach(function(childSnap) {
+                var childKey = childSnap.key;
+                var childData = childSnap.val();
+                console.log(childData);
+                appendToTable({
+                  'title': childData.title,
+                  'author': childData.author,
+                  'time-start': childData.timeStart,
+                  'time-end': childData.timeEnd
+                });
+              });
+            });
+          } else {
+            alert("로그인이 필요합니다.");
+            window.location.href = "/register.html";
+          }
+        });
+      });
+
       firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
           var ary = getAllBooks();
