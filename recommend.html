@@ -10,17 +10,18 @@
 
 <body>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="/index.html">PleaseReadBook</a>
+    <a class="navbar-brand" href="#">PleaseReadBook</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
           <a class="nav-link" href="/mypage1.html">마이페이지</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/myclip.html">내 목표</a>
+          <a class="nav-link" href="/myclip.html">나의 리스트</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">고객센터</a>
@@ -34,15 +35,12 @@
           <span id="AUTH_STATE"></span>
         </li>
         <li class="nav-item">
-          <button type="button" name="button" class="btn btn-default" id="LOG_OUT">로그아웃</button>
+          <button type="button" name="button" class="btn btn-default" id="logoutUp">로그아웃</button>
         </li>
       </ul>
-      <form class="form-inline my-2 my-lg-0">
-        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-      </form>
     </div>
   </nav>
+
   <table class="table table-hover">
     <thead>
       <tr>
@@ -50,11 +48,19 @@
         <th scope="col">제목</th>
         <th scope="col">저자</th>
         <th scope="col">평점</th>
+        <th scope="col">독파 (단위: 시간)</th>
       </tr>
     </thead>
-    <tbody></tbody>
+    <tbody id="tb"></tbody>
   </table>
-  <button class="btn" id="login">로그인</button>
+
+  <div class="control-panel d-inline">
+    <button type="button" class="btn btn-primary" name="button" id="title">이름순</button>
+    <button type="button" class="btn btn-primary" name="button" id="rate">인기순</button>
+    <button type="button" class="btn btn-primary" name="button" id="time">독파순</button>
+    <button class="btn" id="login">로그인</button>
+    <button type="button" class="btn btn-default" name="button" id="logoutDown">로그아웃</button>
+  </div>
 
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
@@ -66,88 +72,94 @@
   <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-database.js"></script>
   <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-messaging.js"></script>
   <script src="/js/fireinit.js"></script>
-
+  <script src="/js/sortByTime.js"></script>
+  <script src="/js/sortByRate.js"></script>
+  <script src="/js/getAllBooks.js"></script>
   <script type="text/javascript">
-    $('#login').click(function() {
-      var provider = new firebase.auth.GoogleAuthProvider();
-      firebase.auth().signInWithPopup(provider).then(function(result) {
-        alert("로그인 성공");
-      }).catch(function(error) {
-        alert(error);
-      });
-    });
-
-    $('#rate').click(function() {
-      $('tbody>*').remove();
-      var bookTitle;
-      var bookAuthor;
-      var bookRate;
-      var ary = [];
-      var book = {};
-      var numBooks = 0;
-      firebase.database().ref('/book').on('value', function(snapshot) {
-        snapshot.forEach(function(childsnapshot) {
-          firebase.database().ref('/book/' + childsnapshot.key).on('value', function(book) {
-            bookTitle = book.val().title;
-            bookAuthor = book.val().author;
-            bookRate = book.val().rate;
-
-            book = {
-              'title': bookTitle,
-              'author': bookAuthor,
-              'rate': bookRate
-            };
-
-            ary[numBooks++] = book;
-
-          });
-        });
-      });
-
-      heapSort(ary);
-      for (var i = 0; i < ary.length; i++) {
-        $('tbody').append("<tr><th>" + (i + 1) + "</th><td>" + ary[i].title + "</td><td>" + ary[i].author + "</td><td>" + ary[i].rate + "</td></tr>");
-      }
-    });
-
-    firebase.auth().onAuthStateChanged(function(user) {
-      if (user) {
-        $('tbody>*').remove();
-        var bookTitle;
-        var bookAuthor;
-        var bookRate;
-        var ary = [];
-        var book = {};
-        var numBooks = 0;
-        firebase.database().ref('/book').on('value', function(snapshot) {
-          snapshot.forEach(function(childsnapshot) {
-            firebase.database().ref('/book/' + childsnapshot.key).on('value', function(book) {
-              bookTitle = book.val().title;
-              bookAuthor = book.val().author;
-              bookRate = book.val().rate;
-
-              book = {
-                'title': bookTitle,
-                'author': bookAuthor,
-                'rate': bookRate
-              };
-
-              ary[numBooks++] = book;
-
-            });
-          });
-        });
-
+    $(function($) {
+      function setTable(ary) {
         for (var i = 0; i < ary.length; i++) {
-          $('tbody').append("<tr><th>" + (i + 1) + "</th><td>" + ary[i].title + "</td><td>" + ary[i].author + "</td><td>" + ary[i].rate + "</td></tr>");
+          $('tbody').append("<tr><th>" + (i + 1) + "</th><td>" + ary[i].title + "</td><td>" + ary[i].author + "</td><td>" + ary[i].rate + "</td><td>" + ary[i].time + "</td></tr>");
         }
-
-      } else {
-        alert(error);
       }
+
+      $('#login').click(function() {
+        var provider = new firebase.auth.GoogleAuthProvider();
+        firebase.auth().signInWithPopup(provider).then(function(result) {
+          alert("로그인 성공");
+          var ary = getAllBooks();
+          setTable(ary);
+        }).catch(function(error) {
+          alert(error);
+        });
+      });
+
+      $('#logoutUp').click(function() {
+        firebase.auth().signOut().then(function() {
+          window.location.href = "/register.html";
+        }, function(error) {
+          alert(error);
+        });
+      });
+
+      $('#logoutDown').click(function() {
+        firebase.auth().signOut().then(function() {
+          window.location.href = "/register.html";
+        }, function(error) {
+          alert(error);
+        });
+      });
+
+      $(function($) {
+        const auth = firebase.auth();
+        auth.onAuthStateChanged(user => {
+          if (user) {
+            var ary = [];
+            const dbReference = firebase.database().ref('/book');
+            dbReference.once('value', function(snapshot) { //여기 ref 경로 수정필요
+              snapshot.forEach(function(childSnap) {
+                var childData = childSnap.val();
+                console.log(childData);
+                ary.push({
+                  'title': childData.title,
+                  'author': childData.author,
+                  'rate' : childData.rate,
+                  'time': childData.time
+                });
+              });
+              setTable(ary);
+            });
+          } else {
+            alert("로그인이 필요합니다.");
+            window.location.href = "/register.html";
+          }
+        });
+      });
+
+      $('#rate').click(function() {
+        $('tbody>*').remove();
+        var ary = getAllBooks();
+        heapSortRate(ary);
+        setTable(ary);
+      });
+
+      $('#time').click(function() {
+        $('tbody>*').remove();
+        var ary = getAllBooks();
+        heapSortTime(ary);
+        setTable(ary);
+      });
+
+      $('#title').click(function() {
+        $('tbody>*').remove();
+        var ary = getAllBooks();
+        ary.sort(function sortComparer(a, b) {
+          return a.title.localeCompare(b.title);
+        });
+        setTable(ary);
+      });
     });
   </script>
-  <script src="./js/sortByRate.js"></script>
 </body>
 
 </html>
