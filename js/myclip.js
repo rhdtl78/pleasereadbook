@@ -161,6 +161,6 @@ $('#add').click(function(){ // 책 선택창 (팝업) 띄우는 버튼
   });
 
   for (var i = 0; i < ary.length; i++) {
-    $('#bookList tbody').append("<tr><td><input type='checkbox'></td><td></td><td>" + ary[i].title + "</td><td>" + ary[i].author + "</td><td>" + ary[i].rate +"</td></tr>");
+    $('#bookList tbody').append("<tr><td><input type='checkbox'></td><td></td><td class='book-title'>" + ary[i].title + "</td><td class='book-author'>" + ary[i].author + "</td><td>" + ary[i].rate +"</td></tr>");
   }
 });
