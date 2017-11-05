@@ -43,12 +43,12 @@ $(function ($) {
     var book = [];
     $els.each(function(idx, el) {
       book[idx] = {
-        'title': $(this).parents(tr).find('book-title').text(),
-        'author': $(this).parents(tr).find('book-author').text(),
+        'title': $(el).parents(tr).find('book-title').text(),
+        'author': $(el).parents(tr).find('book-author').text(),
         'time-start' : '',
         'time-end' : ''
       };
-      database.ref('/users/' + user.uid + 'reading').push(book);
+      database.ref('/users/' + user.uid + '/reading').push(book);
     });
     resettab();
   });
