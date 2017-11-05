@@ -23,27 +23,37 @@ function resettab () { //선택해놓은 책 목록 새로고침하는 함수
   var numBooks = 0;
   firebase.database().ref('/users/' + user.uid + '/reading').on('value', function(snapshot) { //여기 ref 경로 수정필요
     snapshot.forEach(function(childsnapshot) {
-      firebase.database().ref('/users/' + user.uid + '/reading' + childsnapshot.childSnapshot.key).on('value', function(book) {
-        bookTitle = book.val().title;
-        bookAuthor = book.val().author;
-        timeStart = book.val().timeStart;
-        timeEnd = book.val().timeEnd;
+      firebase.database().ref('/users/' + user.uid + '/reading/' + childsnapshot.key).on('value', function(book) {
 
-        book = {
-          'title': bookTitle,
-          'author': bookAuthor,
-          'time-start': timeStart,
-          'time-end': timeEnd
-        };
+          bookTitle = book.val().title;
+          bookAuthor = book.val().author;
+          if(book.val().timestart != ''){
+            timeStart = book.val().timeStart;
+          }
+          else{
+            timeStart = '아직'
+          }
+          if(book.val().timeEnd != ''){
+            timeEnd = book.val().timeEnd;
+          }
+          else{
+            timeEnd = '아직'
+          }
 
-        ary[numBooks++] = book;
+          book = {
+            'title': bookTitle,
+            'author': bookAuthor,
+            'time-start': timeStart,
+            'time-end': timeEnd
+          };
 
+          ary[numBooks++] = book;
       });
     });
   });
   for (var i = 0; i < ary.length; i++) {
 
-    $('#tab tbody').append("<tr><td><input type='checkbox'></td><td>" + ary[i].title + "</td><td>" + ary[i].author + "<td>" + ary[i].timeStart + "</td><td>" + ary[i].timeEnd + "</td></tr>");
+    $('#tab tbody').append("<tr><td><input type='checkbox'></td><td>" + ary[i].title + "</td><td>" + ary[i].author + "<td>" + ary[i].timeStart + "</td><td>" + ary[i].timeEnd + "</td><td><button class='btn btn-secondary start'>독서 시작</button></td></tr>");
   }
 
 
@@ -53,16 +63,17 @@ $(function ($) {
   $('#addBooks').click(function() { // 책 선택창 (팝업) 에서 선택 완료 버튼
     var user = currentUser;
     var $els = $("#bookList tr input[type='checkbox']:checked");
-    var book = [];
+    var book = {};
     $els.each(function(idx, el) {
-      book[idx] = {
-        'title': $(el).parents("tr").find('book-title').text(),
-        'author': $(el).parents("tr").find('book-author').text(),
+      book = {
+        'title': $(el).parents("tr").find('.book-title').text(),
+        'author': $(el).parents("tr").find('.book-author').text(),
         'time-start' : '',
         'time-end' : ''
       };
+      firebase.database().ref('/users/' + user.uid + '/reading').push(book);
     });
-    firebase.database().ref('/users/' + user.uid + '/reading').push(book);
+    
     resettab();
   });
 
@@ -113,7 +124,7 @@ $(function ($) {
       var $els = $("tr input[type='checkbox']:checked");
       $els.each(function(idx, el) {
         //TODO: 도서 삭제하면 DB 유저정보에서 책 (키값) 삭제 
-        var btitle = $(this).parents(tr).find('book-title').text();
+        var btitle = $(this).parents(tr).find('.book-title').text();
         database.ref('/users/' + user.uid + '/reading').on('value', function(snapshot) {
           snapshot.forEach(function(childSnapshot) {
             var bookKey = childSnapshot.key;
