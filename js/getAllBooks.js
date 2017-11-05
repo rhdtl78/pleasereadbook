@@ -1,31 +1,22 @@
 function getAllBooks() {
-  var bookTitle;
-  var bookAuthor;
-  var bookRate;
-  var bookTime;
   var ary = [];
   var book = {};
   var numBooks = 0;
   firebase.database().ref('/book').on('value', function(snapshot) {
     snapshot.forEach(function(childsnapshot) {
-      firebase.database().ref('/book/' + childsnapshot.key).on('value', function(book) {
-        bookTitle = book.val().title;
-        bookAuthor = book.val().author;
-        bookRate = book.val().rate;
-        bookTime = book.val().time;
+      var book = childsnapshot.val();
+      book = {
+        'title': book.title,
+        'author': book.author,
+        'rate': book.rate,
+        'time': book.time
+      };
 
-        book = {
-          'title': bookTitle,
-          'author': bookAuthor,
-          'rate': bookRate,
-          'time': bookTime
-        };
+      ary[numBooks++] = book;
 
-        ary[numBooks++] = book;
-
-      });
     });
   });
+
 
   return ary;
 }
