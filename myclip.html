@@ -1,98 +1,105 @@
 <!DOCTYPE html>
 <html lang="ko">
-  <head>
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
-    <title>Please Read Book!</title>
-  </head>
-  <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" href="/index.html">PleaseReadBook</a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+  <title>Please Read Book!</title>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/index.html">PleaseReadBook</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="/mypage.html">마이페이지</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/myclip.html">내 목표</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">고객센터</a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link" href="/recommend.html">추천 도서목록</a>
-          </li>
-        </ul>
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item">
-            <span id="AUTH_STATE"></span>
-          </li>
-          <li class="nav-item">
-            <button type="button" name="button" class="btn btn-default" id="LOG_OUT">로그아웃</button>
-          </li>
-        </ul>
-        <form class="form-inline my-2 my-lg-0">
-          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
-      </div>
-    </nav>
-    <table class="table" id="tab">
-      <thead>
-        <tr>
-          <th></th><th>제목</th><th>저자</th><th>시작한 날짜</th><th>끝난 날짜</th><th></th>
-        </tr>
-      </thead>
-      <tbody></tbody>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/mypage.html">마이페이지</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/myclip.html">내 목표</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">고객센터</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link" href="/recommend.html">추천 도서목록</a>
+        </li>
+      </ul>
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <span id="AUTH_STATE"></span>
+        </li>
+        <li class="nav-item">
+          <button type="button" name="button" class="btn btn-default" id="LOG_OUT">로그아웃</button>
+        </li>
+      </ul>
+      <form class="form-inline my-2 my-lg-0">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      </form>
+    </div>
+  </nav>
+  <table class="table" id="tab">
+    <thead>
+      <tr>
+        <th></th>
+        <th>제목</th>
+        <th>저자</th>
+        <th>시작한 날짜</th>
+        <th>끝난 날짜</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody></tbody>
 
-    </table>
-    <button type="button" class="btn btn-primary" id="add" data-toggle="modal" data-target="#bookListModal">
+  </table>
+  <button type="button" class="btn btn-primary" id="add" data-toggle="modal" data-target="#bookListModal">
       도서 추가
     </button>
-    <button class="btn btn-danger" id="del">도서 삭제</button>
-    <!-- Modal -->
-    <div class="modal fade" id="bookListModal" tabindex="-1" role="dialog" aria-labelledby="BookListTitle" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="bookListTitle">추가 가능한 도서</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+  <button class="btn btn-danger" id="del">도서 삭제</button>
+  <!-- Modal -->
+  <div class="modal fade" id="bookListModal" tabindex="-1" role="dialog" aria-labelledby="BookListTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="bookListTitle">추가 가능한 도서</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
-          </div>
-          <div class="modal-body">
-            <table class="table" id="bookList">
-              <thead>
-                <tr>
-                  <th></th><th>책제목</th><th>저자</th><th>평점</th>
-                </tr>
-              </thead>
-              <tbody></tbody>
-            </table>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-primary" id="addBooks">선택 완료</button>
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
-          </div>
+        </div>
+        <div class="modal-body">
+          <table class="table" id="bookList">
+            <thead>
+              <tr>
+                <th></th>
+                <th>책제목</th>
+                <th>저자</th>
+                <th>평점</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" id="addBooks">선택 완료</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
         </div>
       </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
 
-    <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-database.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-messaging.js"></script>
-    <script src="/js/fireinit.js"></script>
-  </body>
-  </html>
-
+  <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-messaging.js"></script>
+  <script src="/js/fireinit.js"></script>
   <script id="startButton" type="text/template">
     <button class="btn btn-secondary start">독서 시작</button>
   </script>
@@ -102,8 +109,7 @@
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="./js/myclip.js"></script>
-  <script type="text/javascript">
-  $(function() {
-    resettab();
-  });
-  </script>
+
+</body>
+
+</html>
