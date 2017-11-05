@@ -23,7 +23,7 @@ function resettab () { //선택해놓은 책 목록 새로고침하는 함수
   var numBooks = 0;
   firebase.database().ref('/users/' + user.uid + '/reading').on('value', function(snapshot) { //여기 ref 경로 수정필요
     snapshot.forEach(function(childsnapshot) {
-      firebase.database().ref('/users/' + user.uid + '/reading' + childsnapshot.key).on('value', function(book) {
+      firebase.database().ref('/users/' + user.uid + '/reading' + childsnapshot.childSnapshot.key).on('value', function(book) {
         bookTitle = book.val().title;
         bookAuthor = book.val().author;
         timeStart = book.val().timeStart;
