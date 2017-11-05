@@ -4,7 +4,6 @@ var currentUser;
 firebase.auth().onAuthStateChanged(function (user){
   if(user) {
   currentUser = user;
-  resettab();
   } else {
     alert("로그인이 필요합니다.");
   }
@@ -27,18 +26,9 @@ function resettab () { //선택해놓은 책 목록 새로고침하는 함수
 
           bookTitle = book.val().title;
           bookAuthor = book.val().author;
-          if(book.val().timestart != ''){
-            timeStart = book.val().timeStart;
-          }
-          else{
-            timeStart = '아직'
-          }
-          if(book.val().timeEnd != ''){
-            timeEnd = book.val().timeEnd;
-          }
-          else{
-            timeEnd = '아직'
-          }
+          timeStart = book.val().timeStart;
+          timeEnd = book.val().timeEnd;
+
 
           book = {
             'title': bookTitle,
@@ -53,7 +43,26 @@ function resettab () { //선택해놓은 책 목록 새로고침하는 함수
   });
   for (var i = 0; i < ary.length; i++) {
 
-    $('#tab tbody').append("<tr><td><input type='checkbox'></td><td>" + ary[i].title + "</td><td>" + ary[i].author + "<td>" + ary[i].timeStart + "</td><td>" + ary[i].timeEnd + "</td><td><button class='btn btn-secondary start'>독서 시작</button></td></tr>");
+    $('#tab tbody').append("<tr><td><input type='checkbox'></td><td>" + ary[i].title + "</td><td>" + ary[i].author + "</td><td class='startTime'></td><td class='endTime'></td><td class='Btn'></td></tr>");// + ary[i].timeStart + "</td><td>" + ary[i].timeEnd + "</td><td><button class='btn btn-secondary start'>독서 시작</button></td></tr>");
+    if(ary[i].timeStart){
+      $('#tab tbody tr:last-child .startTime').append(ary[i].timeStart);
+    /*} else {
+      $('#tab tbody tr:last-child .startTime').append("아직");*/
+    }
+    if(ary[i].timeEnd){
+      $('#tab tbody tr:last-child .endTime').append(ary[i].timeEnd);
+    /*} else {
+      $('#tab tbody tr:last-child .endTime').append("아직");*/
+    }
+    if(ary[i].timeStart){
+      if(ary[i].timeEnd){
+        $('#tab tbody tr:last-child .Btn').append("<button class='btn disabled'>독서 완료됨</button>");
+      } else {
+        $('#tab tbody tr:last-child .Btn').append("<button class='btn btn-success end'>독서 완료</button>");
+      }
+    } else {
+      $('#tab tbody tr:last-child .Btn').append("<button class='btn btn-secondary start'>독서 시작</button>");
+    }
   }
 
 
@@ -82,7 +91,7 @@ $(function ($) {
   $('.start').click(function(){ // 읽기 시작 버튼
     var user = currentUser;
     var d = new Date();
-    var btitle = $(this).parents(tr).find('book-title').text();
+    var btitle = $(this).parents(tr).find('.book-title').text();
     database.ref('/users/' + user.uid + '/reading').on('value', function(snapshot) {
       snapshot.forEach(function(childSnapshot) {
         var bookKey = childSnapshot.key;
@@ -97,11 +106,11 @@ $(function ($) {
     });
     resettab();
     
-    $(this).empty().text('독서 종료').removeClass("start btn-secondary").addClass("btn-success end");
+    //$(this).empty().text('독서 종료').removeClass("start btn-secondary").addClass("btn-success end");
 
     $('.end').click(function(){ // 읽기 완료 버튼
       var user = currentUser;
-      $(this).empty().text("독서 완료됨").removeClass("btn-success end").addClass("disabled"); //'독서 완료됨' 버튼 대신 버튼을 없애고 '독파시간: 00일 00시간' 으로 표시하는 것도 고려
+      //$(this).empty().text("독서 완료됨").removeClass("btn-success end").addClass("disabled"); //'독서 완료됨' 버튼 대신 버튼을 없애고 '독파시간: 00일 00시간' 으로 표시하는 것도 고려
       database.ref('/users/' + user.uid + '/reading').on('value', function(snapshot) {
         snapshot.forEach(function(childSnapshot) {
           var bookKey = childSnapshot.key;
@@ -124,7 +133,7 @@ $(function ($) {
       var $els = $("tr input[type='checkbox']:checked");
       $els.each(function(idx, el) {
         //TODO: 도서 삭제하면 DB 유저정보에서 책 (키값) 삭제 
-        var btitle = $(this).parents(tr).find('.book-title').text();
+        var btitle = $(el).parents(tr).find('.book-title').text();
         database.ref('/users/' + user.uid + '/reading').on('value', function(snapshot) {
           snapshot.forEach(function(childSnapshot) {
             var bookKey = childSnapshot.key;
