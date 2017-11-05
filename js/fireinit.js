@@ -11,8 +11,7 @@ firebase.initializeApp(config);
 
 function getCurrentUser() {
   firebase.auth().onAuthStateChanged(user =>{
-    if(user)
-      return user;
-    return null;
+    if(user) return user;
+    else return null;
   });
 }
