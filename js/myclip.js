@@ -61,7 +61,7 @@ $(function ($) {
         'time-start' : '',
         'time-end' : ''
       };
-      database.ref('/users/' + user.uid + '/reading').push(book);
+      firebase.database().ref('/users/' + user.uid + '/reading').push(book);
     });
     resettab();
   });
