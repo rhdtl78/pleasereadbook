@@ -119,41 +119,7 @@ $(function($) {
           });
         }
       });
-      // TODO: 시작, 종료 누를 때 DB 유저정보에 상태 업데이트
-      //       종료 누를 때 DB에 독파시간 저장
 
-      $('.start').click(function() { // 읽기 시작 버튼
-        alert('sadf');
-        var d = new Date();
-        var bkey = $(this).parents(tr).find('.keytab').text();
-        firebase.database().ref('/users/' + user.uid + '/reading').on('value', function(snapshot) {
-          snapshot.forEach(function(childSnapshot) {
-            var bookKey = childSnapshot.key;
-            if(bookKey == bkey){
-              firebase.database().ref('/users/' + user.uid + '/reading/' + bookKey + '/timeStart').set(d.getFullYear() + '.' + (d.getMonth() + 1) + '.' + d.getDate());
-            }
-          });
-        });
-      });
-
-      $('.end').click(function() { // 읽기 완료 버튼
-        //$(this).empty().text("독서 완료됨").removeClass("btn-success end").addClass("disabled"); //'독서 완료됨' 버튼 대신 버튼을 없애고 '독파시간: 00일 00시간' 으로 표시하는 것도 고려
-        database.ref('/users/' + user.uid + '/reading').on('value', function(snapshot) {
-          snapshot.forEach(function(childSnapshot) {
-            var bookKey = childSnapshot.key;
-            var userDB = database.ref('/users/' + user.uid + '/reading/' + bookKey);
-
-            userDB.on('value', function(book) {
-              if (btitle == book.val().title) {
-                firebase.database().ref('/users/' + user.uid + '/reading/' + childsnapshot.key + '/timeEnd').update(d.getFullYear() + '.' + (d.getMonth() + 1) + '.' + d.getDate());
-              }
-            });
-          });
-        });
-        //TODO: 읽기 완료 시 평점 선택 기록
-      });
-      
-      
       firebase.database().ref('/users/'+user.uid+'/reading').on('value', snap=>{
         var ary = [];
         var i = 0;
@@ -191,7 +157,6 @@ $(function($) {
             $('#tab tbody tr:last-child .Btn').append("<button class='btn disabled'>독서 완료됨</button>");
           } else {
             $("<button class='btn btn-success end'>독서 완료</button>").appendTo('#tab tbody tr:last-child .Btn').click(function(){
-              alert('sadf');
               var d = new Date();
               var bkey = $(this).parents('tr').find('.keytab').text();
               firebase.database().ref('/users/' + user.uid + '/reading').on('value', function(snapshot) {
@@ -206,7 +171,6 @@ $(function($) {
           }
         } else {
           $("<button class='btn btn-secondary start'>독서 시작</button>").appendTo('#tab tbody tr:last-child .Btn').click(function(){
-            alert('sadf');
             var d = new Date();
             var bkey = $(this).parents('tr').find('.keytab').text();
             firebase.database().ref('/users/' + user.uid + '/reading').on('value', function(snapshot) {
@@ -253,7 +217,6 @@ function appendToTable(object) {
     }
   } else {
     $("<button class='btn btn-secondary start'>독서 시작</button>").appendTo('#tab tbody tr:last-child .Btn').click(function(){
-      alert('sadf');
       var d = new Date();
       var bkey = $(this).parents('tr').find('.keytab').text();
       firebase.database().ref('/users/' + user.uid + '/reading').on('value', function(snapshot) {
