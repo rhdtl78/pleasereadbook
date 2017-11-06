@@ -96,7 +96,8 @@
                 'title': title[i],
                 'author': author[i],
                 'rate': parseFloat(rate[i]),
-                'time': parseFloat(time[i])
+                'time': parseFloat(time[i]),
+                'count': 0
               };
             }
 
@@ -106,16 +107,13 @@
 
             database.ref('/book').on('value', function(snapshot) {
               snapshot.forEach(function(childSnapshot) {
-                var btitle;
-                var bookKey = childSnapshot.key;
-                var bookDB = database.ref('/book/' + bookKey);
+                var childKey = childSnapshot.key;
+                var childData = childSnapshot.val();
+                var btitle = childData.title;
+                var bauthor = childData.author;
 
-                bookDB.on('value', function(book) {
-                  btitle = book.val().title;
-                });
-
-                if (btitle === title[0] || btitle === title[1] || btitle === title[2]) {
-                  userBookDB.push(bookKey);
+                if (( btitle === title[0] && bauthor === author[0] )|| ( btitle === title[1] && bauthor === author[1] ) || ( btitle === title[2] && bauthor === author[2] )) {
+                  userBookDB.push(childKey);
                 }
               });
               userBookDB.on('value', function(user_snapshot) {
