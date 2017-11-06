@@ -114,3 +114,7 @@ html {
   clear: both;  /*상단의 흐름을 한번 끊어주기 위해 clear를 해준다.*/
   float: left;  /*새로운 흐름을 지정해줘야 깨지지 않는다*/
 }
+
+.keytab {
+  display: none;  /*myclip 책목록 키 정보 숨김*/
+}
