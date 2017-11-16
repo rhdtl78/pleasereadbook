@@ -75,12 +75,12 @@
   <script src="/js/sortByRate.js"></script>
   <script src="/js/getAllBooks.js"></script>
   <script type="text/javascript">
+  function setTable(ary) {
+    for (var i = 0; i < ary.length; i++) {
+      $('tbody').append("<tr><th>" + (i + 1) + "</th><td>" + ary[i].title + "</td><td>" + ary[i].author + "</td><td>" + ary[i].rate + "</td><td>" + ary[i].time + "</td></tr>");
+    }
+  }
     $(function($) {
-      function setTable(ary) {
-        for (var i = 0; i < ary.length; i++) {
-          $('tbody').append("<tr><th>" + (i + 1) + "</th><td>" + ary[i].title + "</td><td>" + ary[i].author + "</td><td>" + ary[i].rate + "</td><td>" + ary[i].time + "</td></tr>");
-        }
-      }
 
       $('#login').click(function() {
         var provider = new firebase.auth.GoogleAuthProvider();
@@ -122,7 +122,7 @@
                 ary.push({
                   'title': childData.title,
                   'author': childData.author,
-                  'rate' : childData.rate,
+                  'rate': childData.rate,
                   'time': childData.time
                 });
               });

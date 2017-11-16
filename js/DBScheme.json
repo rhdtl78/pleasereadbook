@@ -1,0 +1,25 @@
+{
+  "bookKey": {
+    "tilte": "null",
+    "author": "null",
+    "rate": "null",
+    "count": "null",
+    "time": "null",
+  }
+}
+
+
+{
+  "users": {
+    "uid": {
+      "reading": {
+        "bookKey": {
+          "tilte": "null",
+          "author": "null",
+          "timeStart": "null",
+          "timeEnd": "null",
+        }
+      }
+    }
+  }
+}
