@@ -35,6 +35,9 @@
         </ul>
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
+            <button type="button" name="button" class="btn btn-primary" id="help">도움말</button>
+          </li>
+          <li class="nav-item">
             <span id="AUTH_STATE"></span>
           </li>
           <li class="nav-item">
@@ -70,13 +73,19 @@
     <div class="input-group">
       <span class="input-group-addon" id="basic-addon1">닉네임</span>
       <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" id="nickname">
+      <button type="button" class="btn btn-primary" id="ch_nick">닉네임 변경</button>
+    </div>
+
+    <div class="input-group">
+      <span class="input-group-addon" id="basic-addon1">프로필 사진</span>
+      <button type="button" class="btn btn-primary" id="ch_proph"></button>
     </div>
 
     <br>
 
-    <div class="put_right">
-      <button type="button" class="btn btn-primary" id="ch_inf">변경</button>
-    </div>
+  <!--  <div class="put_right">
+
+  </div>-->
 
 
     <!--Core Script CDN Link-->
@@ -102,7 +111,7 @@
       }
     });
 
-    $('#ch_inf').click(function(){
+    $('#ch_nick').click(function(){
       var nick = $('#nickname').val();
     //  var phn = $('#phone').val();
 
@@ -111,10 +120,28 @@
       user.updateProfile({
         'displayName': nick,
       }).then(function() {
-        window.location.href = "/mypage1.html";
+        //window.location.href = "/mypage1.html";
       }, function(error) {
         alert("닉네임 변경에 실패\n" + error.message);
       });
+
+      var upph = document.getElementById('ch_proph');
+
+      upph.addEventListener('change', function(e){
+        var file = e.target.files[0];
+
+        var storageRef = firebase.storage().ref('PROFILEPHOTO/' + user.UID);
+
+        var task = storageRef.put(file);
+
+        user.updateProfile({
+          'uid': storageRef,
+        });
+      });
+
+      /*$('#ch_proph').click(function(){
+
+      });*/
 
     /*  user.updatePhoneNumber({
         'phoneNumber': phn,
