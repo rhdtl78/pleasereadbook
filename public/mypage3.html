@@ -78,7 +78,7 @@
 
     <div class="input-group">
       <span class="input-group-addon" id="basic-addon1">프로필 사진</span>
-      <button type="button" class="btn btn-primary" id="ch_proph"></button>
+      <button type="button" class="btn btn-primary" id="ch_proph">프로필 변경</button>
     </div>
 
     <br>
@@ -124,33 +124,22 @@
       }, function(error) {
         alert("닉네임 변경에 실패\n" + error.message);
       });
-
-      var upph = document.getElementById('ch_proph');
-
-      upph.addEventListener('change', function(e){
-        var file = e.target.files[0];
-
-        var storageRef = firebase.storage().ref('PROFILEPHOTO/' + user.UID);
-
-        var task = storageRef.put(file);
-
-        user.updateProfile({
-          'uid': storageRef,
-        });
-      });
-
-      /*$('#ch_proph').click(function(){
-
-      });*/
-
-    /*  user.updatePhoneNumber({
-        'phoneNumber': phn,
-      }).then(function(){
-
-      },function(error){
-        alert("전화번호 변경에 실패\n" + error.message);
-      });*/
     });
+
+    var upph = document.getElementById('ch_proph');
+
+    upph.addEventListener('change', function(e){
+      var file = e.target.files[0];
+
+      var storageRef = firebase.storage().ref('PROFILEPHOTO/' + user.UID);
+
+      var task = storageRef.put(file);
+
+      user.updateProfile({
+        'uid': storageRef,
+      });
+    });
+
 
     </script>
   </body>
