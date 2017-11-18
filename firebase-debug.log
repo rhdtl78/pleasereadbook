@@ -1,0 +1,36 @@
+[debug] [2017-11-18T11:37:01.510Z] ----------------------------------------------------------------------
+[debug] [2017-11-18T11:37:01.510Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\joon1\AppData\Roaming\npm\node_modules\firebase-tools\bin\firebase serve
+[debug] [2017-11-18T11:37:01.510Z] CLI Version:   3.13.1
+[debug] [2017-11-18T11:37:01.510Z] Platform:      win32
+[debug] [2017-11-18T11:37:01.510Z] Node Version:  v9.0.0
+[debug] [2017-11-18T11:37:01.510Z] Time:          Sat Nov 18 2017 20:37:01 GMT+0900 (대한민국 표준시)
+[debug] [2017-11-18T11:37:01.510Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2017-11-18T11:37:01.525Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2017-11-18T11:37:01.525Z] > authorizing via signed-in user
+[debug] [2017-11-18T11:37:01.525Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2017-11-18T11:37:01.525Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token { refresh_token: '1/QMvKPJYh9KEFAwVtQSXb81dvRwLSuwdjzRsru-INPLs',
+  client_id: '563584335869-fgrhgmd47bqnekij5i8b5pr03ho849e6.apps.googleusercontent.com',
+  client_secret: 'j9iVZfS8kkCEFUPaAeJV0sAi',
+  grant_type: 'refresh_token',
+  scope: 'email https://www.googleapis.com/auth/cloud-platform https://www.googleapis.com/auth/cloudplatformprojects.readonly https://www.googleapis.com/auth/firebase openid' } 
+ Sat Nov 18 2017 20:37:01 GMT+0900 (대한민국 표준시)
+[debug] [2017-11-18T11:37:01.824Z] <<< HTTP RESPONSE 200
+[debug] [2017-11-18T11:37:01.855Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/pleasereadbook  
+ Sat Nov 18 2017 20:37:01 GMT+0900 (대한민국 표준시)
+[debug] [2017-11-18T11:37:02.995Z] <<< HTTP RESPONSE 200
+[debug] [2017-11-18T11:37:02.996Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/pleasereadbook/tokens  
+ Sat Nov 18 2017 20:37:02 GMT+0900 (대한민국 표준시)
+[debug] [2017-11-18T11:37:04.088Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Serving from 'C:\Users\joon1\Documents\pleasereadbook'...
+[info] 
+[debug] [2017-11-18T11:37:04.088Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/pleasereadbook  
+ Sat Nov 18 2017 20:37:04 GMT+0900 (대한민국 표준시)
+[debug] [2017-11-18T11:37:05.104Z] <<< HTTP RESPONSE 200
+[debug] [2017-11-18T11:37:05.104Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/291094516014/clients/_:getWebAppConfig  
+ Sat Nov 18 2017 20:37:05 GMT+0900 (대한민국 표준시)
+[debug] [2017-11-18T11:37:06.144Z] <<< HTTP RESPONSE 200
+[info] i  hosting: Serving hosting files from: public
+[info] +  hosting: Local server: http://localhost:5000
+
