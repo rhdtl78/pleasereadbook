@@ -10,7 +10,7 @@
 
 <body>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">PleaseReadBook</a>
+    <a class="navbar-brand" href="/index.html">PleaseReadBook</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -75,19 +75,52 @@
   <script src="/js/sortByRate.js"></script>
   <script src="/js/getAllBooks.js"></script>
   <script type="text/javascript">
-  function setTable(ary) {
-    for (var i = 0; i < ary.length; i++) {
-      $('tbody').append("<tr><th>" + (i + 1) + "</th><td>" + ary[i].title + "</td><td>" + ary[i].author + "</td><td>" + ary[i].rate + "</td><td>" + ary[i].time + "</td></tr>");
-    }
-  }
     $(function($) {
+      /*
+      var config = {
+          apiKey: '<your-api-key>',
+          authDomain: '<your-auth-domain>',
+          databaseURL: 'https://console.firebase.google.com/project/pleasereadbook/database/pleasereadbook/data',
+          storageBucket: '<your-storage-bucket>'
+        };
+        firebase.initializeApp(config);
 
+        var storage = firebase.storage();
+        var childPrince=storage.child("https://search.pstatic.net/common/?src=http%3A%2F%2Fbookthumb.phinf.naver.net%2Fcover%2F097%2F003%2F09700399.jpg%3Ftype%3Dm1%26udate%3D20151218&type=o75_108_re24");
+        var frogPrince=storage.child("https://search.pstatic.net/common/?src=http%3A%2F%2Fbookthumb.phinf.naver.net%2Fcover%2F001%2F764%2F00176486.jpg%3Ftype%3Dm1%26udate%3D20170531&type=o75_108_re24");
+        var gildonghong=storage.child("https://search.pstatic.net/common/?src=http%3A%2F%2Fbookthumb.phinf.naver.net%2Fcover%2F111%2F841%2F11184161.jpg%3Ftype%3Dm1%26udate%3D20161019&type=o75_108_re24");
+    */
+      /*var storageRef=firebase.storage.ref();    //스토리지 참조
+      storageRef.child('images').getDownloadURL().then(function(url){
+
+      }).catch(function(error){
+        alert("표지 받는데 실패함");
+      })*/
+      function setTable(ary) {
+        for (var i = 0; i < ary.length; i++) {
+          $('tbody').append("<tr><th>" + (i + 1) + "</th><td>" + ary[i].title + "</td><td>" + ary[i].author + "</td><td>" + ary[i].rate + "</td><td>" + ary[i].time + "</td></tr>");
+        }
+      }
+      /*function setCover(ary){    //요렇게 해서 표지 이미지를 띄워서 보여줄계획
+        for (var i = 0; i < ary.length; i++) {
+          $('tr').eq(i).click(function(){
+
+          });
+        }
+      }*/
       $('#login').click(function() {
         var provider = new firebase.auth.GoogleAuthProvider();
         firebase.auth().signInWithPopup(provider).then(function(result) {
           alert("로그인 성공");
           var ary = getAllBooks();
           setTable(ary);
+          /*function setCover(ary){
+            for (var i = 0; i < ary.length; i++) {
+              $('tr').eq(i).click(function(){
+
+              });
+            }
+          }*/
         }).catch(function(error) {
           alert(error);
         });
@@ -122,7 +155,7 @@
                 ary.push({
                   'title': childData.title,
                   'author': childData.author,
-                  'rate': childData.rate,
+                  'rate' : childData.rate,
                   'time': childData.time
                 });
               });
@@ -140,6 +173,13 @@
         var ary = getAllBooks();
         heapSortRate(ary);
         setTable(ary);
+        /*function setCover(ary){
+          for (var i = 0; i < ary.length; i++) {
+            $('tr').eq(i).click(function(){
+
+            });
+          }
+        }*/
       });
 
       $('#time').click(function() {
@@ -147,6 +187,13 @@
         var ary = getAllBooks();
         heapSortTime(ary);
         setTable(ary);
+        /*function setCover(ary){
+          for (var i = 0; i < ary.length; i++) {
+            $('tr').eq(i).click(function(){
+
+            });
+          }
+        }*/
       });
 
       $('#title').click(function() {
@@ -156,6 +203,13 @@
           return a.title.localeCompare(b.title);
         });
         setTable(ary);
+        /*function setCover(ary){
+          for (var i = 0; i < ary.length; i++) {
+            $('tr').eq(i).click(function(){
+
+            });
+          }
+        }*/
       });
     });
   </script>
