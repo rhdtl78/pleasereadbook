@@ -78,7 +78,8 @@
 
     <div class="input-group">
       <span class="input-group-addon" id="basic-addon1">프로필 사진</span>
-      <button type="button" class="btn btn-primary" id="ch_proph">프로필 변경</button>
+      <input type="file" id="INPUT_FILE">
+      <!--<button type="button" class="btn btn-primary" id="ch_proph">프로필 변경</button>-->
     </div>
 
     <br>
@@ -126,7 +127,25 @@
       });
     });
 
-    $('#ch_proph').click(function(){
+    var _file = null;
+    document.getElementById('INPUT_FILE').addEventListener('change', handleFiles, false);
+    function handleFiles(){
+      _file = (this.files)[0];
+    }
+
+    var storageRef = firebase.storage.ref();
+    var uploadTask = storageRef.child('PROFILEPHOTO/'+user.uid).put(_file);
+    uploadTask.on('state_changed', function(snapshot){
+      var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      console.log('Upload is ' + progress + '% done');
+    },function(error){
+      alert(error.message);
+      return false;
+    }, function(){
+
+    });
+
+    /*$('#ch_proph').click(function(){
       var upph = document.getElementById('ch_proph');
 
       upph.addEventListener('change', function(e){
@@ -137,10 +156,10 @@
         var task = storageRef.put(file);
 
         user.updateProfile({
-          'uid': storageRef,
+          'photoURL': storageRef,
         });
       });
-    });
+    });*/
 
     </script>
   </body>
