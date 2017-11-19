@@ -145,7 +145,6 @@
         alert(error.message);
         return false;
       }, function(){
-        if(user.photoURL != null){
           user.updateProfile({
             'photoURL': 'PROFILEPHOTO/'+_file.name,
           }).then(function(){
@@ -153,7 +152,7 @@
           },function(error){
 
           });
-        }
+
       });
     });
 
