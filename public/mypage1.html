@@ -106,7 +106,7 @@
           $('#USER_EMAIL').text(user.email);
           $('#USER_NICKNAME').text(user.displayName);
           $('#USER_PHONENUMBER').text(user.phoneNumber);
-          $('#USER_PHOTOURL').text(user.photoURL);
+          document.getElementById('USER_PHOTOURL').src=user.photoURL;
           $('#login').hide();
 
         } else {
