@@ -128,6 +128,7 @@
       });
     });
 
+
     var _file = null;
     document.getElementById('INPUT_FILE').addEventListener('change', handleFiles, false);
     function handleFiles(){
@@ -135,7 +136,7 @@
     }
 
     var storageRef = firebase.storage().ref();
-    var uploadTask = storageRef.child('PROFILEPHOTO/'+user.uid).put(_file);
+    var uploadTask = storageRef.child('PROFILEPHOTO/'+_file.name).put(_file);
     uploadTask.on('state_changed', function(snapshot){
       var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
       console.log('Upload is ' + progress + '% done');
