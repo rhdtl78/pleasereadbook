@@ -133,7 +133,7 @@
       _file = (this.files)[0];
     }
 
-    var storageRef = firebase.storage.ref();
+    var storageRef = firebase.storage().ref();
     var uploadTask = storageRef.child('PROFILEPHOTO/'+user.uid).put(_file);
     uploadTask.on('state_changed', function(snapshot){
       var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
