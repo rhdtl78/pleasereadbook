@@ -15,6 +15,7 @@
         <span id="USER_NICKNAME"></span>님! 가입을 축하합니다!<br>
         <span id="USER_EMAIL"></span>로 인증 메일을 보내드렸으니 확인 바랍니다!<br>
         <button type="button" class="btn btn-primary" name="button" id="HOME">홈으로</button>
+        <button type="button" name="button" class="btn btn-default" id="help">도움말</button>
       </div>
     </div>
 
@@ -42,7 +43,7 @@
           //email verification
           user.sendEmailVerification().then(function() {
             // Email sent.
-//            firebase.database().ref('/users/' + user.uid + '/seted').set(false);
+            //            firebase.database().ref('/users/' + user.uid + '/seted').set(false);
           }).catch(function(error) {
             // An error happened.
             alert(error.message);
@@ -52,8 +53,14 @@
         }
       });
 
-      $('#HOME').click(function () {
-        window.location.href="/index.html";
+      $('#help').click(function() {
+        var storageRef = firebase.storage().ref();
+        storageRef.child('HELP/help_auth.jpg').getDownloadURL().then(function(url) {
+          window.open(url, '도움말');
+        });
+      });
+      $('#HOME').click(function() {
+        window.location.href = "/index.html";
       });
     });
   </script>

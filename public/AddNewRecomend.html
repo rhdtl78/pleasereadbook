@@ -34,6 +34,9 @@
           <span id="AUTH_STATE"></span>
         </li>
         <li class="nav-item">
+          <button type="button" name="button" class="btn btn-primary" id="help">도움말</button>
+        </li>
+        <li class="nav-item">
           <button type="button" name="button" class="btn btn-default" id="LOG_OUT">로그아웃</button>
         </li>
       </ul>
@@ -43,7 +46,6 @@
     <div class="row">
       <div class="col-lg-4">
         <div class="input-group">
-          <label for="query">검색 영역</label>
           <input type="text" name="query" id="query" accesskey="s" title="검색어" class="form-control" value="">
           <span class="input-group-btn">
             <button type="button" id="search" name="search" alt="검색" value="검색" class="btn btn-secondary">검색 </Button>
@@ -157,7 +159,12 @@
         });
       });
 
-
+      $('#help').click(function(){
+        var storageRef = firebase.storage().ref();
+        storageRef.child('HELP/help_AddNewRecomend.jpg').getDownloadURL().then(function(url){
+          window.open(url, '도움말');
+        });
+      });
 
     });
   </script>
