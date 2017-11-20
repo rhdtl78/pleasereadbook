@@ -77,40 +77,15 @@
   <script src="/js/getAllBooks.js"></script>
   <script type="text/javascript">
     $(function($) {
-      var storage = firebase.storage(); //스토리지 참조
-      var imageRef = storage.ref('/cover');
-      //var gildongRef= storageRef.child('cover/홍길동.jpg');
-      //var littlePrinceRef= storageRef.child('cover/어린왕자.jpg');
-      //var frogPrinceRef=storageRef.child('cover/개구리왕자.jpg');
 
-      function imageLoad(title) {
-        var sampleimg = imageRef.child(title + '.jpg').getDownloadURL().then(function(url) {
-          var img = document.getElementById(title + 'cover');
-          img.src = url;
-        }).catch(function(error) {
-          //alert(title + "의 이미지를 불러오는 데 실패");
-        });
-      }
+
 
 
       function setTable(ary) {
         for (var i = 0; i < ary.length; i++) {
-          $('tbody').append("<tr><th>" + (i + 1) + "</th><td>" + ary[i].title + "</td><td><img id = '" + ary[i].title + "cover' src =''><td>" + ary[i].author + "</td><td>" + ary[i].rate + "</td><td>" + ary[i].time + "</td></tr>");
-          imageLoad(ary[i].title);
+          $('tbody').append("<tr><th>" + (i + 1) + "</th><td>" + ary[i].title + "</td><td><img id = 'cover' src ='"+ary[i].cover+"'><td>" + ary[i].author + "</td><td>" + ary[i].rate + "</td><td>" + ary[i].time + "</td></tr>");
         }
       }
-      /*function setCover(ary){    //요렇게 해서 표지 이미지를 띄워서 보여줄계획
-        for (var i = 0; i < ary.length; i++) {
-          $('tr').eq(i).click(function(){
-            //$("div.image").append('<img src=""');
-            $("img").show();
-          });
-          $('tr').eq(i).dbclick(function(){
-            $("img").hide();
-          });
-        }
-
-      }*/
 
       $('#login').click(function() {
         var provider = new firebase.auth.GoogleAuthProvider();
@@ -118,13 +93,6 @@
           alert("로그인 성공");
           var ary = getAllBooks();
           setTable(ary);
-          /*function setCover(ary){
-            for (var i = 0; i < ary.length; i++) {
-              $('tr').eq(i).click(function(){
-
-              });
-            }
-          }*/
         }).catch(function(error) {
           alert(error);
         });
@@ -158,6 +126,7 @@
                 console.log(childData);
                 ary.push({
                   'title': childData.title,
+                  'cover': childData.coverUrl,
                   'author': childData.author,
                   'rate': childData.rate,
                   'time': childData.time
@@ -177,13 +146,6 @@
         var ary = getAllBooks();
         heapSortRate(ary);
         setTable(ary);
-        /*function setCover(ary){
-          for (var i = 0; i < ary.length; i++) {
-            $('tr').eq(i).click(function(){
-
-            });
-          }
-        }*/
       });
 
       $('#time').click(function() {
@@ -191,13 +153,6 @@
         var ary = getAllBooks();
         heapSortTime(ary);
         setTable(ary);
-        /*function setCover(ary){
-          for (var i = 0; i < ary.length; i++) {
-            $('tr').eq(i).click(function(){
-
-            });
-          }
-        }*/
       });
 
       $('#title').click(function() {
@@ -207,13 +162,6 @@
           return a.title.localeCompare(b.title);
         });
         setTable(ary);
-        /*function setCover(ary){
-          for (var i = 0; i < ary.length; i++) {
-            $('tr').eq(i).click(function(){
-
-            });
-          }
-        }*/
       });
     });
   </script>

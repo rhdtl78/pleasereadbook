@@ -10,7 +10,7 @@
 
 <body>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">PleaseReadBook</a>
+    <a class="navbar-brand" href="/index.html">PleaseReadBook</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -21,10 +21,7 @@
           <a class="nav-link" href="/mypage1.html">마이페이지</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/myclip.html">나의 리스트</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">고객센터</a>
+          <a class="nav-link" href="/myclip.html">내 목표</a>
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link" href="/recommend.html">추천 도서목록</a>
@@ -35,17 +32,25 @@
           <span id="AUTH_STATE"></span>
         </li>
         <li class="nav-item">
-          <button type="button" name="button" class="btn btn-default" id="LOG_OUT">로그아웃</button>
+          <button type="button" name="button" class="btn btn-default" id="logoutUp">로그아웃</button>
         </li>
       </ul>
     </div>
   </nav>
+  <div class="control-panel d-inline">
+    <button type="button" class="btn btn-primary" name="button" id="title">이름순</button>
+    <button type="button" class="btn btn-primary" name="button" id="rate">인기순</button>
+    <button type="button" class="btn btn-primary" name="button" id="time">독파순</button>
+    <!--button class="btn" id="login">로그인</button>
+    <button type="button" class="btn btn-default" name="button" id="logoutDown">로그아웃</button-->
+  </div>
 
   <table class="table table-hover">
     <thead>
       <tr>
         <th scope="col">번호</th>
         <th scope="col">제목</th>
+        <th scope="col">표지</th>
         <th scope="col">저자</th>
         <th scope="col">평점</th>
         <th scope="col">독파 (단위: 시간)</th>
@@ -54,13 +59,7 @@
     <tbody id="tb"></tbody>
   </table>
 
-  <div class="control-panel d-inline">
-    <button type="button" class="btn btn-primary" name="button" id="title">이름순</button>
-    <button type="button" class="btn btn-primary" name="button" id="rate">인기순</button>
-    <button type="button" class="btn btn-primary" name="button" id="time">독파순</button>
-    <button class="btn" id="login">로그인</button>
-    <button type="button" class="btn btn-default" name="button" id="logout">로그아웃</button>
-  </div>
+
 
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
@@ -71,16 +70,33 @@
   <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-database.js"></script>
   <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-messaging.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-storage.js"></script>
   <script src="/js/fireinit.js"></script>
   <script src="/js/sortByTime.js"></script>
   <script src="/js/sortByRate.js"></script>
   <script src="/js/getAllBooks.js"></script>
   <script type="text/javascript">
-  //원본 백업입니다
     $(function($) {
+      var storage = firebase.storage(); //스토리지 참조
+      var imageRef = storage.ref('/cover');
+      //var gildongRef= storageRef.child('cover/홍길동.jpg');
+      //var littlePrinceRef= storageRef.child('cover/어린왕자.jpg');
+      //var frogPrinceRef=storageRef.child('cover/개구리왕자.jpg');
+
+      function imageLoad(title) {
+        var sampleimg = imageRef.child(title + '.jpg').getDownloadURL().then(function(url) {
+          var img = document.getElementById(title + 'cover');
+          img.src = url;
+        }).catch(function(error) {
+          //alert(title + "의 이미지를 불러오는 데 실패");
+        });
+      }
+
+
       function setTable(ary) {
         for (var i = 0; i < ary.length; i++) {
-          $('tbody').append("<tr><th>" + (i + 1) + "</th><td>" + ary[i].title + "</td><td>" + ary[i].author + "</td><td>" + ary[i].rate + "</td><td>" + ary[i].time + "</td></tr>");
+          $('tbody').append("<tr><th>" + (i + 1) + "</th><td>" + ary[i].title + "</td><td><img id = '" + ary[i].title + "cover' src =''><td>" + ary[i].author + "</td><td>" + ary[i].rate + "</td><td>" + ary[i].time + "</td></tr>");
+          imageLoad(ary[i].title);
         }
       }
 
@@ -88,11 +104,14 @@
         var provider = new firebase.auth.GoogleAuthProvider();
         firebase.auth().signInWithPopup(provider).then(function(result) {
           alert("로그인 성공");
+          var ary = getAllBooks();
+          setTable(ary);
         }).catch(function(error) {
           alert(error);
         });
       });
-      $('#LOG_OUT').click(function() {
+
+      $('#logoutUp').click(function() {
         firebase.auth().signOut().then(function() {
           window.location.href = "/register.html";
         }, function(error) {
@@ -100,13 +119,38 @@
         });
       });
 
-      firebase.auth().onAuthStateChanged(function(user) {
-        if (user) {
-          var ary = getAllBooks();
-          setTable(ary);
-        } else {
-          alert("로그인 필요");
-        }
+      $('#logoutDown').click(function() {
+        firebase.auth().signOut().then(function() {
+          window.location.href = "/register.html";
+        }, function(error) {
+          alert(error);
+        });
+      });
+
+      $(function($) {
+        const auth = firebase.auth();
+        auth.onAuthStateChanged(user => {
+          if (user) {
+            var ary = [];
+            const dbReference = firebase.database().ref('/book');
+            dbReference.once('value', function(snapshot) { //여기 ref 경로 수정필요
+              snapshot.forEach(function(childSnap) {
+                var childData = childSnap.val();
+                console.log(childData);
+                ary.push({
+                  'title': childData.title,
+                  'author': childData.author,
+                  'rate': childData.rate,
+                  'time': childData.time
+                });
+              });
+              setTable(ary);
+            });
+          } else {
+            alert("로그인이 필요합니다.");
+            window.location.href = "/register.html";
+          }
+        });
       });
 
       $('#rate').click(function() {
