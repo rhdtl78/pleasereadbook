@@ -105,8 +105,8 @@
         if (user) {
           $('#USER_EMAIL').text(user.email);
           $('#USER_NICKNAME').text(user.displayName);
-          $('#USER_PHONENUMBER').text(user.phoneNumber);
-          document.getElementById('USER_PHOTOURL').src=user.photoURL;
+          var gsRef = storage.refFromURL(user.photoURL);
+          document.getElementById('USER_PHOTOURL').src=gsRef;
           $('#login').hide();
 
         } else {
