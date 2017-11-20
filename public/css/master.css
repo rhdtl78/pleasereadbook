@@ -6,6 +6,10 @@ html {
   background-size: cover;
 }
 
+.coverFile {
+  display: none;
+}
+
 .Background img{
   width: 100%;
   height: 100%;
