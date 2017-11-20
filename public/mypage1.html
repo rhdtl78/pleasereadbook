@@ -105,7 +105,7 @@
         if (user) {
           $('#USER_EMAIL').text(user.email);
           $('#USER_NICKNAME').text(user.displayName);
-          var gsRef = storage.refFromURL(user.photoURL);
+          var gsRef = firebase.storage().refFromURL(user.photoURL);
           document.getElementById('USER_PHOTOURL').src=gsRef;
           $('#login').hide();
 
