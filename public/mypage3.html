@@ -139,7 +139,7 @@
 
     $('#ch_proph').click(function(){
       var storageRef = firebase.storage().ref();
-      var uploadTask = storageRef.child('PROFILEPHOTO/'+_file.name+'.'＋_file.type).put(_file);
+      var uploadTask = storageRef.child('PROFILEPHOTO/'+_file.name).put(_file);
 
       uploadTask.on('state_changed', function(snapshot){
         var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
