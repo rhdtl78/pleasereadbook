@@ -1,11 +1,11 @@
 function getAllBooks() {
   var ary = [];
-  var book = {};
+  var books = {};
   var numBooks = 0;
   firebase.database().ref('/book').on('value', function(snapshot) {
     snapshot.forEach(function(childsnapshot) {
       var book = childsnapshot.val();
-      book = {
+      books = {
         'title': book.title,
         'cover':book.coverUrl,
         'author': book.author,
@@ -13,7 +13,7 @@ function getAllBooks() {
         'time': book.time
       };
 
-      ary[numBooks++] = book;
+      ary[numBooks++] = books;
 
     });
   });

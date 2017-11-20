@@ -29,6 +29,9 @@
       </ul>
       <ul class="navbar-nav ml-auto">
         <li class="nav-item">
+          <button type="button" name="button" class="btn btn-primary" id="help">도움말</button>
+        </li>
+        <li class="nav-item">
           <span id="AUTH_STATE"></span>
         </li>
         <li class="nav-item">
@@ -77,13 +80,9 @@
   <script src="/js/getAllBooks.js"></script>
   <script type="text/javascript">
     $(function($) {
-
-
-
-
       function setTable(ary) {
         for (var i = 0; i < ary.length; i++) {
-          $('tbody').append("<tr><th>" + (i + 1) + "</th><td>" + ary[i].title + "</td><td><img id = 'cover' src ='"+ary[i].cover+"'><td>" + ary[i].author + "</td><td>" + ary[i].rate + "</td><td>" + ary[i].time + "</td></tr>");
+          $('tbody').append("<tr><th>" + (i + 1) + "</th><td>" + ary[i].title + "</td><td><img src ='"+ary[i].cover+"'></td><td>" + ary[i].author + "</td><td>" + ary[i].rate + "</td><td>" + ary[i].time + "</td></tr>");
         }
       }
 
@@ -163,6 +162,15 @@
         });
         setTable(ary);
       });
+
+      $('#help').click(function(){
+        var storageRef = firebase.storage().ref();
+
+        storageRef.child('HELP/help_recommend.jpg').getDownloadURL().then(function(url){
+          window.open(url, '도움말');
+        });
+      });
+
     });
   </script>
 </body>
