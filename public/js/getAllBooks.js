@@ -7,7 +7,6 @@ function getAllBooks() {
       var book = childsnapshot.val();
       book = {
         'title': book.title,
-        'coverUrl': book.coverUrl,
         'author': book.author,
         'rate': book.rate,
         'time': book.time
