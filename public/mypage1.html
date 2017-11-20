@@ -50,7 +50,7 @@
 
   <ul class="list-group">
     <li class="list-group-item">
-      프로필: <img id="USER_PHOTOURL" width="200" alt="저장된 이미지 없음">
+      프로필 사진: <img id="USER_PHOTOURL" width="200" alt="저장된 이미지 없음">
     </li>
     <li class="list-group-item">EMAIL: <span id="USER_EMAIL"></span></li>
     <li class="list-group-item">NICKNAME: <span id="USER_NICKNAME"></span></li>
@@ -59,7 +59,7 @@
   <br>
 
   <div class="put_right">
-    <button type="button" class="btn btn-link" id="mybook">내 책 목록</button>
+    <button type="button" class="btn btn-link" id="mybook">내 목표</button>
     <button type="button" class="btn btn-primary" id="chinf">개인정보 수정</button>
   </div>
 
@@ -115,6 +115,14 @@
       });
 
 
+    });
+
+    $('#help').click(function(){
+      var storageRef = firebase.storage().ref();
+
+      storageRef.child('HELP/help_mypage1.JPG').getDownloadURL().then(function(url){
+        window.open(url, '도움말');
+      });
     });
 
     $('#mybook').click(function(){

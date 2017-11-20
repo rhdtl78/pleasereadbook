@@ -149,6 +149,14 @@
     $('#mv_my1').click(function(){
       window.location.href = "/mypage1.html";
     });
+
+    $('#help').click(function(){
+      var storageRef = firebase.storage().ref();
+
+      storageRef.child('HELP/help_mypage3.JPG').getDownloadURL().then(function(url){
+        window.open(url, '도움말');
+      });
+    });
     </script>
   </body>
 </html>
