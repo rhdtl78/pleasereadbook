@@ -122,3 +122,11 @@ html {
 .keytab {
   display: none;  /*myclip 책목록 키 정보 숨김*/
 }
+
+.imgUrl {
+  display: none; /*책표지 이미지 url 숨김*/
+}
+
+img {
+  color: #f80;
+}
