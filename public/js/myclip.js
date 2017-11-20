@@ -10,15 +10,25 @@ $(function($) {
   //이미지 불러오기 함수
   function imageLoad(title){
     var sampleimg = imageRef.child(title + '.jpg').getDownloadURL().then(function(url) {
-      console.log(sampleimg);
       var img = document.getElementById(title + 'cover');
-      img.src = url;
+        console.log(img);
+        img.src = url;
+
+    }).catch(function(error) {
+      alert(title + "의 이미지를 불러오는 데 실패");
+    });
+  }
+
+  function modalimageLoad(title){
+    var sampleimg = imageRef.child(title + '.jpg').getDownloadURL().then(function(url) {
+      var img = document.getElementById(title + 'modalcover');
+        console.log(img);
+        img.src = url;
+
     }).catch(function(error) {
       //alert(title + "의 이미지를 불러오는 데 실패");
     });
-    console.log(sampleimg);
   }
-
 
 
   const auth = firebase.auth();
@@ -42,10 +52,11 @@ $(function($) {
             });
           });
           for (var i = 0; i < ary.length; i++) {
-            $('#bookList tbody').append("<tr><td><input type='checkbox'></td><td class='book-title'>" + ary[i].title + "</td><td><img id = '" + ary[i].title + "cover' src ='' alt='뭘봐 시발'></td><td class='book-author'>" + ary[i].author + "</td><td>" + ary[i].rate + "</td><td>" + ary[i].time + "</td></tr>");
-            imageLoad(ary[i].title);
+            $('#bookList tbody').append("<tr><td><input type='checkbox'></td><td class='book-title'>" + ary[i].title + "</td><td><img id = '" + ary[i].title + "modalcover' alt='이미지 준비중'></td><td class='book-author'>" + ary[i].author + "</td><td>" + ary[i].rate + "</td><td>" + ary[i].time + "</td></tr>");
+            modalimageLoad(ary[i].title);
           }
         });
+        console.log("tab append실행됨");
         $('#rate').click(function() {
           $('#bookList > tbody > *').remove();
           var ary = [];
@@ -62,7 +73,8 @@ $(function($) {
             });
             heapSortRate(ary);
             for (var i = 0; i < ary.length; i++) {
-              $('#bookList tbody').append("<tr><td><input type='checkbox'></td><td class='book-title'>" + ary[i].title + "</td><td><img id = '" + ary[i].title + "cover' src ='' alt='뭘봐 시발'></td><td class='book-author'>" + ary[i].author + "</td><td>" + ary[i].rate + "</td><td>" + ary[i].time + "</td></tr>");
+              $('#bookList tbody').append("<tr><td><input type='checkbox'></td><td class='book-title'>" + ary[i].title + "</td><td><img id = '" + ary[i].title + "modalcover' alt='이미지 준비중'></td><td class='book-author'>" + ary[i].author + "</td><td>" + ary[i].rate + "</td><td>" + ary[i].time + "</td></tr>");
+              modalimageLoad(ary[i].title);
             }
           });
         });
@@ -83,7 +95,8 @@ $(function($) {
             });
             heapSortTime(ary);
             for (var i = 0; i < ary.length; i++) {
-              $('#bookList tbody').append("<tr><td><input type='checkbox'></td><td class='book-title'>" + ary[i].title + "</td><td><img id = '" + ary[i].title + "cover' src ='' alt='뭘봐 시발'></td><td class='book-author'>" + ary[i].author + "</td><td>" + ary[i].rate + "</td><td>" + ary[i].time + "</td></tr>");
+              $('#bookList tbody').append("<tr><td><input type='checkbox'></td><td class='book-title'>" + ary[i].title + "</td><td><img id = '" + ary[i].title + "modalcover' alt='이미지 준비중'></td><td class='book-author'>" + ary[i].author + "</td><td>" + ary[i].rate + "</td><td>" + ary[i].time + "</td></tr>");
+              modalimageLoad(ary[i].title);
             }
           });
         });
@@ -106,7 +119,8 @@ $(function($) {
               return a.title.localeCompare(b.title);
             });
             for (var i = 0; i < ary.length; i++) {
-              $('#bookList tbody').append("<tr><td><input type='checkbox'></td><td class='book-title'>" + ary[i].title + "</td><td><img id = '" + ary[i].title + "cover' src ='' alt='뭘봐 시발'></td><td class='book-author'>" + ary[i].author + "</td><td>" + ary[i].rate + "</td><td>" + ary[i].time + "</td></tr>");
+              $('#bookList tbody').append("<tr><td><input type='checkbox'></td><td class='book-title'>" + ary[i].title + "</td><td><img id = '" + ary[i].title + "modalcover' alt='이미지 준비중'></td><td class='book-author'>" + ary[i].author + "</td><td>" + ary[i].rate + "</td><td>" + ary[i].time + "</td></tr>");
+              modalimageLoad(ary[i].title);
             }
           });
         });
@@ -166,7 +180,8 @@ $(function($) {
       }
       
       function appendToTable(object) {
-        $('#tab tbody').append("<tr><td><input type='checkbox'></td><td>" + object.title + "</td><td><img id = '" + object.title + "cover' src ='' alt='뭘봐 시발'</td><td>" + object.author + "</td><td class='startTime'></td><td class='endTime'></td><td class='Btn'></td><td class='keytab'>" + object.key + "</td></tr>");
+        $('#tab tbody').append("<tr><td><input type='checkbox'></td><td>" + object.title + "</td><td><img id = '" + object.title + "cover' alt='이미지 준비중'</td><td>" + object.author + "</td><td class='startTime'></td><td class='endTime'></td><td class='Btn'></td><td class='keytab'>" + object.key + "</td></tr>");
+        imageLoad(object.title);
         if (object.timeStart) {
           $('#tab tbody tr:last-child .startTime').append(object.timeStart);
         }
@@ -223,7 +238,9 @@ function setTable(ary) {
 }
 
 function appendToTable(object) {
-  $('#tab tbody').append("<tr><td><input type='checkbox'></td><td>" + object.title + "</td><td><img id = '" + object.title + "cover' src ='' alt='뭘봐 시발'></td><td>" + object.author + "</td><td class='startTime'></td><td class='endTime'></td><td class='Btn'></td><td class='keytab'>" + object.key + "</td></tr>");
+  $('#tab tbody').append("<tr><td><input type='checkbox'></td><td>" + object.title + "</td><td><img id = '" + object.title + "cover' alt='이미지 준비중'></td><td>" + object.author + "</td><td class='startTime'></td><td class='endTime'></td><td class='Btn'></td><td class='keytab'>" + object.key + "</td></tr>");
+  imageLoad(object.title);
+  console.log("tab append실행됨");
   if (object.timeStart) {
     $('#tab tbody tr:last-child .startTime').append(object.timeStart);
   }
