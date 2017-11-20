@@ -1,6 +1,6 @@
 "use strict"
-
 $(function($) {
+
   const auth = firebase.auth();
   var user;
   auth.onAuthStateChanged(user => {
@@ -16,13 +16,14 @@ $(function($) {
             var childData = childSnap.val();
             ary.push({
               'title': childData.title,
+              'coverUrl': childData.coverUrl,
               'author': childData.author,
               'rate': childData.rate,
               'time': childData.time
             });
           });
           for (var i = 0; i < ary.length; i++) {
-            $('#bookList tbody').append("<tr><td><input type='checkbox'></td><td class='book-title'>" + ary[i].title + "</td><td class='book-author'>" + ary[i].author + "</td><td>" + ary[i].rate + "</td><td>" + ary[i].time + "</td></tr>");
+            $('#bookList tbody').append("<tr><td><input type='checkbox'></td><td class='book-title'>" + ary[i].title + "</td><td><img src='" + ary[i].coverUrl + "' alt='이미지 준비중'></td><td class='book-author'>" + ary[i].author + "</td><td>" + ary[i].rate + "</td><td>" + ary[i].time + "</td><td class='imgUrl'>" + ary[i].coverUrl + "</td></tr>");
           }
         });
         $('#rate').click(function() {
@@ -34,6 +35,7 @@ $(function($) {
               var childData = childSnap.val();
               ary.push({
                 'title': childData.title,
+                'coverUrl': childData.coverUrl,
                 'author': childData.author,
                 'rate': childData.rate,
                 'time': childData.time
@@ -41,7 +43,7 @@ $(function($) {
             });
             heapSortRate(ary);
             for (var i = 0; i < ary.length; i++) {
-              $('#bookList tbody').append("<tr><td><input type='checkbox'></td><td class='book-title'>" + ary[i].title + "</td><td class='book-author'>" + ary[i].author + "</td><td>" + ary[i].rate + "</td><td>" + ary[i].time + "</td></tr>");
+              $('#bookList tbody').append("<tr><td><input type='checkbox'></td><td class='book-title'>" + ary[i].title + "</td><td><img src='" + ary[i].coverUrl + "' alt='이미지 준비중'></td><td class='book-author'>" + ary[i].author + "</td><td>" + ary[i].rate + "</td><td>" + ary[i].time + "</td><td class='imgUrl'>" + ary[i].coverUrl + "</td></tr>");
             }
           });
         });
@@ -55,6 +57,7 @@ $(function($) {
               var childData = childSnap.val();
               ary.push({
                 'title': childData.title,
+                'coverUrl': childData.coverUrl,
                 'author': childData.author,
                 'rate': childData.rate,
                 'time': childData.time
@@ -62,7 +65,7 @@ $(function($) {
             });
             heapSortTime(ary);
             for (var i = 0; i < ary.length; i++) {
-              $('#bookList tbody').append("<tr><td><input type='checkbox'></td><td class='book-title'>" + ary[i].title + "</td><td class='book-author'>" + ary[i].author + "</td><td>" + ary[i].rate + "</td><td>" + ary[i].time + "</td></tr>");
+              $('#bookList tbody').append("<tr><td><input type='checkbox'></td><td class='book-title'>" + ary[i].title + "</td><td><img src='" + ary[i].coverUrl + "' alt='이미지 준비중'></td><td class='book-author'>" + ary[i].author + "</td><td>" + ary[i].rate + "</td><td>" + ary[i].time + "</td><td class='imgUrl'>" + ary[i].coverUrl + "</td></tr>");
             }
           });
         });
@@ -76,6 +79,7 @@ $(function($) {
               var childData = childSnap.val();
               ary.push({
                 'title': childData.title,
+                'coverUrl': childData.coverUrl,
                 'author': childData.author,
                 'rate': childData.rate,
                 'time': childData.time
@@ -85,7 +89,7 @@ $(function($) {
               return a.title.localeCompare(b.title);
             });
             for (var i = 0; i < ary.length; i++) {
-              $('#bookList tbody').append("<tr><td><input type='checkbox'></td><td class='book-title'>" + ary[i].title + "</td><td class='book-author'>" + ary[i].author + "</td><td>" + ary[i].rate + "</td><td>" + ary[i].time + "</td></tr>");
+              $('#bookList tbody').append("<tr><td><input type='checkbox'></td><td class='book-title'>" + ary[i].title + "</td><td><img src='" + ary[i].coverUrl + "' alt='이미지 준비중'></td><td class='book-author'>" + ary[i].author + "</td><td>" + ary[i].rate + "</td><td>" + ary[i].time + "</td><td class='imgUrl'>" + ary[i].coverUrl + "</td></tr>");
             }
           });
         });
@@ -97,6 +101,7 @@ $(function($) {
           firebase.database().ref('/users/' + user.uid + '/reading').push({
             'title': $(el).parents("tr").find('.book-title').text(),
             'author': $(el).parents("tr").find('.book-author').text(),
+            'coverUrl': $(el).parents("tr").find('.imgUrl').text(),
             'timeStart': '',
             'timeEnd': '',
           });
@@ -127,6 +132,7 @@ $(function($) {
           var key = child.key;
           var book = {
             'title':child.val().title,
+            'coverUrl': child.val().coverUrl,
             'author':child.val().author,
             'timeStart':child.val().timeStart,
             'timeEnd':child.val().timeEnd,
@@ -145,7 +151,8 @@ $(function($) {
       }
       
       function appendToTable(object) {
-        $('#tab tbody').append("<tr><td><input type='checkbox'></td><td>" + object.title + "</td><td>" + object.author + "</td><td class='startTime'></td><td class='endTime'></td><td class='Btn'></td><td class='keytab'>" + object.key + "</td></tr>");
+        $('#tab tbody').append("<tr><td><input type='checkbox'></td><td>" + object.title + "</td><td><img  src='" + object.coverUrl + "' alt='이미지 준비중'</td><td>" + object.author + "</td><td class='startTime'></td><td class='endTime'></td><td class='Btn'></td><td class='keytab'>" + object.key + "</td></tr>");
+    
         if (object.timeStart) {
           $('#tab tbody tr:last-child .startTime').append(object.timeStart);
         }
@@ -202,7 +209,8 @@ function setTable(ary) {
 }
 
 function appendToTable(object) {
-  $('#tab tbody').append("<tr><td><input type='checkbox'></td><td>" + object.title + "</td><td>" + object.author + "</td><td class='startTime'></td><td class='endTime'></td><td class='Btn'></td><td class='keytab'>" + object.key + "</td></tr>");
+  $('#tab tbody').append("<tr><td><input type='checkbox'></td><td>" + object.title + "</td><td><img  src='" + object.coverUrl + "' alt='이미지 준비중'></td><td>" + object.author + "</td><td class='startTime'></td><td class='endTime'></td><td class='Btn'></td><td class='keytab'>" + object.key + "</td></tr>");
+  console.log("tab append실행됨");
   if (object.timeStart) {
     $('#tab tbody tr:last-child .startTime').append(object.timeStart);
   }
