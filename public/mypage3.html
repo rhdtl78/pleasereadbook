@@ -48,28 +48,6 @@
         </div>
     </nav>
 
-    <!--<div class="chinf">
-      <table>
-        <tr>
-          <td><label for="passwd">비밀번호</label></td>
-          <td><input id="passwd" type="text" name=""></td>
-          <td><input type="submit" value="확인"></td>
-        </tr>
-        <tr>
-          <td><label for="nickname">닉네임 변경</label></td>
-          <td><input id="nickname" type="text" name=""></td>
-        </tr>
-        <tr>
-          <td><label for="phone">전화번호 변경</label></td>
-          <td><input id="phone" type="text" name=""></td>
-        </tr>
-
-        <tr>
-          <td><button type="button" id="ch_inf">변경</button></td>
-        </tr>
-      </table>
-    </div>-->
-
     <div class="input-group">
       <span class="input-group-addon" id="basic-addon1">닉네임</span>
       <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1" id="nickname">
@@ -84,9 +62,10 @@
 
     <br>
 
-  <!--  <div class="put_right">
 
-  </div>-->
+  <div class="put_right">
+    <button type="button" class="btn btn-primary" id="mv_my1">완료</button>
+  </div>
 
 
     <!--Core Script CDN Link-->
@@ -124,7 +103,7 @@
       user.updateProfile({
         'displayName': nick,
       }).then(function() {
-        //window.location.href = "/mypage1.html";
+        alert("닉네임 변경 완료!");
       }, function(error) {
         alert("닉네임 변경에 실패\n" + error.message);
       });
@@ -159,12 +138,16 @@
         user.updateProfile({
           'photoURL': 'PROFILEPHOTO/'+_file.name,
         }).then(function(){
-
+          alert("프로필 사진 변경 완료!");
         },function(error){
 
         });
 
       });
+    });
+
+    $('#mv_my1').click(function(){
+      window.location.href = "/mypage1.html";
     });
     </script>
   </body>
