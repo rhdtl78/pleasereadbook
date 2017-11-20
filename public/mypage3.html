@@ -149,9 +149,9 @@
         return false;
       }, function(){
         var user = firebase.auth().currentUser;
-
+            
         user.updateProfile({
-          'photoURL': 'PROFILEPHOTO/'+_file.name,
+          'photoURL': 'gs://pleasereadbook.appspot.com/PROFILEPHOTO/'+_file.name,
         }).then(function(){
 
         },function(error){
