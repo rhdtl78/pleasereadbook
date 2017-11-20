@@ -238,3 +238,10 @@ function appendToTable(object) {
     });
   }
 }
+$('#help').click(function(){
+  var storageRef = firebase.storage().ref();
+
+  storageRef.child('HELP/help_myclip.JPG').getDownloadURL().then(function(url){
+    window.open(url, '도움말');
+  });
+});
