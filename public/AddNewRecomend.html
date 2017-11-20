@@ -9,7 +9,33 @@
 </head>
 
 <body>
-
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/index.html">PleaseReadBook</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/mypage1.html">마이페이지</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/myclip.html">내 목표</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link" href="/recommend.html">추천 도서목록</a>
+        </li>
+      </ul>
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <span id="AUTH_STATE"></span>
+        </li>
+        <li class="nav-item">
+          <button type="button" name="button" class="btn btn-default" id="LOG_OUT">로그아웃</button>
+        </li>
+      </ul>
+    </div>
+  </nav>
   <div class="search_book">
     <fieldset class="srch">
       <legend>검색영역</legend>
@@ -44,6 +70,7 @@
           <td colspan="7">검색 결과가 없습니다.</td>
         </tr>
         <tr class="__template" style="display: none">
+          <td>#check#</td>
           <td><img src="#image#" width="50px" height="70px" /></td>
           <td>#title#</td>
           <td>#author#</td>
@@ -59,7 +86,7 @@
 
   <!--Core Script CDN Link-->
   <!--Bootstrap-->
-  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
   <!--Firebase-->
@@ -69,58 +96,59 @@
   <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-database.js"></script>
   <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-messaging.js"></script>
   <script type="text/javascript" src="/js/fireinit.js"></script>
+  <script src="/js/loginStatus.js"></script>
   <script type="text/javascript">
-  $(function ($) {
-    $('#search').click(function() {
-      if ($('#query').val() == '') {
-        alert('검색어를 입력해 주세요');
-        $('#query').focus();
-      } else {
-        callAjax($('#query').val());
-        $('#name').val("");
-      }
-    });
-
-    function callAjax(query) {
-      $.ajax({
-        url: 'https://openapi.naver.com/v1/search/book.json',
-        dataType: 'json',
-        type: 'GET',
-        data: {
-          'query': query
-        },
-        success: function(result) {
-          $('#result').html('');
-          if (result['channel']['display'] > 0) {
-            $('.__oldlist').remove();
-            for (var i in result['channel']['item']) {
-              var item = result['channel']['item'][i];
-              $html = template('__template', item);
-              $html.addClass('__oldlist');
-              $('#list').append($html);
-              $('.__oldlist').show();
-            }
-
-          } else {
-            $('#result').html('');
-            $('#result').append("데이터가 없거나 정상적으로 로딩 되지 않았습니다.");
-          }
+    $(function($) {
+      $('#search').click(function() {
+        if ($('#query').val() == '') {
+          alert('검색어를 입력해 주세요');
+          $('#query').focus();
+        } else {
+          callAjax($('#query').val());
+          $('#name').val("");
         }
       });
-    };
 
-    function template(template_id, params) {
-      var c = $('.' + template_id).clone();
-      var html = $('<div>').append(c).html();
-      for (var key in params) {
-        html = html.replace(new RegExp('#' + key + '#', 'g'), params[key]);
+      function callAjax(query) {
+        $.ajax({
+          url: '/AddNewRecomend.html/book',
+          dataType: 'json',
+          type: 'get',
+          data: {
+            'search': query
+          },
+          success: function(result) {
+            console.log(result);
+            $('#result').html('');
+            if (result["display"] > 0) {
+              $('.__oldlist').remove();
+              for (var i in result["items"]) {
+                var item = result["items"][i];
+                $html = template('__template', item);
+                $html.addClass('__oldlist');
+                $('#list').append($html);
+                $('.__oldlist').show();
+              }
+
+            } else {
+              $('#result').html('');
+              $('#result').append("데이터가 없거나 정상적으로 로딩 되지 않았습니다.");
+            }
+          }
+        });
+      };
+
+      function template(template_id, params) {
+        var c = $('.' + template_id).clone();
+        var html = $('<div>').append(c).html();
+        for (var key in params) {
+          html = html.replace(new RegExp('#' + key + '#', 'g'), params[key]);
+        }
+        html = html.replace(/#template_([^#]*)#/g, '$1');
+        var $html = $(html).removeClass(template_id).removeClass('__template');
+        return $html;
       }
-      html = html.replace(/#template_([^#]*)#/g, '$1');
-      var $html = $(html).removeClass(template_id).removeClass('__template');
-      return $html;
-    }
-  });
-
+    });
   </script>
 </body>
 
