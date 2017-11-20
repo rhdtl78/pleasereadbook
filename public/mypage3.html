@@ -151,7 +151,7 @@
         var user = firebase.auth().currentUser;
 
         user.updateProfile({
-          'photoURL': 'PROFILEPHOTO/'+_file.name+'.'+_file.type,
+          'photoURL': 'PROFILEPHOTO/'+_file.name,
         }).then(function(){
 
         },function(error){
