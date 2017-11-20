@@ -37,7 +37,6 @@
       </ul>
     </div>
   </nav>
-
   <div class="control-panel d-inline">
     <button type="button" class="btn btn-primary" name="button" id="title">이름순</button>
     <button type="button" class="btn btn-primary" name="button" id="rate">인기순</button>
@@ -51,6 +50,7 @@
       <tr>
         <th scope="col">번호</th>
         <th scope="col">제목</th>
+        <th scope="col">표지</th>
         <th scope="col">저자</th>
         <th scope="col">평점</th>
         <th scope="col">독파 (단위: 시간)</th>
@@ -70,44 +70,57 @@
   <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-database.js"></script>
   <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-messaging.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-storage.js"></script>
   <script src="/js/fireinit.js"></script>
   <script src="/js/sortByTime.js"></script>
   <script src="/js/sortByRate.js"></script>
   <script src="/js/getAllBooks.js"></script>
   <script type="text/javascript">
     $(function($) {
-      /*
-      var config = {
-          apiKey: '<your-api-key>',
-          authDomain: '<your-auth-domain>',
-          databaseURL: 'https://console.firebase.google.com/project/pleasereadbook/database/pleasereadbook/data',
-          storageBucket: '<your-storage-bucket>'
-        };
-        firebase.initializeApp(config);
+      var storageRef=firebase.storage().ref();    //스토리지 참조
+      var coverRef=storageRef.child('cover');
+      //var gildongRef= storageRef.child('cover/홍길동.jpg');
+      //var littlePrinceRef= storageRef.child('cover/어린왕자.jpg');
+      //var frogPrinceRef=storageRef.child('cover/개구리왕자.jpg');
 
-        var storage = firebase.storage();
-        var childPrince=storage.child("https://search.pstatic.net/common/?src=http%3A%2F%2Fbookthumb.phinf.naver.net%2Fcover%2F097%2F003%2F09700399.jpg%3Ftype%3Dm1%26udate%3D20151218&type=o75_108_re24");
-        var frogPrince=storage.child("https://search.pstatic.net/common/?src=http%3A%2F%2Fbookthumb.phinf.naver.net%2Fcover%2F001%2F764%2F00176486.jpg%3Ftype%3Dm1%26udate%3D20170531&type=o75_108_re24");
-        var gildonghong=storage.child("https://search.pstatic.net/common/?src=http%3A%2F%2Fbookthumb.phinf.naver.net%2Fcover%2F111%2F841%2F11184161.jpg%3Ftype%3Dm1%26udate%3D20161019&type=o75_108_re24");
-    */
-      /*var storageRef=firebase.storage.ref();    //스토리지 참조
-      storageRef.child('images').getDownloadURL().then(function(url){
-
+      storageRef.child('cover/홍길동.jpg').getDownloadURL().then(function(url){
+        var img= document.getElementById('mycover1');
+        img.src="https://firebasestorage.googleapis.com/v0/b/pleasereadbook.appspot.com/o/cover%2F%ED%99%8D%EA%B8%B8%EB%8F%99.jpg?alt=media&token=8782dce1-3670-465c-b963-77451d5a1165";
       }).catch(function(error){
         alert("표지 받는데 실패함");
-      })*/
+      });
+
+      storageRef.child('cover/어린왕자.jpg').getDownloadURL().then(function(url){
+        var img= document.getElementById('mycover2');
+        img.src="https://firebasestorage.googleapis.com/v0/b/pleasereadbook.appspot.com/o/cover%2F%EC%96%B4%EB%A6%B0%EC%99%95%EC%9E%90.jpg?alt=media&token=0d06d6ba-397e-4a2a-9aa8-be4100997dd1";
+      }).catch(function(error){
+        alert("표지 받는데 실패함");
+      });
+      storageRef.child('cover/개구리왕자.jpg').getDownloadURL().then(function(url){
+        var img= document.getElementById('mycover3');
+        img.src="https://firebasestorage.googleapis.com/v0/b/pleasereadbook.appspot.com/o/cover%2F%EA%B0%9C%EA%B5%AC%EB%A6%AC%EC%99%95%EC%9E%90.jpg?alt=media&token=f9ef306b-06a4-4535-a871-e50b7c2462d0";
+      }).catch(function(error){
+        alert("표지 받는데 실패함");
+      });
+
       function setTable(ary) {
         for (var i = 0; i < ary.length; i++) {
-          $('tbody').append("<tr><th>" + (i + 1) + "</th><td>" + ary[i].title + "</td><td>" + ary[i].author + "</td><td>" + ary[i].rate + "</td><td>" + ary[i].time + "</td></tr>");
+          $('tbody').append("<tr><th>" + (i + 1) + "</th><td>" + ary[i].title + "</td><td><img id='mycover"+(i+1)+"'><td>" + ary[i].author + "</td><td>" + ary[i].rate + "</td><td>" + ary[i].time + "</td></tr>");
         }
       }
       /*function setCover(ary){    //요렇게 해서 표지 이미지를 띄워서 보여줄계획
         for (var i = 0; i < ary.length; i++) {
           $('tr').eq(i).click(function(){
-
+            //$("div.image").append('<img src=""');
+            $("img").show();
+          });
+          $('tr').eq(i).dbclick(function(){
+            $("img").hide();
           });
         }
+
       }*/
+
       $('#login').click(function() {
         var provider = new firebase.auth.GoogleAuthProvider();
         firebase.auth().signInWithPopup(provider).then(function(result) {
@@ -155,7 +168,7 @@
                 ary.push({
                   'title': childData.title,
                   'author': childData.author,
-                  'rate' : childData.rate,
+                  'rate': childData.rate,
                   'time': childData.time
                 });
               });
