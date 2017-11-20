@@ -22,6 +22,7 @@
         <input id="signin_password" type="password" name="password" placeholder="Password">
         <button id="BTN_SIGNIN" type="button">Login</button>
         <button type="button" ><a href="/register.html">Register</a></button>
+        <button type="button" id="help">도움말</button>
       </form>
     </div>
 
@@ -36,6 +37,7 @@
     <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-database.js"></script>
     <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-messaging.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-storage.js"></script>
     <script type="text/javascript" src="/js/fireinit.js"></script>
     <script type="text/javascript">
       $('#BTN_SIGNIN').click(function() {
@@ -48,6 +50,14 @@
           alert(error.message);
         });
 
+      });
+
+      $('#help').click(function(){
+        var storageRef = firebase.storage().ref();
+
+        storageRef.child('HELP/help_login.JPG').getDownloadURL().then(function(url){
+          window.open(url, '도움말');
+        });
       });
     </script>
   </section>

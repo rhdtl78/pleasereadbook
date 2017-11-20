@@ -13,6 +13,7 @@
   <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-database.js"></script>
   <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-messaging.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-storage.js"></script>
   <script type="text/javascript" src="/js/fireinit.js"></script>
 
   <script type="text/javascript">
@@ -58,6 +59,7 @@
         </li>
         <li class="nav-item">
           <button type="button" name="button" class="btn btn-default" id="LOG_OUT">로그아웃</button>
+          <button type="button" name="button" class="btn btn-default" id="help">도움말</button>
         </li>
       </ul>
     </div>
@@ -91,6 +93,14 @@
         if(user){
           $('#AUTH_STATE').text("환영합니다"+user.displayName+"님!");
         }
+      });
+
+      $('#help').click(function(){
+        var storageRef = firebase.storage().ref();
+
+        storageRef.child('HELP/help_index.JPG').getDownloadURL().then(function(url){
+          window.open(url, '도움말');
+        });
       });
 
       $('#LOG_OUT').click(function() {
