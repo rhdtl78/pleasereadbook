@@ -10,7 +10,7 @@
 
 <body>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">PleaseReadBook</a>
+    <a class="navbar-brand" href="/index.html">PleaseReadBook</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -37,7 +37,6 @@
       </ul>
     </div>
   </nav>
-
   <div class="control-panel d-inline">
     <button type="button" class="btn btn-primary" name="button" id="title">이름순</button>
     <button type="button" class="btn btn-primary" name="button" id="rate">인기순</button>
@@ -51,6 +50,7 @@
       <tr>
         <th scope="col">번호</th>
         <th scope="col">제목</th>
+        <th scope="col">표지</th>
         <th scope="col">저자</th>
         <th scope="col">평점</th>
         <th scope="col">독파 (단위: 시간)</th>
@@ -70,17 +70,22 @@
   <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-database.js"></script>
   <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-messaging.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-storage.js"></script>
   <script src="/js/fireinit.js"></script>
   <script src="/js/sortByTime.js"></script>
   <script src="/js/sortByRate.js"></script>
   <script src="/js/getAllBooks.js"></script>
   <script type="text/javascript">
-  function setTable(ary) {
-    for (var i = 0; i < ary.length; i++) {
-      $('tbody').append("<tr><th>" + (i + 1) + "</th><td>" + ary[i].title + "</td><td>" + ary[i].author + "</td><td>" + ary[i].rate + "</td><td>" + ary[i].time + "</td></tr>");
-    }
-  }
     $(function($) {
+
+
+
+
+      function setTable(ary) {
+        for (var i = 0; i < ary.length; i++) {
+          $('tbody').append("<tr><th>" + (i + 1) + "</th><td>" + ary[i].title + "</td><td><img id = 'cover' src ='"+ary[i].cover+"'><td>" + ary[i].author + "</td><td>" + ary[i].rate + "</td><td>" + ary[i].time + "</td></tr>");
+        }
+      }
 
       $('#login').click(function() {
         var provider = new firebase.auth.GoogleAuthProvider();
@@ -121,6 +126,7 @@
                 console.log(childData);
                 ary.push({
                   'title': childData.title,
+                  'cover': childData.coverUrl,
                   'author': childData.author,
                   'rate': childData.rate,
                   'time': childData.time
