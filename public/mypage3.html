@@ -150,6 +150,12 @@
       }, function(){
         var user = firebase.auth().currentUser;
 
+        firebase.storage().ref(user.photoURL).delete().then(function(){
+
+        }).catch(function(error){
+          alert(error.message);
+        });
+
         user.updateProfile({
           'photoURL': 'PROFILEPHOTO/'+_file.name,
         }).then(function(){
