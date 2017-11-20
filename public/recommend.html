@@ -77,35 +77,26 @@
   <script src="/js/getAllBooks.js"></script>
   <script type="text/javascript">
     $(function($) {
-      var storageRef=firebase.storage().ref();    //스토리지 참조
-      var coverRef=storageRef.child('cover');
+      var storage = firebase.storage(); //스토리지 참조
+      var imageRef = storage.ref('/cover');
       //var gildongRef= storageRef.child('cover/홍길동.jpg');
       //var littlePrinceRef= storageRef.child('cover/어린왕자.jpg');
       //var frogPrinceRef=storageRef.child('cover/개구리왕자.jpg');
 
-      storageRef.child('cover/홍길동.jpg').getDownloadURL().then(function(url){
-        var img= document.getElementById('mycover1');
-        img.src="https://firebasestorage.googleapis.com/v0/b/pleasereadbook.appspot.com/o/cover%2F%ED%99%8D%EA%B8%B8%EB%8F%99.jpg?alt=media&token=8782dce1-3670-465c-b963-77451d5a1165";
-      }).catch(function(error){
-        alert("표지 받는데 실패함");
-      });
+      function imageLoad(title) {
+        var sampleimg = imageRef.child(title + '.jpg').getDownloadURL().then(function(url) {
+          var img = document.getElementById(title + 'cover');
+          img.src = url;
+        }).catch(function(error) {
+          //alert(title + "의 이미지를 불러오는 데 실패");
+        });
+      }
 
-      storageRef.child('cover/어린왕자.jpg').getDownloadURL().then(function(url){
-        var img= document.getElementById('mycover2');
-        img.src="https://firebasestorage.googleapis.com/v0/b/pleasereadbook.appspot.com/o/cover%2F%EC%96%B4%EB%A6%B0%EC%99%95%EC%9E%90.jpg?alt=media&token=0d06d6ba-397e-4a2a-9aa8-be4100997dd1";
-      }).catch(function(error){
-        alert("표지 받는데 실패함");
-      });
-      storageRef.child('cover/개구리왕자.jpg').getDownloadURL().then(function(url){
-        var img= document.getElementById('mycover3');
-        img.src="https://firebasestorage.googleapis.com/v0/b/pleasereadbook.appspot.com/o/cover%2F%EA%B0%9C%EA%B5%AC%EB%A6%AC%EC%99%95%EC%9E%90.jpg?alt=media&token=f9ef306b-06a4-4535-a871-e50b7c2462d0";
-      }).catch(function(error){
-        alert("표지 받는데 실패함");
-      });
 
       function setTable(ary) {
         for (var i = 0; i < ary.length; i++) {
-          $('tbody').append("<tr><th>" + (i + 1) + "</th><td>" + ary[i].title + "</td><td><img id='mycover"+(i+1)+"'><td>" + ary[i].author + "</td><td>" + ary[i].rate + "</td><td>" + ary[i].time + "</td></tr>");
+          $('tbody').append("<tr><th>" + (i + 1) + "</th><td>" + ary[i].title + "</td><td><img id = '" + ary[i].title + "cover' src =''><td>" + ary[i].author + "</td><td>" + ary[i].rate + "</td><td>" + ary[i].time + "</td></tr>");
+          imageLoad(ary[i].title);
         }
       }
       /*function setCover(ary){    //요렇게 해서 표지 이미지를 띄워서 보여줄계획
