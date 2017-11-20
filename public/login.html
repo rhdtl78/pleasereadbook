@@ -55,7 +55,7 @@
       $('#help').click(function(){
         var storageRef = firebase.storage().ref();
 
-        storageRef.child('HELP/help_login.JPG').getDownloadURL().then(function(url){
+        storageRef.child('HELP/help_login.jpg').getDownloadURL().then(function(url){
           window.open(url, '도움말');
         });
       });
