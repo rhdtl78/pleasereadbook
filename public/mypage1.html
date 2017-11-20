@@ -105,9 +105,13 @@
         if (user) {
           $('#USER_EMAIL').text(user.email);
           $('#USER_NICKNAME').text(user.displayName);
-          var gsRef = firebase.storage().refFromURL(user.photoURL);
-          document.getElementById('USER_PHOTOURL').src=gsRef;
           $('#login').hide();
+
+          var storageRef = firebase.storage().ref();
+
+          storageRef.child(user.photoURL).getDownloadURL().then(function(url){
+            document.getElementById('USER_PHOTOURL').src = url
+          });
 
         } else {
           window.location.href = "/login.html"

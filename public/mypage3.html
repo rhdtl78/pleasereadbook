@@ -149,9 +149,9 @@
         return false;
       }, function(){
         var user = firebase.auth().currentUser;
-            
+
         user.updateProfile({
-          'photoURL': 'gs://pleasereadbook.appspot.com/PROFILEPHOTO/'+_file.name,
+          'photoURL': 'PROFILEPHOTO/'+_file.name,
         }).then(function(){
 
         },function(error){
@@ -160,23 +160,6 @@
 
       });
     });
-
-    /*$('#ch_proph').click(function(){
-      var upph = document.getElementById('ch_proph');
-
-      upph.addEventListener('change', function(e){
-        var file = e.target.files[0];
-
-        var storageRef = firebase.storage().ref('PROFILEPHOTO/' + user.UID);
-
-        var task = storageRef.put(file);
-
-        user.updateProfile({
-          'photoURL': storageRef,
-        });
-      });
-    });*/
-
     </script>
   </body>
 </html>
