@@ -33,6 +33,11 @@
       }
     });
   </script>
+  <style>
+    html{
+      background-image:url('/img/books-1281581_1920.jpg');
+    }
+  </style>
 </head>
 
 <body>
@@ -62,28 +67,25 @@
         </li>
         <li class="nav-item">
           <button type="button" name="button" class="btn btn-default" id="LOG_OUT">로그아웃</button>
-          <button type="button" name="button" class="btn btn-default" id="help">도움말</button>
+          <button type="button" name="button" class="btn btn-primary" id="help">도움말</button>
         </li>
       </ul>
     </div>
   </nav>
-  <div id="top"></div>
-  <div id="navi">
-    <div id="menu1">
-      <h2><a href="#menu1">notice</a></h2>
+
+  <!-- <div class="container">
+    <div class="row">
+      <div class="col-lg-3">
+        <table id="bookList">
+          <th>
+            <td>제목</td>
+            <td>선택수</td>
+          </th>
+          <tbody></tbody>
+        </table>
+      </div>
     </div>
-    <div id="menu2">
-      <h2><a href="/recommend.html">추천 도서목록</a></h2>
-    </div>
-    <div id="menu3">
-      <h2><a href="/myclip.html">내 목표</a></h2>
-    </div>
-    <div id="menu4">
-      <h2><a href="/mypage1.html">마이페이지</a></h2>
-    </div>
-  </div>
-  <div id="main"></div>
-  <div id="bottom"></div>
+  </div> -->
 
 
   <!--Core Script CDN Link-->
@@ -92,10 +94,27 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
   <script src="/js/loginStatus.js"></script>
   <script type="text/javascript">
-    $('#help').click(function() {
-      var storageRef = firebase.storage().ref();
-      storageRef.child('HELP/help_index.jpg').getDownloadURL().then(function(url) {
-        window.open(url, '도움말');
+    $(function() {
+      $('#help').click(function() {
+        var storageRef = firebase.storage().ref();
+        storageRef.child('HELP/help_index.jpg').getDownloadURL().then(function(url) {
+          window.open(url, '도움말');
+        });
+      });
+
+      firebase.auth().onAuthStateChanged(user => {
+        if(user){
+          var ary = [];
+          firebase.database().ref('/book').once('value', snap=>{
+            snap.forEach(child=>{
+              var book = child.val();
+              ary.push(book);
+            });
+            for (var i = 0; i < ary.length; i++) {
+              $('#bookList tbody').append("<tr><td class='book-title'>" + ary[i].title + "</td><td class='book-author'>" + ary[i].author + "</td></tr>");
+            }
+          });
+        }
       });
     });
   </script>

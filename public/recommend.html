@@ -128,7 +128,6 @@
             dbReference.once('value', function(snapshot) { //여기 ref 경로 수정필요
               snapshot.forEach(function(childSnap) {
                 var childData = childSnap.val();
-                console.log(childData);
                 ary.push({
                   'title': childData.title,
                   'cover': childData.coverUrl,
