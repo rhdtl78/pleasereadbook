@@ -80,10 +80,8 @@
   <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-messaging.js"></script>
   <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-storage.js"></script>
   <script src="/js/fireinit.js"></script>
-  <script src="/js/sortByTime.js"></script>
-  <script src="/js/sortByRate.js"></script>
-  <script src="/js/sortByCount.js"></script>
   <script src="/js/getAllBooks.js"></script>
+  <script src="/js/Sort.js"></script>
   <script type="text/javascript">
     $(function($) {
       function setTable(ary) {
@@ -149,21 +147,21 @@
       $('#rate').click(function() {
         $('tbody>*').remove();
         var ary = getAllBooks();
-        heapSortRate(ary);
+        Sort('rate',ary);
         setTable(ary);
       });
 
       $('#time').click(function() {
         $('tbody>*').remove();
         var ary = getAllBooks();
-        heapSortTime(ary);
+        Sort('time',ary);
         setTable(ary);
       });
 
       $('#count').click(function() {
         $('tbody>*').remove();
         var ary = getAllBooks();
-        heapSortCount(ary);
+        Sort('count',ary);
         setTable(ary);
       });
 
