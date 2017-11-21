@@ -130,8 +130,6 @@
                 $('#list tbody').append("<tr><td><input type='checkbox'></td><td><img src='" + ary[i].coverUrl + "' class='book-cover'></td><td class='book-title'>" + ary[i].title + "</td><td class='book-author'>" + ary[i].author +
                   "</td><td>" + ary[i].publisher + "</td><td>" + ary[i].pubdate + "</td></tr>");
               }
-              alert("반영되었습니다. 감사합니다.");
-              window.location.href = "/index.html";
             } else {
               $('#result').html('');
               $('#result').append("데이터가 없거나 정상적으로 로딩 되지 않았습니다.");
@@ -153,7 +151,14 @@
           }
           firebase.auth().onAuthStateChanged(user => {
             if (user) {
-              firebase.database().ref('/book').push(book);
+              firebase.database().ref('/book').push(book).then(function () {
+                var update = {};
+                update['/users/' + user.uid + '/seted'] = true;
+                firebase.database().ref().update(update).then(function () {
+                  alert("반영되었습니다. 감사합니다.");
+                  window.location.href = "/index.html";
+                });
+              });
             } else {
               // login requiered
             }
