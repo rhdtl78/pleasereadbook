@@ -15,7 +15,7 @@
 
 <body>
   <div class="container-fluid">
-    <button type="button" name="button" class=""></button>
+    <button type="button" name="button" class="btn btn-primary" id="help">도움말</button>
     <div class="row d-flex justify-content-center">
       <div class="title">
         제발! 책좀 읽자!
@@ -65,6 +65,7 @@
   <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-database.js"></script>
   <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-messaging.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase-storage.js"></script>
   <script type="text/javascript" src="/js/fireinit.js"></script>
   <script type="text/javascript" src="/js/serializeObject.js"></script>
   <!-- firebase ui 링크 -->
@@ -132,6 +133,12 @@
 
       $('#LOGIN_BTN').click(function() {
         window.location.href = "/login.html";
+      });
+      $('#help').click(function(){
+        var storageRef = firebase.storage().ref();
+        storageRef.child('HELP/help_register.JPG').getDownloadURL().then(function(url){
+          window.open(url, '도움말');
+        });
       });
     });
   </script>

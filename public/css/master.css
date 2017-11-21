@@ -20,12 +20,14 @@ html {
   background-color: #B6B5B5;
 }
 
-.container-fluid{
-  background-color: #555555;
+.container-fluid {
+  position: fixed;
+  background-color: rgba( 255, 255, 255, 0.0 );
 }
 .title{
   margin-top: 5%;
   margin-bottom: 5%;
+  background-color: rgba( 125, 125, 125, 0.5 );
   color: white;
   font-size: 3rem;
 }
