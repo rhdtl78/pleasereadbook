@@ -47,6 +47,7 @@
     <button type="button" class="btn btn-primary" name="button" id="title">이름순</button>
     <button type="button" class="btn btn-primary" name="button" id="rate">인기순</button>
     <button type="button" class="btn btn-primary" name="button" id="time">독파순</button>
+    <button type="button" class="btn btn-primary" name="button" id="count">선택순</button>
     <!--button class="btn" id="login">로그인</button>
     <button type="button" class="btn btn-default" name="button" id="logoutDown">로그아웃</button-->
   </div>
@@ -55,11 +56,12 @@
     <thead>
       <tr>
         <th scope="col">번호</th>
-        <th scope="col">제목</th>
         <th scope="col">표지</th>
+        <th scope="col">제목</th>
         <th scope="col">저자</th>
         <th scope="col">평점</th>
         <th scope="col">독파 (단위: 시간)</th>
+        <th scope="col">선택수</th>
       </tr>
     </thead>
     <tbody id="tb"></tbody>
@@ -80,12 +82,13 @@
   <script src="/js/fireinit.js"></script>
   <script src="/js/sortByTime.js"></script>
   <script src="/js/sortByRate.js"></script>
+  <script src="/js/sortByCount.js"></script>
   <script src="/js/getAllBooks.js"></script>
   <script type="text/javascript">
     $(function($) {
       function setTable(ary) {
         for (var i = 0; i < ary.length; i++) {
-          $('tbody').append("<tr><th>" + (i + 1) + "</th><td>" + ary[i].title + "</td><td><img src ='"+ary[i].cover+"'></td><td>" + ary[i].author + "</td><td>" + ary[i].rate + "</td><td>" + ary[i].time + "</td></tr>");
+          $('tbody').append("<tr><th>" + (i + 1) + "</th><td><img src ='"+ary[i].cover+"'></td><td>" + ary[i].title + "</td><td>" + ary[i].author + "</td><td>" + ary[i].rate + "</td><td>" + ary[i].time + "</td><td>" + ary[i].count + "</td></tr>");
         }
       }
 
@@ -131,7 +134,8 @@
                   'cover': childData.coverUrl,
                   'author': childData.author,
                   'rate': childData.rate,
-                  'time': childData.time
+                  'time': childData.time,
+                  'count':childData.count
                 });
               });
               setTable(ary);
@@ -154,6 +158,13 @@
         $('tbody>*').remove();
         var ary = getAllBooks();
         heapSortTime(ary);
+        setTable(ary);
+      });
+
+      $('#count').click(function() {
+        $('tbody>*').remove();
+        var ary = getAllBooks();
+        heapSortCount(ary);
         setTable(ary);
       });
 

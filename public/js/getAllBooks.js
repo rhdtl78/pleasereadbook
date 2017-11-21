@@ -10,7 +10,8 @@ function getAllBooks() {
         'cover':book.coverUrl,
         'author': book.author,
         'rate': book.rate,
-        'time': book.time
+        'time': book.time,
+        'count':book.count
       };
 
       ary[numBooks++] = books;
