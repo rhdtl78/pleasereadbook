@@ -24,16 +24,14 @@ exports.cleanupUser = functions.auth.user().onDelete(event => {
   admin.database().ref('/users/' + user.uid).set(null);
 });
 
-exports.countUpExBooks = functions.database.ref('/books/{pushId}').onWrite(event => {
+exports.countUpExBooks = functions.database.ref('/book/{pushId}').onCreate(event => {  // DB 이벤트 트리거
   var eventSnapshot = event.data;
   var eventedBook = eventSnapshot.val();
   var key = eventSnapshot.key;
-
-  admin.database().ref('/books').on('value', function(snapshot) {
+  admin.database().ref('/book').once('value', function(snapshot) {
     snapshot.forEach(function(childSnapshot) {
       var childKey = childSnapshot.key;
       var childData = childSnapshot.val();
-      console.log(childData);
       var btitle = childData.title;
       var bauthor = childData.author;
       var brate = childData.rate;
@@ -41,15 +39,15 @@ exports.countUpExBooks = functions.database.ref('/books/{pushId}').onWrite(event
       var bcount = childData.count;
       var bookKey = childSnapshot.key;
 
-      if (btitle === eventedBook.title && bauthor === eventBook.author) {
+      if (btitle === eventedBook.title && bauthor === eventedBook.author && bookKey != key) {
         var update = {};
-        update['/books/' + key + '/time'] = (brate * bcount + eventedBook.time) / (bcount + 1);
+        update['/book/' + key + '/time'] = (brate * bcount + eventedBook.time) / (bcount + 1);
         admin.database().ref().update(update);
-        update['/books/' + key + '/rate'] = (brate * bcount + eventedBook.rate) / (bcount + 1);
+        update['/book/' + key + '/rate'] = (brate * bcount + eventedBook.rate) / (bcount + 1);
         admin.database().ref().update(update);
-        update['/books' + key + '/count'] = bcount + 1;
+        update['/book/' + key + '/count'] = bcount + 1;
         admin.database().ref().update(update);
-        admin.database().ref('/books/' + eventSnapshot.key).set(null);
+        admin.database().ref('/book/' + bookKey).set(null);
       }
     });
   });
@@ -67,6 +65,7 @@ exports.book = functions.https.onRequest((req, res) => {
       'query': search,
       'display': 10,
       'start': 1,
+
       'sort': 'sim'
     };
     var query = querystring.stringify(queryOption);

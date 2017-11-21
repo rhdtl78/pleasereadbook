@@ -1,0 +1,38 @@
+[debug] [2017-11-21T04:59:58.708Z] ----------------------------------------------------------------------
+[debug] [2017-11-21T04:59:58.710Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\ICUNIX\AppData\Roaming\npm\node_modules\firebase-tools\bin\firebase serve --only hosting,functions
+[debug] [2017-11-21T04:59:58.710Z] CLI Version:   3.15.2
+[debug] [2017-11-21T04:59:58.710Z] Platform:      win32
+[debug] [2017-11-21T04:59:58.710Z] Node Version:  v8.9.1
+[debug] [2017-11-21T04:59:58.711Z] Time:          Tue Nov 21 2017 13:59:58 GMT+0900 (대한민국 표준시)
+[debug] [2017-11-21T04:59:58.711Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2017-11-21T04:59:58.719Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2017-11-21T04:59:58.719Z] > authorizing via signed-in user
+[debug] [2017-11-21T04:59:58.720Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/pleasereadbook  
+ Tue Nov 21 2017 13:59:58 GMT+0900 (대한민국 표준시)
+[debug] [2017-11-21T04:59:59.969Z] <<< HTTP RESPONSE 200
+[debug] [2017-11-21T04:59:59.971Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/pleasereadbook/tokens  
+ Tue Nov 21 2017 13:59:59 GMT+0900 (대한민국 표준시)
+[debug] [2017-11-21T05:00:00.700Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Serving from 'D:\git\pleasereadbook'...
+[info] 
+[info] i  functions: Preparing to emulate functions.
+[debug] [2017-11-21T05:00:04.158Z] >>> HTTP REQUEST GET https://appengine.googleapis.com/v1/apps/pleasereadbook  
+ Tue Nov 21 2017 14:00:04 GMT+0900 (대한민국 표준시)
+[debug] [2017-11-21T05:00:04.158Z] >>> HTTP REQUEST GET https://apikeys.googleapis.com/v1/projects/pleasereadbook/apiKeys  
+ Tue Nov 21 2017 14:00:04 GMT+0900 (대한민국 표준시)
+[debug] [2017-11-21T05:00:04.159Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/pleasereadbook  
+ Tue Nov 21 2017 14:00:04 GMT+0900 (대한민국 표준시)
+[debug] [2017-11-21T05:00:05.145Z] <<< HTTP RESPONSE 200
+[debug] [2017-11-21T05:00:05.146Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/291094516014/clients/_:getWebAppConfig  
+ Tue Nov 21 2017 14:00:05 GMT+0900 (대한민국 표준시)
+[debug] [2017-11-21T05:00:05.207Z] <<< HTTP RESPONSE 200
+[debug] [2017-11-21T05:00:05.458Z] <<< HTTP RESPONSE 200
+[debug] [2017-11-21T05:00:05.992Z] <<< HTTP RESPONSE 200
+[info] i  hosting: Serving hosting files from: public
+[info] +  hosting: Local server: http://localhost:5000
+
+[info] +  functions: book: http://localhost:5001/pleasereadbook/us-central1/book
+[info] [hosting] Rewriting /AddNewRecomend.html/book?search=%EC%8B%A0 to local function book
+[info] [hosting] Rewriting /AddNewRecomend.html/book?search=%EC%8B%A0 to local function book
