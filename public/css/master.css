@@ -122,14 +122,8 @@ html {
   float: left;  /*새로운 흐름을 지정해줘야 깨지지 않는다*/
 }
 
-.keytab {
+.keytab, .originkeytab, .imgUrl {
   display: none;  /*myclip 책목록 키 정보 숨김*/
-}
-.originkeytab {
-  display: none;  /*myclip 책목록 키 정보 숨김*/
-}
-.imgUrl {
-  display: none; /*책표지 이미지 url 숨김*/
 }
 
 img {
@@ -148,4 +142,10 @@ img {
 
 #bkau {
   width:5em;
+}
+#tbtitle {
+  width: 20em;
+}
+#bkrt, #bktm {
+  width: 4em;
 }

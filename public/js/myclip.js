@@ -169,7 +169,7 @@ $(function($) {
           if (object.timeEnd) {
             $('#tab tbody tr:last-child .Btn').append("<button class='btn disabled'>독서 완료됨</button>");
           } else {
-            $("<button class='btn btn-success end'>독서 완료</button>").appendTo('#tab tbody tr:last-child .Btn').click(function(){
+            $("<button class='btn btn-success end' data-toggle='modal' data-target='#rateModal'>독서 완료</button>").appendTo('#tab tbody tr:last-child .Btn').click(function(){
               var d = new Date();
               var bkey = $(this).parents('tr').find('.keytab').text();
               firebase.database().ref('/users/' + user.uid + '/reading').on('value', function(snapshot) {
@@ -181,14 +181,26 @@ $(function($) {
                 });
               });
               
-              var originkey = $(this).parents('tr').find('.originkeytab').text();
-              firebase.database().ref('/book').on('value', function(snapshot){
-                snapshot.forEach(function(childSnapshot){
-                  if(originkey == childSnapshot.key){
-                    childSnapshot.rate += newRate;
-                  }
-                });
+              //평점 입력용 Modal js코드
+
+              $('#rateModalLabel').append(object.title + ": 책이 마음에 드셨나요?" );
+              $('#rateConfirm').click(function(){
+                alert("반영되었습니다!");
+                
+                var newRate = 0;
+                newRate = $("#rate-radio input[type='radio']:checked").text();
+                console.log(newRate);
+                var originkey = $(this).parents('tr').find('.originkeytab').text();
+                firebase.database().ref('/book').on('value', function(snapshot){
+                  snapshot.forEach(function(childSnapshot){
+                    if(originkey == childSnapshot.key){
+                      newRate += childSnapshot.rate;
+                      console.log(newRate);
+                    }
+                  });
+                });  
               });
+              
 
             });
           }
