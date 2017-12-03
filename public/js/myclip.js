@@ -28,74 +28,24 @@ $(function($) {
           }
         });
         $('#rate').click(function() {
-          $('#bookList > tbody > *').remove();
-          var ary = [];
-          firebase.database().ref('/book').on('value', function(snapshot) {
-            snapshot.forEach(function(childSnap) {
-              var childKey = childSnap.key;
-              var childData = childSnap.val();
-              ary.push({
-                'title': childData.title,
-                'coverUrl': childData.coverUrl,
-                'author': childData.author,
-                'rate': childData.rate,
-                'time': childData.time,
-                'key': childKey
-              });
-            });
-            heapSortRate(ary);
-            for (var i = 0; i < ary.length; i++) {
-              $('#bookList tbody').append("<tr><td><input type='checkbox'></td><td><img src='" + ary[i].coverUrl + "' alt='이미지 준비중'></td><td class='book-title'>" + ary[i].title + "</td><td class='book-author'>" + ary[i].author + "</td><td>" + ary[i].rate + "</td><td>" + ary[i].time + "</td><td class='imgUrl'>" + ary[i].coverUrl + "</td><td class='keytab'>" + ary[i].key + "</td></tr>");
-            }
-          });
+          var ary = SetList();
+          Sort('rate',ary);
+          AppendList(ary);
         });
   
         $('#time').click(function() {
-          $('#bookList > tbody > *').remove();
-          var ary = [];
-          firebase.database().ref('/book').on('value', function(snapshot) {
-            snapshot.forEach(function(childSnap) {
-              var childKey = childSnap.key;
-              var childData = childSnap.val();
-              ary.push({
-                'title': childData.title,
-                'coverUrl': childData.coverUrl,
-                'author': childData.author,
-                'rate': childData.rate,
-                'time': childData.time,
-                'key': childKey
-              });
-            });
-            heapSortTime(ary);
-            for (var i = 0; i < ary.length; i++) {
-              $('#bookList tbody').append("<tr><td><input type='checkbox'></td><td><img src='" + ary[i].coverUrl + "' alt='이미지 준비중'></td><td class='book-title'>" + ary[i].title + "</td><td class='book-author'>" + ary[i].author + "</td><td>" + ary[i].rate + "</td><td>" + ary[i].time + "</td><td class='imgUrl'>" + ary[i].coverUrl + "</td><td class='keytab'>" + ary[i].key + "</td></tr>");
-            }
-          });
+          var ary = SetList();
+          Sort('time',ary);
+          ary.reverse();
+          AppendList(ary);
         });
   
         $('#title').click(function() {
-          $('#bookList > tbody > *').remove();
-          var ary = [];
-          firebase.database().ref('/book').on('value', function(snapshot) {
-            snapshot.forEach(function(childSnap) {
-              var childKey = childSnap.key;
-              var childData = childSnap.val();
-              ary.push({
-                'title': childData.title,
-                'coverUrl': childData.coverUrl,
-                'author': childData.author,
-                'rate': childData.rate,
-                'time': childData.time,
-                'key': childKey
-              });
-            });
-            ary.sort(function sortComparer(a, b) {
+          var ary = SetList();
+           ary.sort(function sortComparer(a, b) {
               return a.title.localeCompare(b.title);
             });
-            for (var i = 0; i < ary.length; i++) {
-              $('#bookList tbody').append("<tr><td><input type='checkbox'></td><td><img src='" + ary[i].coverUrl + "' alt='이미지 준비중'></td><td class='book-title'>" + ary[i].title + "</td><td class='book-author'>" + ary[i].author + "</td><td>" + ary[i].rate + "</td><td>" + ary[i].time + "</td><td class='imgUrl'>" + ary[i].coverUrl + "</td><td class='keytab'>" + ary[i].key + "</td></tr>");
-            }
-          });
+          AppendList(ary);
         });
       });
       
@@ -273,3 +223,29 @@ $('#help').click(function(){
     window.open(url, '도움말');
   });
 });
+
+function SetList(){
+  $('#bookList > tbody > *').remove();
+  var ary = [];
+  firebase.database().ref('/book').on('value', function(snapshot) {
+    snapshot.forEach(function(childSnap) {
+      var childKey = childSnap.key;
+      var childData = childSnap.val();
+      ary.push({
+        'title': childData.title,
+        'coverUrl': childData.coverUrl,
+        'author': childData.author,
+        'rate': childData.rate,
+        'time': childData.time,
+        'key': childKey
+      });
+    });
+  });
+  return ary;
+}
+
+function AppendList(ary){
+  for (var i = 0; i < ary.length; i++) {
+    $('#bookList tbody').append("<tr><td><input type='checkbox'></td><td><img src='" + ary[i].coverUrl + "' alt='이미지 준비중'></td><td class='book-title'>" + ary[i].title + "</td><td class='book-author'>" + ary[i].author + "</td><td>" + ary[i].rate + "</td><td>" + ary[i].time + "</td><td class='imgUrl'>" + ary[i].coverUrl + "</td><td class='keytab'>" + ary[i].key + "</td></tr>");
+  }
+}
