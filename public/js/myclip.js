@@ -135,20 +135,26 @@ $(function($) {
 
               $('#rateModalLabel').append(object.title + ": 책이 마음에 드셨나요?" );
               $('#rateConfirm').click(function(){
-                alert("반영되었습니다!");
+                
                 
                 var newRate = 0;
-                newRate = $("#rate-radio input[type='radio']:checked").value;
-                console.log(newRate);
-                var originkey = $(this).parents('tr').find('.originkeytab').text();
-                firebase.database().ref('/book').on('value', function(snapshot){
+                newRate = parseFloat($("input[type=radio][name=rate]:checked").val());
+                console.log("newRate="+newRate);
+                var originkey = object.originkey;
+                console.log("originkey="+originkey);
+                firebase.database().ref('/book').once('value', function(snapshot){
                   snapshot.forEach(function(childSnapshot){
                     if(originkey == childSnapshot.key){
-                      newRate += childSnapshot.rate;
-                      console.log(newRate);
+                      console.log("key="+childSnapshot.key);
+                      console.log("rate=" + childSnapshot.val().rate);
+                      var updates = {};
+                      updates['/book/' + childSnapshot.key + '/rate'] = parseFloat(childSnapshot.val().rate) + newRate;
+                      firebase.database().ref().update(updates);
+                      console.log("newRate + rate="+newRate);
                     }
                   });
                 });  
+                alert(newRate + "점 반영되었습니다!");
               });
               
 
