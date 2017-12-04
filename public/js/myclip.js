@@ -122,6 +122,7 @@ $(function($) {
             $("<button class='btn btn-success end' data-toggle='modal' data-target='#rateModal'>독서 완료</button>").appendTo('#tab tbody tr:last-child .Btn').click(function(){
               var d = new Date();
               var bkey = $(this).parents('tr').find('.keytab').text();
+              var originbkey = $(this).parents('tr').find('.originkeytab').text();
               firebase.database().ref('/users/' + user.uid + '/reading').on('value', function(snapshot) {
                 snapshot.forEach(function(childSnapshot) {
                   var bookKey = childSnapshot.key;
@@ -130,6 +131,35 @@ $(function($) {
                   }
                 });
               });
+
+
+
+              //독파시간의 평균을 DB에 저장하기 위한 코드
+
+              var bookref = firebase.database().ref('/users/' + user.uid + '/reading/' + bkey);
+              bookref.once('value', function(snapshot) {
+                
+                var arrStart = snapshot.val().timeStart.split('.');
+                var arrEnd = snapshot.val().timeEnd.split('.');
+                var dateStart = new Date(arrStart[0], arrStart[1], arrStart[2]);
+                var dateEnd = new Date(arrEnd[0], arrEnd[1], arrEnd[2]);
+                var readingTime = parseInt((dateEnd-dateStart)/(1000*60*60*24))
+
+                var originBookref = firebase.database().ref('/book/'+originbkey);
+                
+                originBookref.once('value', function(snap) {
+                  var tmp = snap.val().time * snap.val().count;
+                  tmp += readingTime;
+                  tmp /= snap.val().count;
+                  var updates = {};
+                  updates['/book/'+originbkey+'/time'] = tmp;
+                  firebase.database().ref().update(updates);
+                });
+                
+              });
+              
+
+
               
               //평점 입력용 Modal js코드
 
@@ -146,14 +176,13 @@ $(function($) {
                 
                 var newRate = 0;
                 newRate = parseFloat($("input[type=radio][name=rate]:checked").val());
-                console.log("newRate="+newRate);
+                
                 var originkey = object.originkey;
-                console.log("originkey="+originkey);
+                
                 firebase.database().ref('/book').once('value', function(snapshot){
                   snapshot.forEach(function(childSnapshot){
                     if(originkey == childSnapshot.key){
-                      console.log("key="+childSnapshot.key);
-                      console.log("rate=" + childSnapshot.val().rate);
+                      
                       var updates = {};
                       var count = childSnapshot.val().count;
                       if (count == 0) count++;
@@ -162,7 +191,7 @@ $(function($) {
                       updates['/book/' + childSnapshot.key + '/count'] = count + 1;
                       updates['/book/' + childSnapshot.key + '/rate'] = ( rate * (count-1) + newRate ) / count;
                       firebase.database().ref().update(updates);
-                      console.log("newRate + rate="+newRate);
+                      
                     }
                   });
                 });  
