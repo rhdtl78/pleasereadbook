@@ -138,7 +138,7 @@ $(function($) {
                 alert("반영되었습니다!");
                 
                 var newRate = 0;
-                newRate = $("#rate-radio input[type='radio']:checked").text();
+                newRate = $("#rate-radio input[type='radio']:checked").value;
                 console.log(newRate);
                 var originkey = $(this).parents('tr').find('.originkeytab').text();
                 firebase.database().ref('/book').on('value', function(snapshot){
