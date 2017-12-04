@@ -2,7 +2,7 @@ function getAllBooks() {
   var ary = [];
   var books = {};
   var numBooks = 0;
-  firebase.database().ref('/book').on('value', function(snapshot) {
+  firebase.database().ref('/book').once('value', function(snapshot) {
     snapshot.forEach(function(childsnapshot) {
       var book = childsnapshot.val();
       books = {
@@ -13,12 +13,8 @@ function getAllBooks() {
         'time': book.time,
         'count':book.count
       };
-
       ary[numBooks++] = books;
-
     });
   });
-
-
   return ary;
 }

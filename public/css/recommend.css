@@ -1,3 +1,11 @@
 nav{
   margin-bottom: 5em;
 }
+table {
+    table-layout:fixed;
+}
+td{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
