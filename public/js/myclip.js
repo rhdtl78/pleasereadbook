@@ -52,14 +52,28 @@ $(function($) {
       $('#addBooks').click(function() { // 책 선택창 (팝업) 에서 선택 완료 버튼
         var $els = $("#bookList tr input[type='checkbox']:checked");
         $els.each(function(idx, el) {
-          firebase.database().ref('/users/' + user.uid + '/reading').push({
-            'title': $(el).parents("tr").find('.book-title').text(),
-            'author': $(el).parents("tr").find('.book-author').text(),
-            'coverUrl': $(el).parents("tr").find('.imgUrl').text(),
-            'timeStart': '',
-            'timeEnd': '',
-            'originkey': $(el).parents("tr").find('.keytab').text()
+          //중복체크 들어갑니다
+          var dup = 0;
+          var checksbj = $(el).parents("tr").find('.book-title').text();
+          var existing = 
+          firebase.database().ref('/users/' + user.uid + '/reading').once('value', function(snapshot) {
+            snapshot.forEach(function(childSnapshot) {
+              if(checksbj == childSnapshot.val().title){
+                dup = 1;
+              }
+            });
           });
+          // 중복체크 끝
+          if (dup == 0){
+            firebase.database().ref('/users/' + user.uid + '/reading').push({
+              'title': $(el).parents("tr").find('.book-title').text(),
+              'author': $(el).parents("tr").find('.book-author').text(),
+              'coverUrl': $(el).parents("tr").find('.imgUrl').text(),
+              'timeStart': '',
+              'timeEnd': '',
+              'originkey': $(el).parents("tr").find('.keytab').text()
+            });
+          }
         });
       });
 
