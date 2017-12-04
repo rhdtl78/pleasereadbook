@@ -133,7 +133,14 @@ $(function($) {
               
               //평점 입력용 Modal js코드
 
-              $('#rateModalLabel').append(object.title + ": 책이 마음에 드셨나요?" );
+              $('#rateModalLabel').text(object.title + ": 책이 마음에 드셨나요?");
+              $('#forRate').append("<div class='modal-body' id='rate-radio'><input type='radio' name='rate' value='1'>1</input><input type='radio' name='rate' value='2'>2</input><input type='radio' name='rate' value='3'>3</input><input type='radio' name='rate' value='4'>4</input><input type='radio' name='rate' value='5'>5</input><input type='radio' name='rate' value='6'>6</input><input type='radio' name='rate' value='7'>7</input><input type='radio' name='rate' value='8'>8</input><input type='radio' name='rate' value='9'>9 </input><input type='radio' name='rate' value='10'>10</input></div>");
+              $('#forRate').append("<div class='modal-footer' id='rate-buttons'><button type='button' class='btn btn-secondary' data-dismiss='modal' id='rateCancel'>모르겠네요</button><button type='button' class='btn btn-primary' data-dismiss='modal' id='rateConfirm'>결정!</button></div>");
+              $('#rateCancel').click(function(){
+                document.getElementById('rate-radio').remove();
+                document.getElementById('rate-buttons').remove();
+                $('#rateModalLabel').text("그럼 평점은 생략할게요.");
+              });
               $('#rateConfirm').click(function(){
                 
                 
@@ -148,13 +155,20 @@ $(function($) {
                       console.log("key="+childSnapshot.key);
                       console.log("rate=" + childSnapshot.val().rate);
                       var updates = {};
-                      updates['/book/' + childSnapshot.key + '/rate'] = parseFloat(childSnapshot.val().rate) + newRate;
+                      var count = childSnapshot.val().count;
+                      if (count == 0) count++;
+                      var rate = parseFloat(childSnapshot.val().rate);
+
+                      updates['/book/' + childSnapshot.key + '/count'] = count + 1;
+                      updates['/book/' + childSnapshot.key + '/rate'] = ( rate * (count-1) + newRate ) / count;
                       firebase.database().ref().update(updates);
                       console.log("newRate + rate="+newRate);
                     }
                   });
                 });  
-                alert(newRate + "점 반영되었습니다!");
+                document.getElementById('rate-radio').remove();
+                document.getElementById('rate-buttons').remove();
+                $('#rateModalLabel').text(newRate + "점 반영되었습니다!");
               });
               
 
