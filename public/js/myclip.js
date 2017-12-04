@@ -52,14 +52,28 @@ $(function($) {
       $('#addBooks').click(function() { // 책 선택창 (팝업) 에서 선택 완료 버튼
         var $els = $("#bookList tr input[type='checkbox']:checked");
         $els.each(function(idx, el) {
-          firebase.database().ref('/users/' + user.uid + '/reading').push({
-            'title': $(el).parents("tr").find('.book-title').text(),
-            'author': $(el).parents("tr").find('.book-author').text(),
-            'coverUrl': $(el).parents("tr").find('.imgUrl').text(),
-            'timeStart': '',
-            'timeEnd': '',
-            'originkey': $(el).parents("tr").find('.keytab').text()
+          //중복체크 들어갑니다
+          var dup = 0;
+          var checksbj = $(el).parents("tr").find('.book-title').text();
+          var existing = 
+          firebase.database().ref('/users/' + user.uid + '/reading').once('value', function(snapshot) {
+            snapshot.forEach(function(childSnapshot) {
+              if(checksbj == childSnapshot.val().title){
+                dup = 1;
+              }
+            });
           });
+          // 중복체크 끝
+          if (dup == 0){
+            firebase.database().ref('/users/' + user.uid + '/reading').push({
+              'title': $(el).parents("tr").find('.book-title').text(),
+              'author': $(el).parents("tr").find('.book-author').text(),
+              'coverUrl': $(el).parents("tr").find('.imgUrl').text(),
+              'timeStart': '',
+              'timeEnd': '',
+              'originkey': $(el).parents("tr").find('.keytab').text()
+            });
+          }
         });
       });
 
@@ -122,6 +136,7 @@ $(function($) {
             $("<button class='btn btn-success end' data-toggle='modal' data-target='#rateModal'>독서 완료</button>").appendTo('#tab tbody tr:last-child .Btn').click(function(){
               var d = new Date();
               var bkey = $(this).parents('tr').find('.keytab').text();
+              var originbkey = $(this).parents('tr').find('.originkeytab').text();
               firebase.database().ref('/users/' + user.uid + '/reading').on('value', function(snapshot) {
                 snapshot.forEach(function(childSnapshot) {
                   var bookKey = childSnapshot.key;
@@ -130,25 +145,73 @@ $(function($) {
                   }
                 });
               });
+
+
+
+              //독파시간의 평균을 DB에 저장하기 위한 코드
+
+              var bookref = firebase.database().ref('/users/' + user.uid + '/reading/' + bkey);
+              bookref.once('value', function(snapshot) {
+                
+                var arrStart = snapshot.val().timeStart.split('.');
+                var arrEnd = snapshot.val().timeEnd.split('.');
+                var dateStart = new Date(arrStart[0], arrStart[1], arrStart[2]);
+                var dateEnd = new Date(arrEnd[0], arrEnd[1], arrEnd[2]);
+                var readingTime = parseInt((dateEnd-dateStart)/(1000*60*60*24))
+
+                var originBookref = firebase.database().ref('/book/'+originbkey);
+                
+                originBookref.once('value', function(snap) {
+                  var tmp = snap.val().time * snap.val().count;
+                  tmp += readingTime;
+                  tmp /= snap.val().count;
+                  var updates = {};
+                  updates['/book/'+originbkey+'/time'] = tmp;
+                  firebase.database().ref().update(updates);
+                });
+                
+              });
+              
+
+
               
               //평점 입력용 Modal js코드
 
-              $('#rateModalLabel').append(object.title + ": 책이 마음에 드셨나요?" );
+              $('#rateModalLabel').text(object.title + ": 책이 마음에 드셨나요?");
+              $('#forRate').append("<div class='modal-body' id='rate-radio'><input type='radio' name='rate' value='1'>1</input><input type='radio' name='rate' value='2'>2</input><input type='radio' name='rate' value='3'>3</input><input type='radio' name='rate' value='4'>4</input><input type='radio' name='rate' value='5'>5</input><input type='radio' name='rate' value='6'>6</input><input type='radio' name='rate' value='7'>7</input><input type='radio' name='rate' value='8'>8</input><input type='radio' name='rate' value='9'>9 </input><input type='radio' name='rate' value='10'>10</input></div>");
+              $('#forRate').append("<div class='modal-footer' id='rate-buttons'><button type='button' class='btn btn-secondary' data-dismiss='modal' id='rateCancel'>모르겠네요</button><button type='button' class='btn btn-primary' data-dismiss='modal' id='rateConfirm'>결정!</button></div>");
+              $('#rateCancel').click(function(){
+                document.getElementById('rate-radio').remove();
+                document.getElementById('rate-buttons').remove();
+                $('#rateModalLabel').text("그럼 평점은 생략할게요.");
+              });
               $('#rateConfirm').click(function(){
-                alert("반영되었습니다!");
+                
                 
                 var newRate = 0;
-                newRate = $("#rate-radio input[type='radio']:checked").text();
-                console.log(newRate);
-                var originkey = $(this).parents('tr').find('.originkeytab').text();
-                firebase.database().ref('/book').on('value', function(snapshot){
+                newRate = parseFloat($("input[type=radio][name=rate]:checked").val());
+                
+                var originkey = object.originkey;
+                
+                firebase.database().ref('/book').once('value', function(snapshot){
                   snapshot.forEach(function(childSnapshot){
                     if(originkey == childSnapshot.key){
-                      newRate += childSnapshot.rate;
-                      console.log(newRate);
+                      
+                      var updates = {};
+                      var count = childSnapshot.val().count;
+                      if (count == 0) count++;
+                      var rate = parseFloat(childSnapshot.val().rate);
+
+                      updates['/book/' + childSnapshot.key + '/count'] = count + 1;
+                      updates['/book/' + childSnapshot.key + '/rate'] = ( rate * (count-1) + newRate ) / count;
+                      firebase.database().ref().update(updates);
+                      
                     }
                   });
                 });  
+                document.getElementById('rate-radio').remove();
+                document.getElementById('rate-buttons').remove();
+                $('#rateModalLabel').text(newRate + "점 반영되었습니다!");
               });
               
 
