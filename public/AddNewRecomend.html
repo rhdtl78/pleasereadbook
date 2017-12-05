@@ -42,37 +42,43 @@
       </ul>
     </div>
   </nav>
-  <div class="search_book">
+
+  <div class="container">
     <div class="row">
-      <div class="col-lg-4">
-        <div class="input-group">
-          <input type="text" name="query" id="query" accesskey="s" title="검색어" class="form-control" value="">
-          <span class="input-group-btn">
-            <button type="button" id="search" name="search" alt="검색" value="검색" class="btn btn-secondary">검색 </Button>
-          </span>
+      <div class="search_book col-lg-10">
+        <div class="row">
+          <div class="col-lg-4">
+            <div class="input-group">
+              <input type="text" name="query" id="query" accesskey="s" title="검색어" class="form-control" value="">
+              <span class="input-group-btn">
+                <button type="button" id="search" name="search" alt="검색" value="검색" class="btn btn-secondary">검색 </Button>
+              </span>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <button type="button" name="button" class="btn btn-primary" id="addBooks">추천!</button>
+          </div>
         </div>
-      </div>
-      <div class="col-lg-4">
-        <button type="button" name="button" class="btn btn-primary" id="addBooks">추천!</button>
+
+
+        <table cellspacing="0" border="1" summary="책검색 API 결과" class="table" id="list">
+          <caption>책검색 API 결과</caption>
+          <thead>
+            <tr>
+              <th>선택</th>
+              <th>책표지</th>
+              <th>책이름</th>
+              <th>저자</th>
+              <th>출판사</th>
+              <th>출판년도</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
       </div>
     </div>
-
-
-    <table cellspacing="0" border="1" summary="책검색 API 결과" class="table" id="list">
-      <caption>책검색 API 결과</caption>
-      <thead>
-        <tr>
-          <th>선택</th>
-          <th>책표지</th>
-          <th>책이름</th>
-          <th>저자</th>
-          <th>출판사</th>
-          <th>출판년도</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
   </div>
+
 
 
   <!--Core Script CDN Link-->
@@ -126,6 +132,7 @@
                   'pubdate': item.pubdate
                 });
               }
+              $('#list tbody>*').remove();
               for (var i = 0; i < ary.length; i++) {
                 $('#list tbody').append("<tr><td><input type='checkbox'></td><td><img src='" + ary[i].coverUrl + "' class='book-cover'></td><td class='book-title'>" + ary[i].title + "</td><td class='book-author'>" + ary[i].author +
                   "</td><td>" + ary[i].publisher + "</td><td>" + ary[i].pubdate + "</td></tr>");
@@ -138,37 +145,43 @@
         });
       }
 
-      $('#addBooks').click(function() { // 책 선택창 (팝업) 에서 선택 완료 버튼
+
+      function addToRecomend() {
         var $els = $("#list tr input[type='checkbox']:checked");
-        $els.each(function(idx, el) {
-          var book = {
-            'coverUrl': $(el).parents("tr").find('.book-cover').attr('src'),
-            'title': $(el).parents("tr").find('.book-title').text(),
-            'author': $(el).parents("tr").find('.book-author').text(),
-            'count': 0,
-            'rate': 0,
-            'time': 0
-          }
-          firebase.auth().onAuthStateChanged(user => {
-            if (user) {
-              firebase.database().ref('/book').push(book).then(function () {
-                var update = {};
-                update['/users/' + user.uid + '/seted'] = true;
-                firebase.database().ref().update(update).then(function () {
-                  alert("반영되었습니다. 감사합니다.");
-                  window.location.href = "/index.html";
-                });
-              });
-            } else {
-              // login requiered
+        $els.each(
+          function(idx, el, fun) {
+            var book = {
+              'coverUrl': $(el).parents("tr").find('.book-cover').attr('src'),
+              'title': $(el).parents("tr").find('.book-title').text(),
+              'author': $(el).parents("tr").find('.book-author').text(),
+              'count': 0,
+              'rate': 0,
+              'time': 0
             }
+            firebase.auth().onAuthStateChanged(user => {
+              if (user) {
+                firebase.database().ref('/book').push(book).then(function() {
+                  var update = {};
+                  update['/users/' + user.uid + '/seted'] = true;
+                  firebase.database().ref().update(update).then(function() {});
+                });
+              } else {
+                // login requiered
+              }
+            });
           });
-        });
+          setTimeout(function (){
+            alert("반영되었습니다. 감사합니다.");
+            window.location.href = "/index.html";
+          },3000);
+      }
+      $('#addBooks').click(function() {
+        addToRecomend();
       });
 
-      $('#help').click(function(){
+      $('#help').click(function() {
         var storageRef = firebase.storage().ref();
-        storageRef.child('HELP/help_AddNewRecomend.jpg').getDownloadURL().then(function(url){
+        storageRef.child('HELP/help_AddNewRecomend.jpg').getDownloadURL().then(function(url) {
           window.open(url, '도움말');
         });
       });

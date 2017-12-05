@@ -32,14 +32,14 @@ $(function($) {
           Sort('rate',ary);
           AppendList(ary);
         });
-  
+
         $('#time').click(function() {
           var ary = SetList();
           Sort('time',ary);
           ary.reverse();
           AppendList(ary);
         });
-  
+
         $('#title').click(function() {
           var ary = SetList();
            ary.sort(function sortComparer(a, b) {
@@ -48,14 +48,14 @@ $(function($) {
           AppendList(ary);
         });
       });
-      
+
       $('#addBooks').click(function() { // 책 선택창 (팝업) 에서 선택 완료 버튼
         var $els = $("#bookList tr input[type='checkbox']:checked");
         $els.each(function(idx, el) {
           //중복체크 들어갑니다
           var dup = 0;
           var checksbj = $(el).parents("tr").find('.book-title').text();
-          var existing = 
+          var existing =
           firebase.database().ref('/users/' + user.uid + '/reading').once('value', function(snapshot) {
             snapshot.forEach(function(childSnapshot) {
               if(checksbj == childSnapshot.val().title){
@@ -119,10 +119,10 @@ $(function($) {
           appendToTable(ary[i]);
         }
       }
-      
+
       function appendToTable(object) {
         $('#tab tbody').append("<tr><td><input type='checkbox'></td><td>" + object.title + "</td><td><img  src='" + object.coverUrl + "' alt='이미지 준비중'</td><td>" + object.author + "</td><td class='startTime'></td><td class='endTime'></td><td class='Btn'></td><td class='keytab'>" + object.key + "</td><td class='originkeytab'>" + object.originkey + "</td></tr>");
-    
+
         if (object.timeStart) {
           $('#tab tbody tr:last-child .startTime').append(object.timeStart);
         }
@@ -152,7 +152,7 @@ $(function($) {
 
               var bookref = firebase.database().ref('/users/' + user.uid + '/reading/' + bkey);
               bookref.once('value', function(snapshot) {
-                
+
                 var arrStart = snapshot.val().timeStart.split('.');
                 var arrEnd = snapshot.val().timeEnd.split('.');
                 var dateStart = new Date(arrStart[0], arrStart[1], arrStart[2]);
@@ -160,21 +160,22 @@ $(function($) {
                 var readingTime = parseInt((dateEnd-dateStart)/(1000*60*60*24))
 
                 var originBookref = firebase.database().ref('/book/'+originbkey);
-                
+
                 originBookref.once('value', function(snap) {
                   var tmp = snap.val().time * snap.val().count;
                   tmp += readingTime;
-                  tmp /= snap.val().count;
+                  var cnt = snap.val().count;
+                  if (cnt == 0) cnt ++;
+                  tmp /= cnt;
                   var updates = {};
                   updates['/book/'+originbkey+'/time'] = tmp;
                   firebase.database().ref().update(updates);
                 });
-                
               });
-              
 
 
-              
+
+
               //평점 입력용 Modal js코드
 
               $('#rateModalLabel').text(object.title + ": 책이 마음에 드셨나요?");
@@ -186,34 +187,34 @@ $(function($) {
                 $('#rateModalLabel').text("그럼 평점은 생략할게요.");
               });
               $('#rateConfirm').click(function(){
-                
-                
+
+
                 var newRate = 0;
                 newRate = parseFloat($("input[type=radio][name=rate]:checked").val());
-                
+
                 var originkey = object.originkey;
-                
+
                 firebase.database().ref('/book').once('value', function(snapshot){
                   snapshot.forEach(function(childSnapshot){
                     if(originkey == childSnapshot.key){
-                      
+
                       var updates = {};
                       var count = childSnapshot.val().count;
                       if (count == 0) count++;
                       var rate = parseFloat(childSnapshot.val().rate);
 
-                      updates['/book/' + childSnapshot.key + '/count'] = count + 1;
-                      updates['/book/' + childSnapshot.key + '/rate'] = ( rate * (count-1) + newRate ) / count;
+                      updates['/book/' + childSnapshot.key + '/count'] = count;
+                      updates['/book/' + childSnapshot.key + '/rate'] = ( rate * count + newRate ) / count;
                       firebase.database().ref().update(updates);
-                      
+
                     }
                   });
-                });  
+                });
                 document.getElementById('rate-radio').remove();
                 document.getElementById('rate-buttons').remove();
                 $('#rateModalLabel').text(newRate + "점 반영되었습니다!");
               });
-              
+
 
             });
           }
@@ -237,7 +238,7 @@ $(function($) {
       window.location.href = "/register.html";
     }
   });
-  
+
 });
 
 

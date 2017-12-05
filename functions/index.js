@@ -34,7 +34,7 @@ exports.countUpExBooks = functions.database.ref('/book/{pushId}').onCreate(event
       var childData = childSnapshot.val();
       var btitle = childData.title;
       var bauthor = childData.author;
-      var brate = childData.rate;
+      var brate = childData.rate = 5;
       var btime = childData.time;
       var bcount = childData.count;
       var bookKey = childSnapshot.key;

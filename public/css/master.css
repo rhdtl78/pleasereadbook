@@ -149,3 +149,11 @@ img {
 #bkrt, #bktm {
   width: 4em;
 }
+table {
+    table-layout:fixed;
+}
+td{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
