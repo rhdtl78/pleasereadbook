@@ -203,8 +203,8 @@ $(function($) {
                       if (count == 0) count++;
                       var rate = parseFloat(childSnapshot.val().rate);
 
-                      updates['/book/' + childSnapshot.key + '/count'] = count;
-                      updates['/book/' + childSnapshot.key + '/rate'] = ( rate * count + newRate ) / count;
+                      updates['/book/' + childSnapshot.key + '/count'] = count + 1;
+                      updates['/book/' + childSnapshot.key + '/rate'] = ( rate * count + newRate ) / (count+1);
                       firebase.database().ref().update(updates);
 
                     }
